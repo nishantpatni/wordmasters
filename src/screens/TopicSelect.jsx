@@ -1,6 +1,6 @@
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 
-const COUNT_OPTIONS = [10, 25, 50, 100];
+const COUNT_OPTIONS = [50, 100];
 
 export default function TopicSelect({ onStart, onBack, onRevise, syncing }) {
   return (
