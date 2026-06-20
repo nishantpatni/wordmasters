@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { getScores, saveScores, memoryScore } from '../engine/quiz.js';
 import { loadScoresFromSheets, loadLogsFromSheets } from '../services/sheetsService.js';
+import { USER_CHANGELOG, TECH_CHANGELOG } from '../data/changelog.js';
 
 const USERS = ['NP_test', 'PB_test', 'ATV'];
 
@@ -18,7 +19,7 @@ function scoreBg(s) {
 
 export default function Admin({ onBack }) {
   const [activeUser,   setActiveUser]   = useState(USERS[0]);
-  const [view,         setView]         = useState('scores'); // 'scores' | 'logs'
+  const [view,         setView]         = useState('scores'); // 'scores' | 'logs' | 'changelog'
   const [sortBy,       setSortBy]       = useState('score');
   const [filterTopic,  setFilterTopic]  = useState('all');
   const [search,       setSearch]       = useState('');
@@ -150,7 +151,11 @@ export default function Admin({ onBack }) {
           </button>
           <button onClick={() => setView('logs')}
             style={{ ...styles.toggleBtn, ...(view === 'logs' ? styles.toggleActive : {}) }}>
-            📋 Attempt Logs
+            📋 Logs
+          </button>
+          <button onClick={() => setView('changelog')}
+            style={{ ...styles.toggleBtn, ...(view === 'changelog' ? styles.toggleActive : {}) }}>
+            📝 Changelog
           </button>
         </div>
 
@@ -321,10 +326,61 @@ export default function Admin({ onBack }) {
             )}
           </>
         )}
+        {/* ── CHANGELOG VIEW ── */}
+        {view === 'changelog' && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20 }}>
+
+            {/* User-facing */}
+            <div>
+              <div style={clStyles.colTitle}>User-Facing Changes</div>
+              {USER_CHANGELOG.map((release, ri) => (
+                <div key={ri} style={clStyles.releaseBlock}>
+                  <div style={clStyles.releaseDate}>{release.date}</div>
+                  {release.entries.map((e, ei) => (
+                    <div key={ei} style={clStyles.entryRow}>
+                      <span style={{ fontSize: 18, minWidth: 24 }}>{e.icon}</span>
+                      <div>
+                        <div style={clStyles.entryTopic}>{e.topic}</div>
+                        <div style={clStyles.entryText}>{e.text}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Technical */}
+            <div>
+              <div style={clStyles.colTitle}>Technical Changes</div>
+              {TECH_CHANGELOG.map((release, ri) => (
+                <div key={ri} style={clStyles.releaseBlock}>
+                  <div style={clStyles.releaseDate}>{release.date}</div>
+                  {release.entries.map((e, ei) => (
+                    <div key={ei} style={clStyles.techEntry}>
+                      <span style={{ color: '#96F878', marginRight: 6 }}>›</span>{e}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+          </div>
+        )}
+
       </div>
     </div>
   );
 }
+
+const clStyles = {
+  colTitle:     { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 12 },
+  releaseBlock: { background: '#fff', borderRadius: 14, padding: '14px 16px', marginBottom: 14, border: '1px solid #DCD5CE' },
+  releaseDate:  { fontSize: 12, fontWeight: 800, color: '#197A56', background: '#E3FDDB', display: 'inline-block', borderRadius: 999, padding: '3px 10px', marginBottom: 12 },
+  entryRow:     { display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 10 },
+  entryTopic:   { fontSize: 13, fontWeight: 800, color: '#212427', marginBottom: 2 },
+  entryText:    { fontSize: 12, color: '#6B7280', lineHeight: 1.5 },
+  techEntry:    { fontSize: 12, fontFamily: 'monospace', color: '#374151', padding: '5px 0', borderBottom: '1px solid #F2F2F2', lineHeight: 1.5 },
+};
 
 const styles = {
   page:         { minHeight: '100vh', background: '#F1EEEA', fontFamily: "'Plus Jakarta Sans',sans-serif" },

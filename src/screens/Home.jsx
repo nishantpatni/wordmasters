@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { getScores, getMeta, memoryScore, isDue } from '../engine/quiz.js';
+import { USER_CHANGELOG } from '../data/changelog.js';
 
 export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, onLogout }) {
   const scores  = getScores(user.username);
@@ -11,6 +13,8 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
   const strongItems = Object.values(scores).filter(r => memoryScore(r) >= 70).length;
   const avgScore   = attempted === 0 ? 0 :
     Math.round(Object.values(scores).reduce((s, r) => s + memoryScore(r), 0) / attempted);
+
+  const [changelogOpen, setChangelogOpen] = useState(true);
 
   const circR = 54;
   const circ  = 2 * Math.PI * circR;
@@ -82,6 +86,30 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
               <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{s.label}</div>
             </div>
           ))}
+        </div>
+
+        {/* What's New */}
+        <div style={styles.changelogCard}>
+          <button
+            onClick={() => setChangelogOpen(o => !o)}
+            style={styles.changelogHeader}
+          >
+            <span style={{ fontWeight: 800, fontSize: 13, color: '#197A56' }}>🆕 What's New</span>
+            <span style={{ fontSize: 12, color: '#B4B2A9', fontWeight: 700 }}>{USER_CHANGELOG[0].date} {changelogOpen ? '▲' : '▼'}</span>
+          </button>
+          {changelogOpen && (
+            <div style={{ padding: '0 14px 14px' }}>
+              {USER_CHANGELOG[0].entries.map((e, i) => (
+                <div key={i} style={styles.changelogEntry}>
+                  <span style={{ fontSize: 16, minWidth: 22 }}>{e.icon}</span>
+                  <div>
+                    <span style={{ fontWeight: 800, fontSize: 12, color: '#212427' }}>{e.topic} — </span>
+                    <span style={{ fontSize: 12, color: '#6B7280' }}>{e.text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Per-topic mini progress */}
@@ -164,4 +192,7 @@ const styles = {
   sectionTitle: { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 10 },
   topicRow:  { display: 'flex', alignItems: 'center', gap: 12, background: '#fff', borderRadius: 14, padding: '12px 14px', border: '1px solid #DCD5CE' },
   bigBtn:    { width: '100%', background: '#96F878', color: '#212427', border: 'none', borderRadius: 18, fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 22, padding: 18, cursor: 'pointer', transition: 'background 0.15s' },
+  changelogCard:   { background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', marginBottom: 20, overflow: 'hidden' },
+  changelogHeader: { width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#F0FDF4', border: 'none', cursor: 'pointer', borderBottom: '1px solid #D1FAE5' },
+  changelogEntry:  { display: 'flex', gap: 10, alignItems: 'flex-start', paddingTop: 10 },
 };

@@ -389,6 +389,20 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
         @media (max-width: 767px) {
           .timer-fill { display: none; }
         }
+        @media (min-width: 640px) {
+          .quiz-body  { padding: 28px 24px 56px !important; }
+          .quiz-card  { padding: 32px 30px !important; }
+          .quiz-prompt { font-size: 20px !important; }
+          .quiz-option { padding: 16px 20px !important; font-size: 16px !important; }
+        }
+        @media (min-width: 1024px) {
+          .quiz-body  { max-width: 800px !important; padding: 40px 0 64px !important; }
+          .quiz-card  { padding: 44px 44px !important; border-radius: 28px !important; }
+          .quiz-prompt { font-size: 24px !important; margin-bottom: 28px !important; }
+          .quiz-option { padding: 20px 26px !important; font-size: 18px !important; border-radius: 16px !important; min-height: 68px !important; }
+          .quiz-opt-letter { width: 36px !important; height: 36px !important; font-size: 14px !important; }
+          .quiz-submit { font-size: 18px !important; padding: 16px 24px !important; }
+        }
       `}</style>
 
       {/* ── Header ── */}
@@ -428,8 +442,8 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       </div>
 
       {/* ── Question card ── */}
-      <div style={{ ...styles.body, position: 'relative', zIndex: 2 }}>
-        <div style={styles.card} className="pop-in" key={idx}>
+      <div style={{ ...styles.body, position: 'relative', zIndex: 2 }} className="quiz-body">
+        <div style={styles.card} className="pop-in quiz-card" key={idx}>
 
           {/* Card header: topic badge + timer ring */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -440,7 +454,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           </div>
 
           {/* Prompt */}
-          <div style={styles.prompt}>{q.prompt}</div>
+          <div style={styles.prompt} className="quiz-prompt">{q.prompt}</div>
 
           {/* Multi-select hint */}
           {isMulti && !answered && (
@@ -458,10 +472,11 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
                   key={oi}
                   onClick={() => isMulti ? handleMultiToggle(oi) : handleSelect(oi)}
                   style={{ ...styles.optionBtn, ...os, cursor: answered ? 'default' : 'pointer' }}
+                  className="quiz-option"
                   onMouseEnter={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#A8F0B8' : '#F2F2F2'; }}
                   onMouseLeave={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#E3FDDB' : '#FAFAF9'; }}
                 >
-                  <span style={{ ...styles.optLetter,
+                  <span className="quiz-opt-letter" style={{ ...styles.optLetter,
                     background: answered && (isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex)
                       ? 'rgba(16,160,122,0.2)'
                       : answered && (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)
@@ -485,6 +500,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
             <button
               onClick={handleMultiSubmit}
               disabled={multiSel.size === 0}
+              className="quiz-submit"
               style={{
                 ...styles.submitBtn,
                 opacity: multiSel.size === 0 ? 0.45 : 1,
