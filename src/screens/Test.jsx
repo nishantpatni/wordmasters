@@ -79,6 +79,26 @@ function TimerRing({ timeLeft, total, answered }) {
   );
 }
 
+// ── TTS helpers ───────────────────────────────────────────────────────────────
+function ttsSpeak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.88;
+  utt.lang = 'en-US';
+  window.speechSynthesis.speak(utt);
+}
+
+function getKeyTerm(prompt) {
+  // Extract the quoted term/phrase — most prompts wrap the key word in "..."
+  const m = prompt.match(/"([^"]+)"/);
+  if (m) return m[1].replace(/___/g, 'blank');
+  // Tricky fill-in format: "a _____ of X"
+  if (/_{3,}/.test(prompt)) return prompt.replace(/_{3,}/g, 'blank');
+  // Fallback: first line, strip trailing question mark
+  return prompt.split('\n')[0].replace(/\?$/, '').trim();
+}
+
 export default function TestScreen({ questions, onComplete, onQuit }) {
   const [idx,           setIdx]          = useState(0);
   const [sel,           setSel]          = useState(null);       // single-select option idx
@@ -90,6 +110,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [points,        setPoints]       = useState(0);
   const [flash,         setFlash]        = useState(null);
   const [results,       setResults]      = useState([]);
+  const [ttsOn,         setTtsOn]        = useState(() => localStorage.getItem('wm_tts') !== 'off');
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -108,6 +129,8 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const intervalRef   = useRef(null);
   const feedbackRef   = useRef(null);
   const flashTRef     = useRef(null);
+  const ttsOnRef      = useRef(ttsOn);
+  ttsOnRef.current    = ttsOn;
 
   idxRef.current     = idx;
   resultsRef.current = results;
@@ -126,7 +149,15 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   function handleQuit() {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
+    window.speechSynthesis?.cancel();
     onQuit(resultsRef.current);
+  }
+
+  function toggleTts() {
+    const next = !ttsOnRef.current;
+    setTtsOn(next);
+    localStorage.setItem('wm_tts', next ? 'on' : 'off');
+    if (!next) window.speechSynthesis?.cancel();
   }
 
   // ── Timer fires when 10s runs out ─────────────────────────────────────────
@@ -240,6 +271,8 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
 
+    if (ttsOnRef.current) ttsSpeak(getKeyTerm(questions[idxRef.current]?.prompt ?? ''));
+
     const doTimeout = () => triggerTimeout();
 
     intervalRef.current = setInterval(() => {
@@ -264,6 +297,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
     clearTimeout(flashTRef.current);
+    window.speechSynthesis?.cancel();
   }, []);
 
   // Set body background so the red fill shows through the transparent page on desktop
@@ -407,7 +441,13 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
 
       {/* ── Header ── */}
       <div style={{ ...styles.header, position: 'relative', zIndex: 2 }}>
-        <button onClick={handleQuit} style={styles.backBtn}>✕ Quit</button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={handleQuit} style={styles.backBtn}>✕ Quit</button>
+          <button onClick={toggleTts} style={{ ...styles.backBtn, fontSize: 16, padding: '7px 10px' }}
+            title={ttsOn ? 'Mute voice' : 'Unmute voice'}>
+            {ttsOn ? '🔊' : '🔇'}
+          </button>
+        </div>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <div style={{ ...styles.pill, background: '#E3FDDB', color: '#197A56' }}>✓ {correctCount}</div>
@@ -454,7 +494,16 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           </div>
 
           {/* Prompt */}
-          <div style={styles.prompt} className="quiz-prompt">{q.prompt}</div>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+            <div style={{ ...styles.prompt, flex: 1 }} className="quiz-prompt">{q.prompt}</div>
+            {ttsOn && (
+              <button
+                onClick={() => ttsSpeak(getKeyTerm(q.prompt))}
+                style={styles.replayBtn}
+                title="Replay"
+              >🔉</button>
+            )}
+          </div>
 
           {/* Multi-select hint */}
           {isMulti && !answered && (
@@ -576,6 +625,9 @@ const styles = {
                 fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, transition: 'background 0.15s' },
   explanation:{ marginTop: 18, borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600,
                 border: '1px solid', lineHeight: 1.6 },
+  replayBtn:  { background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 20,
+                padding: '2px 4px', flexShrink: 0, opacity: 0.55, marginTop: 2,
+                transition: 'opacity 0.15s' },
   coinFloat:  { position: 'absolute', top: -34, left: '50%', transform: 'translateX(-50%)',
                 fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 18, color: '#197A56',
                 whiteSpace: 'nowrap', animation: 'coinFloat 1.5s ease forwards',
