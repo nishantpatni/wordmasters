@@ -1,0 +1,75 @@
+============================================================
+PDF PARSING PROMPTS FOR CLAUDE.AI
+Upload one PDF at a time and use the matching prompt below.
+============================================================
+
+
+------------------------------------------------------------
+1. Master_Synonyms_Book.pdf
+------------------------------------------------------------
+Extract all entries from this PDF into a JSON array with this exact structure:
+
+[
+  { "id": "word-in-lowercase", "word": "Word", "synonyms": ["Syn1", "Syn2", "Syn3", "Syn4", "Syn5"] }
+]
+
+Rules:
+- id: lowercase version of the word, hyphens for spaces
+- word: title-cased
+- synonyms: array of all synonyms listed (keep title-case)
+- Output raw JSON only, no explanation
+
+
+------------------------------------------------------------
+2. Antonyms_Expanded (1).pdf
+------------------------------------------------------------
+Extract all entries from this PDF into a JSON array with this exact structure:
+
+[
+  { "id": "word-antonym", "word": "Word", "antonym": "Antonym" }
+]
+
+Rules:
+- id: lowercase word + "-" + lowercase antonym (e.g. "abundant-scarce")
+- word and antonym: title-cased
+- Output raw JSON only, no explanation
+
+
+------------------------------------------------------------
+3. One_Word_Substitutions_Only.pdf
+------------------------------------------------------------
+Extract all entries from this PDF into a JSON array with this exact structure:
+
+[
+  { "id": "one-word-lowercase", "phrase": "Full phrase or definition", "word": "OneWord" }
+]
+
+Rules:
+- id: lowercase version of the one-word answer, hyphens for spaces
+- phrase: the descriptive phrase/definition
+- word: title-cased single word answer
+- Output raw JSON only, no explanation
+
+
+------------------------------------------------------------
+4. Master_Proverb_Book_Compact.pdf
+------------------------------------------------------------
+Extract all entries from this PDF into a JSON array with this exact structure:
+
+[
+  { "id": "short-kebab-slug", "proverb": "Full proverb text", "meaning": "What it means", "example": "Example sentence using it." }
+]
+
+Rules:
+- id: 2-4 word kebab-case slug from the proverb (e.g. "stitch-in-time")
+- proverb: exact proverb text
+- meaning: concise meaning
+- example: one example sentence
+- Output raw JSON only, no explanation
+
+
+------------------------------------------------------------
+Once you have all 4 JSON outputs, paste them back into the
+Word Masters project and Claude Code will merge them into
+topicData.js, replacing the hardcoded arrays.
+------------------------------------------------------------

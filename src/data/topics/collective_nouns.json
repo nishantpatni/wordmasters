@@ -1,0 +1,452 @@
+[
+  {
+    "id": "a-band-of-musicians",
+    "phrase": "A band of musicians",
+    "collective": "Band",
+    "noun": "Musicians"
+  },
+  {
+    "id": "a-band-of-robbers",
+    "phrase": "A band of robbers",
+    "collective": "Band",
+    "noun": "Robbers"
+  },
+  {
+    "id": "a-basket-of-fruits",
+    "phrase": "A basket of fruits",
+    "collective": "Basket",
+    "noun": "Fruits"
+  },
+  {
+    "id": "a-batch-of-cakes",
+    "phrase": "A batch of cakes",
+    "collective": "Batch",
+    "noun": "Cakes"
+  },
+  {
+    "id": "a-bevy-of-ladies",
+    "phrase": "A bevy of ladies",
+    "collective": "Bevy",
+    "noun": "Ladies"
+  },
+  {
+    "id": "a-board-of-directors",
+    "phrase": "A board of directors",
+    "collective": "Board",
+    "noun": "Directors"
+  },
+  {
+    "id": "a-bouquet-of-flowers",
+    "phrase": "A bouquet of flowers",
+    "collective": "Bouquet",
+    "noun": "Flowers"
+  },
+  {
+    "id": "a-bouquet-of-roses",
+    "phrase": "A bouquet of roses",
+    "collective": "Bouquet",
+    "noun": "Roses"
+  },
+  {
+    "id": "a-bowl-of-rice",
+    "phrase": "A bowl of rice",
+    "collective": "Bowl",
+    "noun": "Rice"
+  },
+  {
+    "id": "a-brood-of-chickens",
+    "phrase": "A brood of chickens",
+    "collective": "Brood",
+    "noun": "Chickens"
+  },
+  {
+    "id": "a-bunch-of-bananas",
+    "phrase": "A bunch of bananas",
+    "collective": "Bunch",
+    "noun": "Bananas"
+  },
+  {
+    "id": "a-bunch-of-carrots",
+    "phrase": "A bunch of carrots",
+    "collective": "Bunch",
+    "noun": "Carrots"
+  },
+  {
+    "id": "a-bunch-of-flowers",
+    "phrase": "A bunch of flowers",
+    "collective": "Bunch",
+    "noun": "Flowers"
+  },
+  {
+    "id": "a-bunch-of-grapes",
+    "phrase": "A bunch of grapes",
+    "collective": "Bunch",
+    "noun": "Grapes"
+  },
+  {
+    "id": "a-bundle-of-hay",
+    "phrase": "A bundle of hay",
+    "collective": "Bundle",
+    "noun": "Hay"
+  },
+  {
+    "id": "a-bundle-of-sticks",
+    "phrase": "A bundle of sticks",
+    "collective": "Bundle",
+    "noun": "Sticks"
+  },
+  {
+    "id": "a-choir-of-singers",
+    "phrase": "A choir of singers",
+    "collective": "Choir",
+    "noun": "Singers"
+  },
+  {
+    "id": "a-class-of-pupils",
+    "phrase": "A class of pupils",
+    "collective": "Class",
+    "noun": "Pupils"
+  },
+  {
+    "id": "a-class-of-students",
+    "phrase": "A class of students",
+    "collective": "Class",
+    "noun": "Students"
+  },
+  {
+    "id": "a-cluster-of-houses",
+    "phrase": "A cluster of houses",
+    "collective": "Cluster",
+    "noun": "Houses"
+  },
+  {
+    "id": "a-cluster-of-stars",
+    "phrase": "A cluster of stars",
+    "collective": "Cluster",
+    "noun": "Stars"
+  },
+  {
+    "id": "a-clutch-of-eggs",
+    "phrase": "A clutch of eggs",
+    "collective": "Clutch",
+    "noun": "Eggs"
+  },
+  {
+    "id": "a-colony-of-ants",
+    "phrase": "A colony of ants",
+    "collective": "Colony",
+    "noun": "Ants"
+  },
+  {
+    "id": "a-colony-of-penguins",
+    "phrase": "A colony of penguins",
+    "collective": "Colony",
+    "noun": "Penguins"
+  },
+  {
+    "id": "a-company-of-actors",
+    "phrase": "A company of actors",
+    "collective": "Company",
+    "noun": "Actors"
+  },
+  {
+    "id": "a-company-of-soldiers",
+    "phrase": "A company of soldiers",
+    "collective": "Company",
+    "noun": "Soldiers"
+  },
+  {
+    "id": "a-crew-of-sailors",
+    "phrase": "A crew of sailors",
+    "collective": "Crew",
+    "noun": "Sailors"
+  },
+  {
+    "id": "a-crowd-of-people",
+    "phrase": "A crowd of people",
+    "collective": "Crowd",
+    "noun": "People"
+  },
+  {
+    "id": "a-deck-of-cards",
+    "phrase": "A deck of cards",
+    "collective": "Deck",
+    "noun": "Cards"
+  },
+  {
+    "id": "a-fleet-of-buses",
+    "phrase": "A fleet of buses",
+    "collective": "Fleet",
+    "noun": "Buses"
+  },
+  {
+    "id": "a-fleet-of-cars",
+    "phrase": "A fleet of cars",
+    "collective": "Fleet",
+    "noun": "Cars"
+  },
+  {
+    "id": "a-fleet-of-ships",
+    "phrase": "A fleet of ships",
+    "collective": "Fleet",
+    "noun": "Ships"
+  },
+  {
+    "id": "a-flight-of-birds",
+    "phrase": "A flight of birds",
+    "collective": "Flight",
+    "noun": "Birds"
+  },
+  {
+    "id": "a-flight-of-stairs",
+    "phrase": "A flight of stairs",
+    "collective": "Flight",
+    "noun": "Stairs"
+  },
+  {
+    "id": "a-flock-of-geese",
+    "phrase": "A flock of geese",
+    "collective": "Flock",
+    "noun": "Geese"
+  },
+  {
+    "id": "a-forest-of-trees",
+    "phrase": "A forest of trees",
+    "collective": "Forest",
+    "noun": "Trees"
+  },
+  {
+    "id": "a-galaxy-of-stars",
+    "phrase": "A galaxy of stars",
+    "collective": "Galaxy",
+    "noun": "Stars"
+  },
+  {
+    "id": "a-group-of-dancers",
+    "phrase": "A group of dancers",
+    "collective": "Group",
+    "noun": "Dancers"
+  },
+  {
+    "id": "a-group-of-friends",
+    "phrase": "A group of friends",
+    "collective": "Group",
+    "noun": "Friends"
+  },
+  {
+    "id": "a-group-of-islands",
+    "phrase": "A group of islands",
+    "collective": "Group",
+    "noun": "Islands"
+  },
+  {
+    "id": "a-group-of-students",
+    "phrase": "A group of students",
+    "collective": "Group",
+    "noun": "Students"
+  },
+  {
+    "id": "a-heap-of-sand",
+    "phrase": "A heap of sand",
+    "collective": "Heap",
+    "noun": "Sand"
+  },
+  {
+    "id": "a-heap-of-stones",
+    "phrase": "A heap of stones",
+    "collective": "Heap",
+    "noun": "Stones"
+  },
+  {
+    "id": "a-herd-of-buffaloes",
+    "phrase": "A herd of buffaloes",
+    "collective": "Herd",
+    "noun": "Buffaloes"
+  },
+  {
+    "id": "a-herd-of-cattle",
+    "phrase": "A herd of cattle",
+    "collective": "Herd",
+    "noun": "Cattle"
+  },
+  {
+    "id": "a-herd-of-elephants",
+    "phrase": "A herd of elephants",
+    "collective": "Herd",
+    "noun": "Elephants"
+  },
+  {
+    "id": "a-jar-of-cookies",
+    "phrase": "A jar of cookies",
+    "collective": "Jar",
+    "noun": "Cookies"
+  },
+  {
+    "id": "a-library-of-books",
+    "phrase": "A library of books",
+    "collective": "Library",
+    "noun": "Books"
+  },
+  {
+    "id": "a-litter-of-kittens",
+    "phrase": "A litter of kittens",
+    "collective": "Litter",
+    "noun": "Kittens"
+  },
+  {
+    "id": "a-litter-of-puppies",
+    "phrase": "A litter of puppies",
+    "collective": "Litter",
+    "noun": "Puppies"
+  },
+  {
+    "id": "a-mob-of-rioters",
+    "phrase": "A mob of rioters",
+    "collective": "Mob",
+    "noun": "Rioters"
+  },
+  {
+    "id": "a-pack-of-cards",
+    "phrase": "A pack of cards",
+    "collective": "Pack",
+    "noun": "Cards"
+  },
+  {
+    "id": "a-pack-of-hounds",
+    "phrase": "A pack of hounds",
+    "collective": "Pack",
+    "noun": "Hounds"
+  },
+  {
+    "id": "a-panel-of-judges",
+    "phrase": "A panel of judges",
+    "collective": "Panel",
+    "noun": "Judges"
+  },
+  {
+    "id": "a-pile-of-books",
+    "phrase": "A pile of books",
+    "collective": "Pile",
+    "noun": "Books"
+  },
+  {
+    "id": "a-pile-of-clothes",
+    "phrase": "A pile of clothes",
+    "collective": "Pile",
+    "noun": "Clothes"
+  },
+  {
+    "id": "a-pride-of-lions",
+    "phrase": "A pride of lions",
+    "collective": "Pride",
+    "noun": "Lions"
+  },
+  {
+    "id": "a-range-of-mountains",
+    "phrase": "A range of mountains",
+    "collective": "Range",
+    "noun": "Mountains"
+  },
+  {
+    "id": "a-row-of-houses",
+    "phrase": "A row of houses",
+    "collective": "Row",
+    "noun": "Houses"
+  },
+  {
+    "id": "a-row-of-trees",
+    "phrase": "A row of trees",
+    "collective": "Row",
+    "noun": "Trees"
+  },
+  {
+    "id": "a-school-of-dolphins",
+    "phrase": "A school of dolphins",
+    "collective": "School",
+    "noun": "Dolphins"
+  },
+  {
+    "id": "a-set-of-furniture",
+    "phrase": "A set of furniture",
+    "collective": "Set",
+    "noun": "Furniture"
+  },
+  {
+    "id": "a-set-of-tools",
+    "phrase": "A set of tools",
+    "collective": "Set",
+    "noun": "Tools"
+  },
+  {
+    "id": "a-shoal-of-fish",
+    "phrase": "A shoal of fish",
+    "collective": "Shoal",
+    "noun": "Fish"
+  },
+  {
+    "id": "a-staff-of-teachers",
+    "phrase": "A staff of teachers",
+    "collective": "Staff",
+    "noun": "Teachers"
+  },
+  {
+    "id": "a-string-of-beads",
+    "phrase": "A string of beads",
+    "collective": "String",
+    "noun": "Beads"
+  },
+  {
+    "id": "a-string-of-camels",
+    "phrase": "A string of camels",
+    "collective": "String",
+    "noun": "Camels"
+  },
+  {
+    "id": "a-string-of-pearls",
+    "phrase": "A string of pearls",
+    "collective": "String",
+    "noun": "Pearls"
+  },
+  {
+    "id": "a-swarm-of-bees",
+    "phrase": "A swarm of bees",
+    "collective": "Swarm",
+    "noun": "Bees"
+  },
+  {
+    "id": "a-swarm-of-locusts",
+    "phrase": "A swarm of locusts",
+    "collective": "Swarm",
+    "noun": "Locusts"
+  },
+  {
+    "id": "a-team-of-doctors",
+    "phrase": "A team of doctors",
+    "collective": "Team",
+    "noun": "Doctors"
+  },
+  {
+    "id": "a-team-of-players",
+    "phrase": "A team of players",
+    "collective": "Team",
+    "noun": "Players"
+  },
+  {
+    "id": "a-team-of-scientists",
+    "phrase": "A team of scientists",
+    "collective": "Team",
+    "noun": "Scientists"
+  },
+  {
+    "id": "a-troop-of-dancers",
+    "phrase": "A troop of dancers",
+    "collective": "Troop",
+    "noun": "Dancers"
+  },
+  {
+    "id": "a-troop-of-monkeys",
+    "phrase": "A troop of monkeys",
+    "collective": "Troop",
+    "noun": "Monkeys"
+  }
+]

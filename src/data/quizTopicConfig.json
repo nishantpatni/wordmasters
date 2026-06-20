@@ -1,0 +1,55 @@
+{
+  "synonyms": {
+    "subtypes": ["word_to_synonym", "synonym_to_word"],
+    "subtypeWeights": { "word_to_synonym": 0.5, "synonym_to_word": 0.5 },
+    "multiselect": true,
+    "minMultiselectRatio": 0.2
+  },
+  "antonyms": {
+    "subtypes": ["word_to_antonym", "antonym_to_word"],
+    "subtypeWeights": { "word_to_antonym": 0.5, "antonym_to_word": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "collectiveNouns": {
+    "subtypes": ["forward", "reverse"],
+    "subtypeWeights": { "forward": 0.5, "reverse": 0.5 },
+    "multiselect": true,
+    "minMultiselectRatio": 0.2
+  },
+  "similes": {
+    "subtypes": ["fill_comparator", "fill_adjective"],
+    "subtypeWeights": { "fill_comparator": 0.5, "fill_adjective": 0.5 },
+    "multiselect": true,
+    "minMultiselectRatio": 0.2
+  },
+  "idioms": {
+    "subtypes": ["idiom_to_meaning", "meaning_to_idiom"],
+    "subtypeWeights": { "idiom_to_meaning": 0.5, "meaning_to_idiom": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "oneWordSubs": {
+    "subtypes": ["phrase_to_word", "word_to_phrase"],
+    "subtypeWeights": { "phrase_to_word": 0.5, "word_to_phrase": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "oxymorons": {
+    "subtypes": ["phrase_to_meaning", "meaning_to_phrase", "fill_pair"],
+    "subtypeWeights": { "phrase_to_meaning": 0.34, "meaning_to_phrase": 0.33, "fill_pair": 0.33 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "homophones": {
+    "subtypes": ["fill_blank", "meaning_identify"],
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "proverbs": {
+    "subtypes": ["proverb_to_meaning", "meaning_to_proverb", "usage_mcq"],
+    "subtypeWeights": { "proverb_to_meaning": 0.34, "meaning_to_proverb": 0.33, "usage_mcq": 0.33 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  }
+}

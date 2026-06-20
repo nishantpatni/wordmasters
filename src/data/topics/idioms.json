@@ -1,0 +1,727 @@
+[
+  {
+    "id": "a-blessing-in-disguise",
+    "idiom": "A Blessing In Disguise",
+    "meaning": "something good hidden in a bad situation"
+  },
+  {
+    "id": "a-bolt-from-the-blue",
+    "idiom": "A Bolt From The Blue",
+    "meaning": "a sudden shock or calamity"
+  },
+  {
+    "id": "a-chicken-hearted-fellow",
+    "idiom": "A Chicken-Hearted Fellow",
+    "meaning": "a coward"
+  },
+  {
+    "id": "a-dime-a-dozen",
+    "idiom": "A Dime A Dozen",
+    "meaning": "very common"
+  },
+  {
+    "id": "a-hard-nut-to-crack",
+    "idiom": "A Hard Nut To Crack",
+    "meaning": "a difficult problem"
+  },
+  {
+    "id": "a-man-of-straw",
+    "idiom": "A Man Of Straw",
+    "meaning": "an unreliable person"
+  },
+  {
+    "id": "a-price-to-pay",
+    "idiom": "A Price To Pay",
+    "meaning": "a consequence or cost"
+  },
+  {
+    "id": "a-silver-lining-in-a-dark-cloud",
+    "idiom": "A Silver Lining In A Dark Cloud",
+    "meaning": "a ray of hope"
+  },
+  {
+    "id": "a-wet-blanket",
+    "idiom": "A Wet Blanket",
+    "meaning": "a killjoy"
+  },
+  {
+    "id": "a-wild-goose-chase",
+    "idiom": "A Wild Goose Chase",
+    "meaning": "a useless pursuit"
+  },
+  {
+    "id": "abc-of-something",
+    "idiom": "ABC Of Something",
+    "meaning": "basic facts"
+  },
+  {
+    "id": "add-fuel-to-the-fire",
+    "idiom": "Add Fuel To The Fire",
+    "meaning": "make a bad situation worse"
+  },
+  {
+    "id": "all-thumbs",
+    "idiom": "All Thumbs",
+    "meaning": "very clumsy"
+  },
+  {
+    "id": "apple-of-someones-eye",
+    "idiom": "Apple Of Someone's Eye",
+    "meaning": "a favourite person"
+  },
+  {
+    "id": "at-a-stones-throw",
+    "idiom": "At A Stone's Throw",
+    "meaning": "very near"
+  },
+  {
+    "id": "at-home",
+    "idiom": "At Home",
+    "meaning": "comfortable"
+  },
+  {
+    "id": "at-ones-wits-end",
+    "idiom": "At One's Wit's End",
+    "meaning": "completely confused"
+  },
+  {
+    "id": "at-the-eleventh-hour",
+    "idiom": "At The Eleventh Hour",
+    "meaning": "at the last moment"
+  },
+  {
+    "id": "be-all-ears",
+    "idiom": "Be All Ears",
+    "meaning": "listen attentively"
+  },
+  {
+    "id": "be-founded-on",
+    "idiom": "Be Founded On",
+    "meaning": "based on"
+  },
+  {
+    "id": "be-up-to-the-mark",
+    "idiom": "Be Up To The Mark",
+    "meaning": "meet the required standard"
+  },
+  {
+    "id": "bear-in-mind",
+    "idiom": "Bear In Mind",
+    "meaning": "remember"
+  },
+  {
+    "id": "bend-over-backwards",
+    "idiom": "Bend Over Backwards",
+    "meaning": "try very hard to help"
+  },
+  {
+    "id": "bite-off-more-than-you-can-chew",
+    "idiom": "Bite Off More Than You Can Chew",
+    "meaning": "take on too much"
+  },
+  {
+    "id": "bite-the-bullet",
+    "idiom": "Bite The Bullet",
+    "meaning": "face something difficult bravely"
+  },
+  {
+    "id": "blessing-in-disguise",
+    "idiom": "Blessing In Disguise",
+    "meaning": "hidden good fortune"
+  },
+  {
+    "id": "blue-blood",
+    "idiom": "Blue Blood",
+    "meaning": "royal ancestry"
+  },
+  {
+    "id": "break-a-leg",
+    "idiom": "Break A Leg",
+    "meaning": "good luck"
+  },
+  {
+    "id": "burn-bridges",
+    "idiom": "Burn Bridges",
+    "meaning": "destroy relationships or opportunities"
+  },
+  {
+    "id": "burn-the-candle-at-both-ends",
+    "idiom": "Burn The Candle At Both Ends",
+    "meaning": "overwork yourself"
+  },
+  {
+    "id": "burn-the-midnight-oil",
+    "idiom": "Burn The Midnight Oil",
+    "meaning": "work or study late into the night"
+  },
+  {
+    "id": "bury-the-hatchet",
+    "idiom": "Bury The Hatchet",
+    "meaning": "end a quarrel"
+  },
+  {
+    "id": "bury-your-head-in-the-sand",
+    "idiom": "Bury Your Head In The Sand",
+    "meaning": "ignore a problem"
+  },
+  {
+    "id": "buy-a-pig-in-a-poke",
+    "idiom": "Buy A Pig In A Poke",
+    "meaning": "buy without inspecting"
+  },
+  {
+    "id": "by-hook-or-by-crook",
+    "idiom": "By Hook Or By Crook",
+    "meaning": "by any means"
+  },
+  {
+    "id": "call-forth",
+    "idiom": "Call Forth",
+    "meaning": "ask for"
+  },
+  {
+    "id": "call-you-on-the-carpet",
+    "idiom": "Call You On The Carpet",
+    "meaning": "reprimand officially"
+  },
+  {
+    "id": "calm-before-the-storm",
+    "idiom": "Calm Before The Storm",
+    "meaning": "quiet before trouble"
+  },
+  {
+    "id": "cant-hold-a-candle-to",
+    "idiom": "Can't Hold A Candle To",
+    "meaning": "not as good as"
+  },
+  {
+    "id": "carry-out",
+    "idiom": "Carry Out",
+    "meaning": "put into practice"
+  },
+  {
+    "id": "cast-a-spell-on",
+    "idiom": "Cast A Spell On",
+    "meaning": "bewitch"
+  },
+  {
+    "id": "cast-pearls-before-swine",
+    "idiom": "Cast Pearls Before Swine",
+    "meaning": "offer value to those who don't appreciate it"
+  },
+  {
+    "id": "cast-the-first-stone",
+    "idiom": "Cast The First Stone",
+    "meaning": "be the first to criticize"
+  },
+  {
+    "id": "catch-forty-winks",
+    "idiom": "Catch Forty Winks",
+    "meaning": "take a short nap"
+  },
+  {
+    "id": "catch-ones-eye",
+    "idiom": "Catch One's Eye",
+    "meaning": "attract attention"
+  },
+  {
+    "id": "childs-play",
+    "idiom": "Child's Play",
+    "meaning": "very easy work"
+  },
+  {
+    "id": "clinch-the-issue",
+    "idiom": "Clinch The Issue",
+    "meaning": "settle the matter finally"
+  },
+  {
+    "id": "clip-ones-wings",
+    "idiom": "Clip One's Wings",
+    "meaning": "reduce someone's power"
+  },
+  {
+    "id": "come-what-may",
+    "idiom": "Come What May",
+    "meaning": "whatever happens"
+  },
+  {
+    "id": "cool-your-heels",
+    "idiom": "Cool Your Heels",
+    "meaning": "wait a long time"
+  },
+  {
+    "id": "cost-an-arm-and-a-leg",
+    "idiom": "Cost An Arm And A Leg",
+    "meaning": "very expensive"
+  },
+  {
+    "id": "crocodile-tears",
+    "idiom": "Crocodile Tears",
+    "meaning": "false sorrow"
+  },
+  {
+    "id": "cry-in-the-wilderness",
+    "idiom": "Cry In The Wilderness",
+    "meaning": "a futile appeal"
+  },
+  {
+    "id": "cry-over-spilt-milk",
+    "idiom": "Cry Over Spilt Milk",
+    "meaning": "regret uselessly"
+  },
+  {
+    "id": "curry-favour",
+    "idiom": "Curry Favour",
+    "meaning": "seek approval"
+  },
+  {
+    "id": "cut-a-sorry-figure",
+    "idiom": "Cut A Sorry Figure",
+    "meaning": "make a poor impression"
+  },
+  {
+    "id": "cut-corners",
+    "idiom": "Cut Corners",
+    "meaning": "do something cheaply or carelessly"
+  },
+  {
+    "id": "cut-the-gordian-knot",
+    "idiom": "Cut The Gordian Knot",
+    "meaning": "solve a difficult problem boldly"
+  },
+  {
+    "id": "dark-horse",
+    "idiom": "Dark Horse",
+    "meaning": "a hidden talent"
+  },
+  {
+    "id": "dead-duck",
+    "idiom": "Dead Duck",
+    "meaning": "someone doomed to fail"
+  },
+  {
+    "id": "do-away-with",
+    "idiom": "Do Away With",
+    "meaning": "abolish or destroy"
+  },
+  {
+    "id": "dress-to-the-nines",
+    "idiom": "Dress To The Nines",
+    "meaning": "dress very fashionably"
+  },
+  {
+    "id": "drop-in-the-bucket",
+    "idiom": "Drop In The Bucket",
+    "meaning": "a very small amount"
+  },
+  {
+    "id": "drop-like-a-hot-potato",
+    "idiom": "Drop Like A Hot Potato",
+    "meaning": "get rid of quickly"
+  },
+  {
+    "id": "eat-out-of-your-hand",
+    "idiom": "Eat Out Of Your Hand",
+    "meaning": "obey completely"
+  },
+  {
+    "id": "eat-your-hat",
+    "idiom": "Eat Your Hat",
+    "meaning": "suffer embarrassment"
+  },
+  {
+    "id": "egg-on-your-face",
+    "idiom": "Egg On Your Face",
+    "meaning": "be embarrassed"
+  },
+  {
+    "id": "end-in-fiasco",
+    "idiom": "End In Fiasco",
+    "meaning": "end in failure"
+  },
+  {
+    "id": "equal-to-the-occasion",
+    "idiom": "Equal To The Occasion",
+    "meaning": "able to cope successfully"
+  },
+  {
+    "id": "face-the-music",
+    "idiom": "Face The Music",
+    "meaning": "accept consequences"
+  },
+  {
+    "id": "fair-and-square",
+    "idiom": "Fair And Square",
+    "meaning": "honest and just"
+  },
+  {
+    "id": "fair-weather-friend",
+    "idiom": "Fair Weather Friend",
+    "meaning": "friend only in good times"
+  },
+  {
+    "id": "fall-short-of",
+    "idiom": "Fall Short Of",
+    "meaning": "be deficient"
+  },
+  {
+    "id": "famous-last-words",
+    "idiom": "Famous Last Words",
+    "meaning": "ironic or sarcastic remark"
+  },
+  {
+    "id": "fat-cat",
+    "idiom": "Fat Cat",
+    "meaning": "wealthy person"
+  },
+  {
+    "id": "feet-of-clay",
+    "idiom": "Feet Of Clay",
+    "meaning": "hidden weakness"
+  },
+  {
+    "id": "fifth-wheel",
+    "idiom": "Fifth Wheel",
+    "meaning": "unnecessary extra person"
+  },
+  {
+    "id": "finger-in-every-pie",
+    "idiom": "Finger In Every Pie",
+    "meaning": "involved in many activities"
+  },
+  {
+    "id": "for-love-or-money",
+    "idiom": "For Love Or Money",
+    "meaning": "under any circumstances"
+  },
+  {
+    "id": "french-leave",
+    "idiom": "French Leave",
+    "meaning": "leave without permission"
+  },
+  {
+    "id": "from-hand-to-mouth",
+    "idiom": "From Hand To Mouth",
+    "meaning": "barely earning enough to live"
+  },
+  {
+    "id": "get-cold-feet",
+    "idiom": "Get Cold Feet",
+    "meaning": "become nervous"
+  },
+  {
+    "id": "get-on-ones-nerves",
+    "idiom": "Get On One's Nerves",
+    "meaning": "annoy"
+  },
+  {
+    "id": "get-up-with-the-lark",
+    "idiom": "Get Up With The Lark",
+    "meaning": "rise very early"
+  },
+  {
+    "id": "go-dutch",
+    "idiom": "Go Dutch",
+    "meaning": "share expenses equally"
+  },
+  {
+    "id": "go-the-extra-mile",
+    "idiom": "Go The Extra Mile",
+    "meaning": "make extra effort"
+  },
+  {
+    "id": "hair-raising",
+    "idiom": "Hair-Raising",
+    "meaning": "frightening"
+  },
+  {
+    "id": "hale-and-hearty",
+    "idiom": "Hale And Hearty",
+    "meaning": "healthy and strong"
+  },
+  {
+    "id": "half-hearted",
+    "idiom": "Half-Hearted",
+    "meaning": "without enthusiasm"
+  },
+  {
+    "id": "hand-and-glove",
+    "idiom": "Hand And Glove",
+    "meaning": "very close"
+  },
+  {
+    "id": "harp-on-the-same-string",
+    "idiom": "Harp On The Same String",
+    "meaning": "repeat the same thing"
+  },
+  {
+    "id": "have-a-say",
+    "idiom": "Have A Say",
+    "meaning": "participate in a decision"
+  },
+  {
+    "id": "have-a-soft-spot-for",
+    "idiom": "Have A Soft Spot For",
+    "meaning": "be fond of"
+  },
+  {
+    "id": "have-a-whale-of-a-time",
+    "idiom": "Have A Whale Of A Time",
+    "meaning": "enjoy greatly"
+  },
+  {
+    "id": "herculean-task",
+    "idiom": "Herculean Task",
+    "meaning": "extremely difficult task"
+  },
+  {
+    "id": "hit-below-the-belt",
+    "idiom": "Hit Below The Belt",
+    "meaning": "act unfairly"
+  },
+  {
+    "id": "hit-the-nail-on-the-head",
+    "idiom": "Hit The Nail On The Head",
+    "meaning": "be exactly right"
+  },
+  {
+    "id": "hit-the-road",
+    "idiom": "Hit The Road",
+    "meaning": "leave or begin a journey"
+  },
+  {
+    "id": "in-a-state-of-thrall",
+    "idiom": "In A State Of Thrall",
+    "meaning": "under fascination or control"
+  },
+  {
+    "id": "in-a-tight-spot",
+    "idiom": "In A Tight Spot",
+    "meaning": "in difficulty"
+  },
+  {
+    "id": "in-a-trice",
+    "idiom": "In A Trice",
+    "meaning": "very quickly"
+  },
+  {
+    "id": "in-the-nick-of-time",
+    "idiom": "In The Nick Of Time",
+    "meaning": "just in time"
+  },
+  {
+    "id": "in-the-same-boat",
+    "idiom": "In The Same Boat",
+    "meaning": "in the same situation"
+  },
+  {
+    "id": "jump-on-the-bandwagon",
+    "idiom": "Jump On The Bandwagon",
+    "meaning": "join a popular trend"
+  },
+  {
+    "id": "keep-an-eye-on",
+    "idiom": "Keep An Eye On",
+    "meaning": "watch carefully"
+  },
+  {
+    "id": "keep-at-arms-length",
+    "idiom": "Keep At Arm's Length",
+    "meaning": "keep distant"
+  },
+  {
+    "id": "keep-ones-cool",
+    "idiom": "Keep One's Cool",
+    "meaning": "remain calm"
+  },
+  {
+    "id": "keep-up-appearances",
+    "idiom": "Keep Up Appearances",
+    "meaning": "maintain an outward show"
+  },
+  {
+    "id": "lead-a-dogs-life",
+    "idiom": "Lead A Dog's Life",
+    "meaning": "live miserably"
+  },
+  {
+    "id": "leave-no-stone-unturned",
+    "idiom": "Leave No Stone Unturned",
+    "meaning": "do everything possible"
+  },
+  {
+    "id": "let-sleeping-dogs-lie",
+    "idiom": "Let Sleeping Dogs Lie",
+    "meaning": "avoid reopening trouble"
+  },
+  {
+    "id": "let-the-cat-out-of-the-bag",
+    "idiom": "Let The Cat Out Of The Bag",
+    "meaning": "reveal a secret"
+  },
+  {
+    "id": "look-daggers",
+    "idiom": "Look Daggers",
+    "meaning": "glare angrily"
+  },
+  {
+    "id": "look-down-upon",
+    "idiom": "Look Down Upon",
+    "meaning": "despise"
+  },
+  {
+    "id": "make-both-ends-meet",
+    "idiom": "Make Both Ends Meet",
+    "meaning": "live within income"
+  },
+  {
+    "id": "make-much-ado-about-nothing",
+    "idiom": "Make Much Ado About Nothing",
+    "meaning": "make a fuss over nothing"
+  },
+  {
+    "id": "make-sad-faces",
+    "idiom": "Make Sad Faces",
+    "meaning": "pretend sadness"
+  },
+  {
+    "id": "my-hands-are-full",
+    "idiom": "My Hands Are Full",
+    "meaning": "very busy"
+  },
+  {
+    "id": "nib-in-the-bud",
+    "idiom": "Nib In The Bud",
+    "meaning": "stop at an early stage"
+  },
+  {
+    "id": "on-pins-and-needles",
+    "idiom": "On Pins And Needles",
+    "meaning": "anxiously waiting"
+  },
+  {
+    "id": "on-the-horns-of-a-dilemma",
+    "idiom": "On The Horns Of A Dilemma",
+    "meaning": "facing a difficult choice"
+  },
+  {
+    "id": "on-thin-ice",
+    "idiom": "On Thin Ice",
+    "meaning": "in a risky situation"
+  },
+  {
+    "id": "on-top-of-the-world",
+    "idiom": "On Top Of The World",
+    "meaning": "extremely happy"
+  },
+  {
+    "id": "once-and-for-all",
+    "idiom": "Once And For All",
+    "meaning": "finally"
+  },
+  {
+    "id": "once-in-a-blue-moon",
+    "idiom": "Once In A Blue Moon",
+    "meaning": "very rarely"
+  },
+  {
+    "id": "out-of-sorts",
+    "idiom": "Out Of Sorts",
+    "meaning": "unwell"
+  },
+  {
+    "id": "pick-up-a-row",
+    "idiom": "Pick Up A Row",
+    "meaning": "cause a disturbance"
+  },
+  {
+    "id": "plume-oneself-on",
+    "idiom": "Plume Oneself On",
+    "meaning": "be proud of"
+  },
+  {
+    "id": "pocket-an-insult",
+    "idiom": "Pocket An Insult",
+    "meaning": "tolerate an insult"
+  },
+  {
+    "id": "poles-apart",
+    "idiom": "Poles Apart",
+    "meaning": "completely different"
+  },
+  {
+    "id": "practice-makes-perfect",
+    "idiom": "Practice Makes Perfect",
+    "meaning": "repetition improves skill"
+  },
+  {
+    "id": "pull-a-long-face",
+    "idiom": "Pull A Long Face",
+    "meaning": "look sad"
+  },
+  {
+    "id": "pull-someones-leg",
+    "idiom": "Pull Someone's Leg",
+    "meaning": "tease someone"
+  },
+  {
+    "id": "read-between-the-lines",
+    "idiom": "Read Between The Lines",
+    "meaning": "understand the hidden meaning"
+  },
+  {
+    "id": "run-down",
+    "idiom": "Run Down",
+    "meaning": "criticize"
+  },
+  {
+    "id": "scot-free",
+    "idiom": "Scot Free",
+    "meaning": "without punishment"
+  },
+  {
+    "id": "see-through",
+    "idiom": "See Through",
+    "meaning": "understand the truth"
+  },
+  {
+    "id": "sinews-of-war",
+    "idiom": "Sinews Of War",
+    "meaning": "resources needed for conflict"
+  },
+  {
+    "id": "take-after",
+    "idiom": "Take After",
+    "meaning": "resemble"
+  },
+  {
+    "id": "the-ball-is-in-your-court",
+    "idiom": "The Ball Is In Your Court",
+    "meaning": "it is your turn to act"
+  },
+  {
+    "id": "tooth-and-nail",
+    "idiom": "Tooth And Nail",
+    "meaning": "with full force"
+  },
+  {
+    "id": "utopian-scheme",
+    "idiom": "Utopian Scheme",
+    "meaning": "ideal but impractical plan"
+  },
+  {
+    "id": "white-elephant",
+    "idiom": "White Elephant",
+    "meaning": "costly but useless possession"
+  },
+  {
+    "id": "win-laurels",
+    "idiom": "Win Laurels",
+    "meaning": "gain honour"
+  },
+  {
+    "id": "yeomans-service",
+    "idiom": "Yeoman's Service",
+    "meaning": "selfless service"
+  }
+]

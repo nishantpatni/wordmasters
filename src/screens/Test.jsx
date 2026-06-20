@@ -1,0 +1,567 @@
+import { useState, useEffect, useRef } from 'react';
+import { TOPIC_META } from '../data/topicData.js';
+
+const TIMER_SECS     = 10;
+const FEEDBACK_DELAY = 2500; // time to read the explanation before advancing
+
+// ── Web Audio sounds ──────────────────────────────────────────────────────────
+function playCorrect() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    // Ascending two-note chime: C5 → G5
+    [[523.25, 0], [783.99, 0.13]].forEach(([freq, t]) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime + t);
+      gain.gain.linearRampToValueAtTime(0.22, ctx.currentTime + t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.22);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + 0.25);
+    });
+  } catch {}
+}
+
+function playWrong() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(240, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.28);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+  } catch {}
+}
+
+function playTimeout() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [380, 320, 260].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.13, ctx.currentTime + i * 0.14);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.14 + 0.1);
+      osc.start(ctx.currentTime + i * 0.14);
+      osc.stop(ctx.currentTime + i * 0.14 + 0.12);
+    });
+  } catch {}
+}
+
+// ── Circular countdown ring shown in the card header ──────────────────────────
+function TimerRing({ timeLeft, total, answered }) {
+  const r     = 18;
+  const circ  = 2 * Math.PI * r;
+  const offset = circ - (circ * timeLeft / total);
+  const color  = timeLeft > 6 ? '#21BF61' : timeLeft > 3 ? '#F59E0B' : '#DC2626';
+  const urgent = timeLeft <= 3 && !answered;
+  return (
+    <svg width="46" height="46" viewBox="0 0 46 46" style={{ flexShrink: 0 }}>
+      <circle cx="23" cy="23" r={r} fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="3.5" />
+      <circle cx="23" cy="23" r={r} fill="none" stroke={answered ? '#21BF61' : color}
+        strokeWidth="3.5" strokeDasharray={circ} strokeDashoffset={answered ? 0 : offset}
+        strokeLinecap="round" transform="rotate(-90 23 23)"
+        style={{ transition: answered ? 'stroke-dashoffset 0.3s ease' : 'stroke-dashoffset 0.9s linear, stroke 0.3s' }} />
+      <text x="23" y="28" textAnchor="middle"
+        style={{ fontSize: 13, fontWeight: 800, fill: answered ? '#21BF61' : color,
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          animation: urgent ? 'timerPulse 0.6s infinite' : 'none' }}>
+        {answered ? '✓' : timeLeft}
+      </text>
+    </svg>
+  );
+}
+
+export default function TestScreen({ questions, onComplete, onQuit }) {
+  const [idx,           setIdx]          = useState(0);
+  const [sel,           setSel]          = useState(null);       // single-select option idx
+  const [multiSel,      setMultiSel]     = useState(new Set());  // multi-select
+  const [multiSubmitted,setMultiSubmitted] = useState(false);
+  const [timedOut,      setTimedOut]     = useState(false);
+  const [showExp,       setShowExp]      = useState(false);
+  const [timeLeft,      setTimeLeft]     = useState(TIMER_SECS);
+  const [points,        setPoints]       = useState(0);
+  const [flash,         setFlash]        = useState(null);
+  const [results,       setResults]      = useState([]);
+
+  const q       = questions[idx];
+  const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
+  const answered = isMulti ? (multiSubmitted || timedOut) : (sel !== null || timedOut);
+
+  const fillPct  = ((TIMER_SECS - timeLeft) / TIMER_SECS) * 100;
+  const meta     = TOPIC_META[q.topicId] || { color: '#212427', bg: '#E3FDDB', name: q.topicId, icon: '📖' };
+  const correctCount = results.filter(r => r.correct).length;
+  const pct          = (idx / questions.length) * 100;
+
+  // Refs — updated each render so timer callbacks always see fresh values
+  const answeredRef   = useRef(false);
+  const idxRef        = useRef(0);
+  const resultsRef    = useRef([]);
+  const multiSelRef   = useRef(new Set());
+  const intervalRef   = useRef(null);
+  const feedbackRef   = useRef(null);
+  const flashTRef     = useRef(null);
+
+  idxRef.current     = idx;
+  resultsRef.current = results;
+  multiSelRef.current = multiSel;
+
+  // ── Navigation helpers ────────────────────────────────────────────────────
+  function advance(updated) {
+    if (idxRef.current + 1 >= questions.length) {
+      onComplete(updated);
+    } else {
+      setResults(updated);
+      setIdx(idxRef.current + 1);
+    }
+  }
+
+  function handleQuit() {
+    clearInterval(intervalRef.current);
+    clearTimeout(feedbackRef.current);
+    onQuit(resultsRef.current);
+  }
+
+  // ── Timer fires when 10s runs out ─────────────────────────────────────────
+  function triggerTimeout() {
+    if (answeredRef.current) return;
+    answeredRef.current = true;
+    playTimeout();
+    setTimedOut(true);
+    setShowExp(true);
+
+    const cur     = questions[idxRef.current];
+    const isMultiQ = cur.correctIndices != null && cur.correctIndices.length > 1;
+    let correct = false;
+    let selectedOption = 'timeout';
+    let correctAnswer  = cur.options[cur.correctIndex] ?? '';
+
+    if (isMultiQ) {
+      const ms = multiSelRef.current;
+      const allCorrect = cur.correctIndices.every(i => ms.has(i));
+      const noExtra    = [...ms].every(i => cur.correctIndices.includes(i));
+      correct = ms.size > 0 && allCorrect && noExtra;
+      selectedOption   = ms.size > 0 ? [...ms].map(i => cur.options[i]).join(', ') : 'timeout';
+      correctAnswer    = cur.correctIndices.map(i => cur.options[i]).join(' / ');
+    }
+
+    const updated = [...resultsRef.current, {
+      itemId: cur.itemId, topicId: cur.topicId, correct,
+      selectedOption,
+      correctAnswer,
+      prompt: cur.prompt,
+    }];
+    feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
+  }
+
+  // ── Single-select: user taps an option ───────────────────────────────────
+  function handleSelect(optIdx) {
+    if (answeredRef.current || isMulti) return;
+    answeredRef.current = true;
+    clearInterval(intervalRef.current);
+
+    const correct = optIdx === q.correctIndex;
+    correct ? playCorrect() : playWrong();
+    setSel(optIdx);
+    setShowExp(true);
+
+    if (correct) {
+      setPoints(p => p + 10);
+      setFlash('+10');
+      clearTimeout(flashTRef.current);
+      flashTRef.current = setTimeout(() => setFlash(null), 1600);
+    }
+
+    const updated = [...resultsRef.current, {
+      itemId: q.itemId, topicId: q.topicId, correct,
+      selectedOption: q.options[optIdx] ?? '',
+      correctAnswer:  q.options[q.correctIndex] ?? '',
+      prompt:         q.prompt,
+    }];
+    feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
+  }
+
+  // ── Multi-select: toggle an option ───────────────────────────────────────
+  function handleMultiToggle(optIdx) {
+    if (answeredRef.current) return;
+    setMultiSel(prev => {
+      const next = new Set(prev);
+      next.has(optIdx) ? next.delete(optIdx) : next.add(optIdx);
+      return next;
+    });
+  }
+
+  // ── Multi-select: submit chosen options ──────────────────────────────────
+  function handleMultiSubmit() {
+    if (answeredRef.current || multiSel.size === 0) return;
+    answeredRef.current = true;
+    clearInterval(intervalRef.current);
+
+    const allCorrect = q.correctIndices.every(i => multiSel.has(i));
+    const noExtra    = [...multiSel].every(i => q.correctIndices.includes(i));
+    const correct    = allCorrect && noExtra;
+
+    correct ? playCorrect() : playWrong();
+    setMultiSubmitted(true);
+    setShowExp(true);
+
+    if (correct) {
+      setPoints(p => p + 10);
+      setFlash('+10');
+      clearTimeout(flashTRef.current);
+      flashTRef.current = setTimeout(() => setFlash(null), 1600);
+    }
+
+    const updated = [...resultsRef.current, {
+      itemId: q.itemId, topicId: q.topicId, correct,
+      selectedOption: [...multiSel].map(i => q.options[i]).join(', '),
+      correctAnswer:  q.correctIndices.map(i => q.options[i]).join(' / '),
+      prompt:         q.prompt,
+    }];
+    feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
+  }
+
+  // ── Per-question: reset state + start countdown ───────────────────────────
+  useEffect(() => {
+    answeredRef.current = false;
+    setSel(null);
+    setMultiSel(new Set());
+    setMultiSubmitted(false);
+    setTimedOut(false);
+    setShowExp(false);
+    setTimeLeft(TIMER_SECS);
+    clearInterval(intervalRef.current);
+    clearTimeout(feedbackRef.current);
+
+    const doTimeout = () => triggerTimeout();
+
+    intervalRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          doTimeout();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalRef.current);
+      clearTimeout(feedbackRef.current);
+    };
+  }, [idx]);
+
+  // Cleanup on unmount
+  useEffect(() => () => {
+    clearInterval(intervalRef.current);
+    clearTimeout(feedbackRef.current);
+    clearTimeout(flashTRef.current);
+  }, []);
+
+  // Set body background so the red fill shows through the transparent page on desktop
+  useEffect(() => {
+    const prev = document.body.style.background;
+    document.body.style.background = '#F1EEEA';
+    return () => { document.body.style.background = prev; };
+  }, []);
+
+  // ── Keyboard: 1-4 selects/toggles options; Enter submits multi ────────────
+  const handleSelectRef      = useRef(null);
+  const handleMultiToggleRef = useRef(null);
+  const handleMultiSubmitRef = useRef(null);
+  handleSelectRef.current      = handleSelect;
+  handleMultiToggleRef.current = handleMultiToggle;
+  handleMultiSubmitRef.current = handleMultiSubmit;
+
+  useEffect(() => {
+    function onKey(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= 4) {
+        if (isMulti) handleMultiToggleRef.current(n - 1);
+        else         handleSelectRef.current(n - 1);
+      }
+      if (e.key === 'Enter' && isMulti) handleMultiSubmitRef.current();
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMulti]);
+
+  // ── Option styling ────────────────────────────────────────────────────────
+  function optStyle(oi) {
+    if (isMulti) {
+      const isCorrectIdx = q.correctIndices.includes(oi);
+      const isSelected   = multiSel.has(oi);
+      let bg = '#FAFAF9', border = '#DCD5CE', color = '#212427', anim = 'none';
+      if (answered) {
+        if (isCorrectIdx && isSelected)       { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; anim = 'correctPop 0.45s ease'; }
+        else if (isCorrectIdx && !isSelected) { bg = '#FFF9E6'; border = '#F59E0B'; color = '#B45309'; }
+        else if (!isCorrectIdx && isSelected) { bg = '#FEF2F2'; border = '#DC2626'; color = '#DC2626'; anim = 'wrongShake 0.4s ease'; }
+      } else if (isSelected) {
+        bg = '#E3FDDB'; border = '#96F878'; color = '#197A56';
+      }
+      return { background: bg, border: `1.5px solid ${border}`, color, animation: anim };
+    }
+
+    // Single-select
+    const isCorrect  = oi === q.correctIndex;
+    const isSelected = oi === sel;
+    let bg = '#FAFAF9', border = '#DCD5CE', color = '#212427', anim = 'none';
+    if (answered) {
+      if (isCorrect)                  { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; if (isSelected) anim = 'correctPop 0.45s ease'; }
+      else if (isSelected)            { bg = '#FEF2F2'; border = '#DC2626'; color = '#DC2626'; anim = 'wrongShake 0.4s ease'; }
+      else if (timedOut && isCorrect) { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; }
+    }
+    return { background: bg, border: `1.5px solid ${border}`, color, animation: anim };
+  }
+
+  function optIcon(oi) {
+    if (isMulti) {
+      const isCorrectIdx = q.correctIndices.includes(oi);
+      const isSelected   = multiSel.has(oi);
+      if (answered) {
+        if (isCorrectIdx && isSelected)       return <span style={{ fontSize: 18 }}>✓</span>;
+        if (isCorrectIdx && !isSelected)      return <span style={{ fontSize: 18 }}>!</span>;
+        if (!isCorrectIdx && isSelected)      return <span style={{ fontSize: 18 }}>✗</span>;
+      } else {
+        return <span style={{ fontSize: 16, opacity: 0.5 }}>{isSelected ? '☑' : '☐'}</span>;
+      }
+      return null;
+    }
+    // Single-select icons
+    if (answered && oi === q.correctIndex)              return <span style={{ fontSize: 18 }}>✓</span>;
+    if (answered && oi === sel && oi !== q.correctIndex) return <span style={{ fontSize: 18 }}>✗</span>;
+    return null;
+  }
+
+  return (
+    <div style={styles.page} className="test-page">
+
+      {/* Red urgency fill — grows top→down as time runs out, desktop only */}
+      <div className="timer-fill" style={{
+        position: 'fixed', top: 0, left: 0, right: 0,
+        height: `${fillPct}vh`,
+        background: '#DC2626',
+        opacity: answered ? 0 : 1,
+        transition: answered ? 'opacity 0.4s ease' : 'height 0.9s linear',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }} />
+      <style>{`
+        @keyframes correctPop {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(1.03); box-shadow: 0 0 0 4px rgba(16,160,122,0.2); }
+          70%  { transform: scale(0.99); }
+          100% { transform: scale(1); }
+        }
+        @keyframes wrongShake {
+          0%,100% { transform: translateX(0); }
+          20%     { transform: translateX(-5px); }
+          40%     { transform: translateX(5px); }
+          60%     { transform: translateX(-4px); }
+          80%     { transform: translateX(4px); }
+        }
+        @keyframes timerPulse {
+          0%,100% { opacity: 1; }
+          50%     { opacity: 0.5; }
+        }
+        @keyframes coinFloat {
+          0%   { opacity: 1; transform: translateY(0) scale(1); }
+          40%  { opacity: 1; transform: translateY(-22px) scale(1.2); }
+          100% { opacity: 0; transform: translateY(-44px) scale(0.8); }
+        }
+        @keyframes coinSpin {
+          0%   { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+        }
+        @media (min-width: 768px) {
+          .test-page { background: transparent !important; }
+          .timer-fill { display: block; }
+        }
+        @media (max-width: 767px) {
+          .timer-fill { display: none; }
+        }
+      `}</style>
+
+      {/* ── Header ── */}
+      <div style={{ ...styles.header, position: 'relative', zIndex: 2 }}>
+        <button onClick={handleQuit} style={styles.backBtn}>✕ Quit</button>
+
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ ...styles.pill, background: '#E3FDDB', color: '#197A56' }}>✓ {correctCount}</div>
+          <div style={{ ...styles.pill, background: '#FEF2F2', color: '#DC2626' }}>✗ {idx - correctCount}</div>
+
+          <div style={{ position: 'relative' }}>
+            {flash && (
+              <div style={styles.coinFloat}>
+                <span style={{ animation: 'coinSpin 0.5s ease', display: 'inline-block' }}>🪙</span>
+                {' '}{flash}
+              </div>
+            )}
+            <div style={{ ...styles.pill, background: '#E3FDDB', color: '#197A56',
+              fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 15,
+              boxShadow: flash ? '0 0 0 3px rgba(180,83,9,0.2)' : 'none',
+              transition: 'box-shadow 0.2s' }}>
+              🪙 {points} pts
+            </div>
+          </div>
+
+          <div style={{ ...styles.pill, background: '#F2F2F2', color: '#212427' }}>
+            {idx + 1}/{questions.length}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Overall progress bar ── */}
+      <div style={{ height: 5, background: 'rgba(0,0,0,0.06)', position: 'relative', zIndex: 2 }}>
+        <div style={{ height: '100%', width: `${pct}%`,
+          background: `linear-gradient(90deg, ${meta.color}, #E85D26)`,
+          transition: 'width 0.4s ease' }} />
+      </div>
+
+      {/* ── Question card ── */}
+      <div style={{ ...styles.body, position: 'relative', zIndex: 2 }}>
+        <div style={styles.card} className="pop-in" key={idx}>
+
+          {/* Card header: topic badge + timer ring */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ ...styles.badge, background: meta.bg, color: meta.color }}>
+              {meta.icon} {meta.name}
+            </span>
+            <TimerRing timeLeft={timeLeft} total={TIMER_SECS} answered={answered} />
+          </div>
+
+          {/* Prompt */}
+          <div style={styles.prompt}>{q.prompt}</div>
+
+          {/* Multi-select hint */}
+          {isMulti && !answered && (
+            <div style={styles.multiHint}>
+              ☑ Select all correct answers, then tap Submit
+            </div>
+          )}
+
+          {/* Options */}
+          <div style={styles.options}>
+            {q.options.map((opt, oi) => {
+              const os = optStyle(oi);
+              return (
+                <button
+                  key={oi}
+                  onClick={() => isMulti ? handleMultiToggle(oi) : handleSelect(oi)}
+                  style={{ ...styles.optionBtn, ...os, cursor: answered ? 'default' : 'pointer' }}
+                  onMouseEnter={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#A8F0B8' : '#F2F2F2'; }}
+                  onMouseLeave={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#E3FDDB' : '#FAFAF9'; }}
+                >
+                  <span style={{ ...styles.optLetter,
+                    background: answered && (isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex)
+                      ? 'rgba(16,160,122,0.2)'
+                      : answered && (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)
+                      ? 'rgba(220,38,38,0.15)'
+                      : !answered && isMulti && multiSel.has(oi)
+                      ? 'rgba(124,77,238,0.2)'
+                      : 'rgba(0,0,0,0.06)',
+                    color: answered && ((isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex) || (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)) ? 'inherit' : '#7A7870',
+                  }}>
+                    {oi + 1}
+                  </span>
+                  <span style={{ flex: 1, textAlign: 'left' }}>{opt}</span>
+                  {optIcon(oi)}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Multi-select Submit button */}
+          {isMulti && !answered && (
+            <button
+              onClick={handleMultiSubmit}
+              disabled={multiSel.size === 0}
+              style={{
+                ...styles.submitBtn,
+                opacity: multiSel.size === 0 ? 0.45 : 1,
+                cursor: multiSel.size === 0 ? 'not-allowed' : 'pointer',
+              }}
+            >
+              Submit ({multiSel.size} selected)
+            </button>
+          )}
+
+          {/* Keyboard hint — only shown before answering */}
+          {!answered && !isMulti && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 14 }}>
+              {[1,2,3,4].map(n => (
+                <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#C4C2B9' }}>
+                  <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
+                    padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>{n}</kbd>
+                </div>
+              ))}
+            </div>
+          )}
+          {!answered && isMulti && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 10, fontSize: 11, color: '#C4C2B9' }}>
+              {[1,2,3,4].map(n => (
+                <kbd key={n} style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
+                  padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>{n}</kbd>
+              ))}
+              <span style={{ marginLeft: 4 }}>toggle · </span>
+              <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
+                padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>Enter</kbd>
+              <span>submit</span>
+            </div>
+          )}
+
+          {/* Explanation panel */}
+          {showExp && (
+            <div style={{ ...styles.explanation, background: meta.bg,
+              borderColor: `${meta.color}30`, color: meta.color }} className="fade-in">
+              {timedOut
+                ? <><strong>⏱ Time&apos;s up!</strong> {q.explanation}</>
+                : <>💡 {q.explanation}</>}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  page:       { minHeight: '100vh', background: '#F1EEEA', fontFamily: "'Plus Jakarta Sans', sans-serif" },
+  header:     { background: '#fff', borderBottom: '1px solid #DCD5CE', padding: '12px 16px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+  backBtn:    { background: 'transparent', border: '1px solid #DCD5CE', borderRadius: 10,
+                padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', color: '#6B7280' },
+  pill:       { borderRadius: 999, padding: '5px 11px', fontSize: 13, fontWeight: 700 },
+  body:       { padding: '20px 16px 40px', maxWidth: 680, margin: '0 auto' },
+  card:       { background: '#fff', borderRadius: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                border: '1px solid #DCD5CE', padding: '24px 22px' },
+  badge:      { borderRadius: 999, padding: '5px 12px', fontSize: 12, fontWeight: 700, letterSpacing: 0.3 },
+  prompt:     { fontSize: 17, fontWeight: 700, color: '#212427', lineHeight: 1.6,
+                marginBottom: 22, whiteSpace: 'pre-line' },
+  multiHint:  { fontSize: 12, fontWeight: 700, color: '#197A56', background: '#E3FDDB',
+                borderRadius: 8, padding: '6px 12px', marginBottom: 14, textAlign: 'center' },
+  options:    { display: 'flex', flexDirection: 'column', gap: 10 },
+  optionBtn:  { display: 'flex', alignItems: 'center', gap: 12, borderRadius: 14, padding: '13px 16px',
+                fontSize: 15, fontWeight: 600, transition: 'background 0.12s', textAlign: 'left',
+                width: '100%' },
+  optLetter:  { width: 28, height: 28, borderRadius: 8, flexShrink: 0, display: 'flex',
+                alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700 },
+  submitBtn:  { marginTop: 14, width: '100%', background: '#96F878',
+                color: '#212427', border: 'none', borderRadius: 14, padding: '13px 20px',
+                fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, transition: 'background 0.15s' },
+  explanation:{ marginTop: 18, borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600,
+                border: '1px solid', lineHeight: 1.6 },
+  coinFloat:  { position: 'absolute', top: -34, left: '50%', transform: 'translateX(-50%)',
+                fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 18, color: '#197A56',
+                whiteSpace: 'nowrap', animation: 'coinFloat 1.5s ease forwards',
+                pointerEvents: 'none', zIndex: 10 },
+};

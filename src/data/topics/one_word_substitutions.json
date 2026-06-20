@@ -1,0 +1,622 @@
+[
+  {
+    "id": "centenary",
+    "phrase": "Celebration of the hundredth year",
+    "word": "Centenary"
+  },
+  {
+    "id": "autobiography",
+    "phrase": "Life story of a man written by himself",
+    "word": "Autobiography"
+  },
+  {
+    "id": "epidemic",
+    "phrase": "A disease mainly contagious which spreads over a huge area",
+    "word": "Epidemic"
+  },
+  {
+    "id": "hostility",
+    "phrase": "State of antagonism",
+    "word": "Hostility"
+  },
+  {
+    "id": "inaudible",
+    "phrase": "That which cannot be heard",
+    "word": "Inaudible"
+  },
+  {
+    "id": "inflammable",
+    "phrase": "Liable to catch fire easily",
+    "word": "Inflammable"
+  },
+  {
+    "id": "manuscript",
+    "phrase": "Handwritten pages of a literary work",
+    "word": "Manuscript"
+  },
+  {
+    "id": "novice",
+    "phrase": "One who is new to some trade or profession",
+    "word": "Novice"
+  },
+  {
+    "id": "omnipresent",
+    "phrase": "One who is present everywhere",
+    "word": "Omnipresent"
+  },
+  {
+    "id": "chassis",
+    "phrase": "The framework of a car",
+    "word": "Chassis"
+  },
+  {
+    "id": "alias",
+    "phrase": "A false name adopted by a person",
+    "word": "Alias"
+  },
+  {
+    "id": "indemnify",
+    "phrase": "To compensate for loss or damage",
+    "word": "Indemnify"
+  },
+  {
+    "id": "tragedy",
+    "phrase": "A play with a sad and tragic end",
+    "word": "Tragedy"
+  },
+  {
+    "id": "yolk",
+    "phrase": "The yellow part of an egg",
+    "word": "Yolk"
+  },
+  {
+    "id": "piscivorous",
+    "phrase": "Living on fish",
+    "word": "Piscivorous"
+  },
+  {
+    "id": "aphonia",
+    "phrase": "Loss of voice",
+    "word": "Aphonia"
+  },
+  {
+    "id": "amnesia",
+    "phrase": "Loss of memory",
+    "word": "Amnesia"
+  },
+  {
+    "id": "cacography",
+    "phrase": "Bad spelling",
+    "word": "Cacography"
+  },
+  {
+    "id": "orthography",
+    "phrase": "Correct spelling",
+    "word": "Orthography"
+  },
+  {
+    "id": "mercenary",
+    "phrase": "Serving for money",
+    "word": "Mercenary"
+  },
+  {
+    "id": "fragile",
+    "phrase": "Easily broken",
+    "word": "Fragile"
+  },
+  {
+    "id": "layette",
+    "phrase": "The outfit of a newborn baby",
+    "word": "Layette"
+  },
+  {
+    "id": "bilingual",
+    "phrase": "Fluent in two languages",
+    "word": "Bilingual"
+  },
+  {
+    "id": "soliloquy",
+    "phrase": "Speaking to oneself",
+    "word": "Soliloquy"
+  },
+  {
+    "id": "memorandum",
+    "phrase": "A note to help memory",
+    "word": "Memorandum"
+  },
+  {
+    "id": "encyclopedia",
+    "phrase": "A book containing information on all branches of knowledge",
+    "word": "Encyclopedia"
+  },
+  {
+    "id": "ledger",
+    "phrase": "A book of accounts showing debits and credits",
+    "word": "Ledger"
+  },
+  {
+    "id": "bulletin",
+    "phrase": "Official reports on the progress of a war",
+    "word": "Bulletin"
+  },
+  {
+    "id": "capitulate",
+    "phrase": "To surrender to an enemy on agreed terms",
+    "word": "Capitulate"
+  },
+  {
+    "id": "seismograph",
+    "phrase": "An instrument for detecting earthquakes",
+    "word": "Seismograph"
+  },
+  {
+    "id": "imperishable",
+    "phrase": "Enduring for all times",
+    "word": "Imperishable"
+  },
+  {
+    "id": "infallible",
+    "phrase": "Incapable of making errors",
+    "word": "Infallible"
+  },
+  {
+    "id": "repatriate",
+    "phrase": "To send back to one's own country",
+    "word": "Repatriate"
+  },
+  {
+    "id": "consignee",
+    "phrase": "One to whom goods are dispatched",
+    "word": "Consignee"
+  },
+  {
+    "id": "patriotism",
+    "phrase": "Love of one's country",
+    "word": "Patriotism"
+  },
+  {
+    "id": "philology",
+    "phrase": "The study of languages",
+    "word": "Philology"
+  },
+  {
+    "id": "antidote",
+    "phrase": "A medicine to counteract poison",
+    "word": "Antidote"
+  },
+  {
+    "id": "chromatics",
+    "phrase": "The science of colours",
+    "word": "Chromatics"
+  },
+  {
+    "id": "statistics",
+    "phrase": "Facts and figures",
+    "word": "Statistics"
+  },
+  {
+    "id": "aristocracy",
+    "phrase": "Government by the nobility",
+    "word": "Aristocracy"
+  },
+  {
+    "id": "accomplice",
+    "phrase": "A partner in a crime",
+    "word": "Accomplice"
+  },
+  {
+    "id": "biography",
+    "phrase": "Life history written by another person",
+    "word": "Biography"
+  },
+  {
+    "id": "complacent",
+    "phrase": "A person satisfied with their own achievements",
+    "word": "Complacent"
+  },
+  {
+    "id": "despot",
+    "phrase": "A ruler with absolute powers",
+    "word": "Despot"
+  },
+  {
+    "id": "epilogue",
+    "phrase": "The concluding part of a literary work",
+    "word": "Epilogue"
+  },
+  {
+    "id": "fiasco",
+    "phrase": "A matter which ends in failure",
+    "word": "Fiasco"
+  },
+  {
+    "id": "glutton",
+    "phrase": "A person fond of excessive eating",
+    "word": "Glutton"
+  },
+  {
+    "id": "kindergarten",
+    "phrase": "A school for young children",
+    "word": "Kindergarten"
+  },
+  {
+    "id": "meticulous",
+    "phrase": "A person very particular about every detail",
+    "word": "Meticulous"
+  },
+  {
+    "id": "nepotism",
+    "phrase": "Undue favour shown to relatives",
+    "word": "Nepotism"
+  },
+  {
+    "id": "loquacious",
+    "phrase": "A person who talks much",
+    "word": "Loquacious"
+  },
+  {
+    "id": "plagiarist",
+    "phrase": "A writer who copies from others",
+    "word": "Plagiarist"
+  },
+  {
+    "id": "red-tapism",
+    "phrase": "Excessive official formalities",
+    "word": "Red Tapism"
+  },
+  {
+    "id": "sacrilege",
+    "phrase": "Violation of sacred things",
+    "word": "Sacrilege"
+  },
+  {
+    "id": "posthumous",
+    "phrase": "An incident occurring after death",
+    "word": "Posthumous"
+  },
+  {
+    "id": "atlas",
+    "phrase": "A book of maps",
+    "word": "Atlas"
+  },
+  {
+    "id": "aviary",
+    "phrase": "A place where birds are kept",
+    "word": "Aviary"
+  },
+  {
+    "id": "apiary",
+    "phrase": "A place where bees are kept",
+    "word": "Apiary"
+  },
+  {
+    "id": "aquarium",
+    "phrase": "A place where fishes are kept",
+    "word": "Aquarium"
+  },
+  {
+    "id": "hutch",
+    "phrase": "A place where rabbits are kept",
+    "word": "Hutch"
+  },
+  {
+    "id": "insectarium",
+    "phrase": "A place for breeding insects",
+    "word": "Insectarium"
+  },
+  {
+    "id": "caravan",
+    "phrase": "Shelter of a gypsy",
+    "word": "Caravan"
+  },
+  {
+    "id": "convent",
+    "phrase": "Residence for nuns",
+    "word": "Convent"
+  },
+  {
+    "id": "brewery",
+    "phrase": "Factory for manufacturing beer",
+    "word": "Brewery"
+  },
+  {
+    "id": "gymnasium",
+    "phrase": "Place for athletic exercises",
+    "word": "Gymnasium"
+  },
+  {
+    "id": "tannery",
+    "phrase": "Place where leather is tanned",
+    "word": "Tannery"
+  },
+  {
+    "id": "mint",
+    "phrase": "Place where money is coined",
+    "word": "Mint"
+  },
+  {
+    "id": "orchard",
+    "phrase": "Place where fruit trees are grown",
+    "word": "Orchard"
+  },
+  {
+    "id": "dock",
+    "phrase": "Place where ships are repaired or built",
+    "word": "Dock"
+  },
+  {
+    "id": "dialogue",
+    "phrase": "Conversation between two persons",
+    "word": "Dialogue"
+  },
+  {
+    "id": "comedy",
+    "phrase": "A humorous play with a happy ending",
+    "word": "Comedy"
+  },
+  {
+    "id": "catalogue",
+    "phrase": "List of books in a library",
+    "word": "Catalogue"
+  },
+  {
+    "id": "autograph",
+    "phrase": "A person's own signature",
+    "word": "Autograph"
+  },
+  {
+    "id": "optimist",
+    "phrase": "One who looks on the bright side",
+    "word": "Optimist"
+  },
+  {
+    "id": "pessimist",
+    "phrase": "One who looks on the dark side",
+    "word": "Pessimist"
+  },
+  {
+    "id": "album",
+    "phrase": "Book with blank pages for autographs/pictures",
+    "word": "Album"
+  },
+  {
+    "id": "pedestrian",
+    "phrase": "One who journeys on foot",
+    "word": "Pedestrian"
+  },
+  {
+    "id": "eavesdropper",
+    "phrase": "One who listens to others' conversations",
+    "word": "Eavesdropper"
+  },
+  {
+    "id": "ambidextrous",
+    "phrase": "One who can use both hands equally well",
+    "word": "Ambidextrous"
+  },
+  {
+    "id": "mimic",
+    "phrase": "One who imitates voices",
+    "word": "Mimic"
+  },
+  {
+    "id": "numismatist",
+    "phrase": "One who collects coins",
+    "word": "Numismatist"
+  },
+  {
+    "id": "anatomy",
+    "phrase": "Science of the structure of the human body",
+    "word": "Anatomy"
+  },
+  {
+    "id": "inedible",
+    "phrase": "Unfit for human consumption",
+    "word": "Inedible"
+  },
+  {
+    "id": "bilingual",
+    "phrase": "Fluent in two languages",
+    "word": "Bilingual"
+  },
+  {
+    "id": "mosaic",
+    "phrase": "Picture made from small coloured pieces",
+    "word": "Mosaic"
+  },
+  {
+    "id": "strop",
+    "phrase": "Leather strip for sharpening razors",
+    "word": "Strop"
+  },
+  {
+    "id": "roster",
+    "phrase": "Duty schedule list",
+    "word": "Roster"
+  },
+  {
+    "id": "pannier",
+    "phrase": "Basket fitted over the back of an animal/bike",
+    "word": "Pannier"
+  },
+  {
+    "id": "amulet",
+    "phrase": "Charm worn against evil",
+    "word": "Amulet"
+  },
+  {
+    "id": "skeleton",
+    "phrase": "Bony framework of the body",
+    "word": "Skeleton"
+  },
+  {
+    "id": "directory",
+    "phrase": "Book of names and addresses",
+    "word": "Directory"
+  },
+  {
+    "id": "awning",
+    "phrase": "Covering used to shade windows and doors",
+    "word": "Awning"
+  },
+  {
+    "id": "embezzle",
+    "phrase": "Misuse entrusted money",
+    "word": "Embezzle"
+  },
+  {
+    "id": "parsimonious",
+    "phrase": "Over-particular about spending money",
+    "word": "Parsimonious"
+  },
+  {
+    "id": "ullage",
+    "phrase": "Space left unfilled in a cask before sealing",
+    "word": "Ullage"
+  },
+  {
+    "id": "niche",
+    "phrase": "Hollow space in a wall for a statue",
+    "word": "Niche"
+  },
+  {
+    "id": "diary",
+    "phrase": "Book recording daily events",
+    "word": "Diary"
+  },
+  {
+    "id": "arraign",
+    "phrase": "Bring a person before a court",
+    "word": "Arraign"
+  },
+  {
+    "id": "dock",
+    "phrase": "Enclosure for prisoners in a courthouse",
+    "word": "Dock"
+  },
+  {
+    "id": "felloe",
+    "phrase": "Rim segment of a wheel",
+    "word": "Felloe"
+  },
+  {
+    "id": "ferrule",
+    "phrase": "Iron ring at the end of a staff",
+    "word": "Ferrule"
+  },
+  {
+    "id": "carnivorous",
+    "phrase": "Living on flesh",
+    "word": "Carnivorous"
+  },
+  {
+    "id": "herbivorous",
+    "phrase": "Living on grass",
+    "word": "Herbivorous"
+  },
+  {
+    "id": "graminivorous",
+    "phrase": "Living on grass",
+    "word": "Graminivorous"
+  },
+  {
+    "id": "flotsam",
+    "phrase": "Goods floating after a shipwreck",
+    "word": "Flotsam"
+  },
+  {
+    "id": "omnivorous",
+    "phrase": "Feeding on both plants and animals",
+    "word": "Omnivorous"
+  },
+  {
+    "id": "gavel",
+    "phrase": "Chairman's hammer",
+    "word": "Gavel"
+  },
+  {
+    "id": "albumen",
+    "phrase": "The white of an egg",
+    "word": "Albumen"
+  },
+  {
+    "id": "baton",
+    "phrase": "Stick used by a conductor or policeman",
+    "word": "Baton"
+  },
+  {
+    "id": "chevron",
+    "phrase": "Rank stripes on sleeves",
+    "word": "Chevron"
+  },
+  {
+    "id": "viaduct",
+    "phrase": "Bridge carrying a road/railway over a valley",
+    "word": "Viaduct"
+  },
+  {
+    "id": "alloy",
+    "phrase": "Mixture of metals",
+    "word": "Alloy"
+  },
+  {
+    "id": "canopy",
+    "phrase": "Rich covering over a throne or bed",
+    "word": "Canopy"
+  },
+  {
+    "id": "careen",
+    "phrase": "To lay a ship on its side for cleaning",
+    "word": "Careen"
+  },
+  {
+    "id": "nostalgia",
+    "phrase": "Homesickness or longing for the past",
+    "word": "Nostalgia"
+  },
+  {
+    "id": "menu",
+    "phrase": "List of food items to be served",
+    "word": "Menu"
+  },
+  {
+    "id": "recipe",
+    "phrase": "Directions for preparing dishes",
+    "word": "Recipe"
+  },
+  {
+    "id": "casein",
+    "phrase": "Milk protein used in cheese making",
+    "word": "Casein"
+  },
+  {
+    "id": "versatile",
+    "phrase": "Able to adapt readily",
+    "word": "Versatile"
+  },
+  {
+    "id": "jetsam",
+    "phrase": "Goods thrown overboard to lighten a ship",
+    "word": "Jetsam"
+  },
+  {
+    "id": "dictionary",
+    "phrase": "Book of words and meanings",
+    "word": "Dictionary"
+  },
+  {
+    "id": "jamboree",
+    "phrase": "Rally of scouts or youth gathering",
+    "word": "Jamboree"
+  },
+  {
+    "id": "carillon",
+    "phrase": "Set of bells arranged to play tunes",
+    "word": "Carillon"
+  },
+  {
+    "id": "caricature",
+    "phrase": "Exaggerated humorous drawing",
+    "word": "Caricature"
+  }
+]

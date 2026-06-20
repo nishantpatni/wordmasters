@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "a-blank-of-houses",
+    "question": "a ________ of houses",
+    "options": [
+      {
+        "id": "A",
+        "text": "cluster"
+      },
+      {
+        "id": "B",
+        "text": "colony"
+      },
+      {
+        "id": "C",
+        "text": "row"
+      },
+      {
+        "id": "D",
+        "text": "set"
+      },
+      {
+        "id": "E",
+        "text": "apartment"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "cluster",
+      "row"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-birds",
+    "question": "a ________ of birds",
+    "options": [
+      {
+        "id": "A",
+        "text": "flight"
+      },
+      {
+        "id": "B",
+        "text": "flock"
+      },
+      {
+        "id": "C",
+        "text": "herd"
+      },
+      {
+        "id": "D",
+        "text": "cluster"
+      },
+      {
+        "id": "E",
+        "text": "swarm"
+      }
+    ],
+    "correctOptionIds": [
+      "A"
+    ],
+    "correctAnswers": [
+      "flight"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-locusts",
+    "question": "a _______ of locusts",
+    "options": [
+      {
+        "id": "A",
+        "text": "herd"
+      },
+      {
+        "id": "B",
+        "text": "flight"
+      },
+      {
+        "id": "C",
+        "text": "swarm"
+      },
+      {
+        "id": "D",
+        "text": "cluster"
+      },
+      {
+        "id": "E",
+        "text": "flock"
+      }
+    ],
+    "correctOptionIds": [
+      "C"
+    ],
+    "correctAnswers": [
+      "swarm"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-rioters",
+    "question": "a _______ of rioters",
+    "options": [
+      {
+        "id": "A",
+        "text": "crowd"
+      },
+      {
+        "id": "B",
+        "text": "band"
+      },
+      {
+        "id": "C",
+        "text": "pack"
+      },
+      {
+        "id": "D",
+        "text": "mob"
+      }
+    ],
+    "correctOptionIds": [
+      "D"
+    ],
+    "correctAnswers": [
+      "mob"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-musicians",
+    "question": "a _____ of musicians",
+    "options": [
+      {
+        "id": "A",
+        "text": "pack"
+      },
+      {
+        "id": "B",
+        "text": "team"
+      },
+      {
+        "id": "C",
+        "text": "band"
+      },
+      {
+        "id": "D",
+        "text": "choir"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "team"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-singers",
+    "question": "a ______ of singers",
+    "options": [
+      {
+        "id": "A",
+        "text": "pack"
+      },
+      {
+        "id": "B",
+        "text": "team"
+      },
+      {
+        "id": "C",
+        "text": "band"
+      },
+      {
+        "id": "D",
+        "text": "choir"
+      }
+    ],
+    "correctOptionIds": [
+      "D"
+    ],
+    "correctAnswers": [
+      "choir"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-robbers",
+    "question": "a _______ of robbers",
+    "options": [
+      {
+        "id": "A",
+        "text": "pack"
+      },
+      {
+        "id": "B",
+        "text": "team"
+      },
+      {
+        "id": "C",
+        "text": "band"
+      },
+      {
+        "id": "D",
+        "text": "mob"
+      },
+      {
+        "id": "E",
+        "text": "gang"
+      }
+    ],
+    "correctOptionIds": [
+      "C"
+    ],
+    "correctAnswers": [
+      "band"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-band-of-blank",
+    "question": "a band of ________",
+    "options": [
+      {
+        "id": "A",
+        "text": "robbers"
+      },
+      {
+        "id": "B",
+        "text": "rioters"
+      },
+      {
+        "id": "C",
+        "text": "singers"
+      },
+      {
+        "id": "D",
+        "text": "musicians"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "D"
+    ],
+    "correctAnswers": [
+      "robbers",
+      "musicians"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-hounds",
+    "question": "a _________ of hounds",
+    "options": [
+      {
+        "id": "A",
+        "text": "herd"
+      },
+      {
+        "id": "B",
+        "text": "pack"
+      },
+      {
+        "id": "C",
+        "text": "band"
+      },
+      {
+        "id": "D",
+        "text": "mob"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "pack"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-books",
+    "question": "a ______ of books",
+    "options": [
+      {
+        "id": "A",
+        "text": "pile"
+      },
+      {
+        "id": "B",
+        "text": "pack"
+      },
+      {
+        "id": "C",
+        "text": "library"
+      },
+      {
+        "id": "D",
+        "text": "set"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "pile",
+      "library"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-cards",
+    "question": "a _______ of cards",
+    "options": [
+      {
+        "id": "A",
+        "text": "pile"
+      },
+      {
+        "id": "B",
+        "text": "pack"
+      },
+      {
+        "id": "C",
+        "text": "library"
+      },
+      {
+        "id": "D",
+        "text": "set"
+      },
+      {
+        "id": "E",
+        "text": "deck"
+      }
+    ],
+    "correctOptionIds": [
+      "B",
+      "E"
+    ],
+    "correctAnswers": [
+      "pack",
+      "deck"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-penguins",
+    "question": "a ______ of penguins",
+    "options": [
+      {
+        "id": "A",
+        "text": "flight"
+      },
+      {
+        "id": "B",
+        "text": "colony"
+      },
+      {
+        "id": "C",
+        "text": "swarm"
+      },
+      {
+        "id": "D",
+        "text": "herd"
+      },
+      {
+        "id": "E",
+        "text": "school"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "colony"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-colony-of-blank",
+    "question": "a colony of ________",
+    "options": [
+      {
+        "id": "A",
+        "text": "houses"
+      },
+      {
+        "id": "B",
+        "text": "ants"
+      },
+      {
+        "id": "C",
+        "text": "penguins"
+      },
+      {
+        "id": "D",
+        "text": "chicken"
+      }
+    ],
+    "correctOptionIds": [
+      "B",
+      "C"
+    ],
+    "correctAnswers": [
+      "ants",
+      "penguins"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-chicken",
+    "question": "a _______ of chicken",
+    "options": [
+      {
+        "id": "A",
+        "text": "herd"
+      },
+      {
+        "id": "B",
+        "text": "swarm"
+      },
+      {
+        "id": "C",
+        "text": "brood"
+      },
+      {
+        "id": "D",
+        "text": "clutch"
+      }
+    ],
+    "correctOptionIds": [
+      "C"
+    ],
+    "correctAnswers": [
+      "brood"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-eggs",
+    "question": "a _______ of eggs",
+    "options": [
+      {
+        "id": "A",
+        "text": "clutch"
+      },
+      {
+        "id": "B",
+        "text": "batch"
+      },
+      {
+        "id": "C",
+        "text": "brood"
+      },
+      {
+        "id": "D",
+        "text": "basket"
+      }
+    ],
+    "correctOptionIds": [
+      "A"
+    ],
+    "correctAnswers": [
+      "clutch"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-cakes",
+    "question": "a _______ of cakes",
+    "options": [
+      {
+        "id": "A",
+        "text": "clutch"
+      },
+      {
+        "id": "B",
+        "text": "batch"
+      },
+      {
+        "id": "C",
+        "text": "brood"
+      },
+      {
+        "id": "D",
+        "text": "basket"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "batch"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-carrots",
+    "question": "a ________ of carrots",
+    "options": [
+      {
+        "id": "A",
+        "text": "batch"
+      },
+      {
+        "id": "B",
+        "text": "brood"
+      },
+      {
+        "id": "C",
+        "text": "basket"
+      },
+      {
+        "id": "D",
+        "text": "bunch"
+      },
+      {
+        "id": "E",
+        "text": "bouquet"
+      }
+    ],
+    "correctOptionIds": [
+      "D"
+    ],
+    "correctAnswers": [
+      "bunch"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-roses",
+    "question": "a ______ of roses",
+    "options": [
+      {
+        "id": "A",
+        "text": "batch"
+      },
+      {
+        "id": "B",
+        "text": "brood"
+      },
+      {
+        "id": "C",
+        "text": "basket"
+      },
+      {
+        "id": "D",
+        "text": "bunch"
+      },
+      {
+        "id": "E",
+        "text": "bouquet"
+      }
+    ],
+    "correctOptionIds": [
+      "D",
+      "E"
+    ],
+    "correctAnswers": [
+      "bunch",
+      "bouquet"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-stars",
+    "question": "a ______ of stars",
+    "options": [
+      {
+        "id": "A",
+        "text": "cluster"
+      },
+      {
+        "id": "B",
+        "text": "row"
+      },
+      {
+        "id": "C",
+        "text": "galaxy"
+      },
+      {
+        "id": "D",
+        "text": "set"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "cluster",
+      "galaxy"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-trees",
+    "question": "a ______ of trees",
+    "options": [
+      {
+        "id": "A",
+        "text": "forest"
+      },
+      {
+        "id": "B",
+        "text": "set"
+      },
+      {
+        "id": "C",
+        "text": "row"
+      },
+      {
+        "id": "D",
+        "text": "bunch"
+      },
+      {
+        "id": "E",
+        "text": "cluster"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "forest",
+      "row"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-islands",
+    "question": "a ________ of islands",
+    "options": [
+      {
+        "id": "A",
+        "text": "cluster"
+      },
+      {
+        "id": "B",
+        "text": "group"
+      },
+      {
+        "id": "C",
+        "text": "pile"
+      },
+      {
+        "id": "D",
+        "text": "galaxy"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "group"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-mountains",
+    "question": "a ________ of mountains",
+    "options": [
+      {
+        "id": "A",
+        "text": "cluster"
+      },
+      {
+        "id": "B",
+        "text": "group"
+      },
+      {
+        "id": "C",
+        "text": "pile"
+      },
+      {
+        "id": "D",
+        "text": "galaxy"
+      },
+      {
+        "id": "E",
+        "text": "range"
+      }
+    ],
+    "correctOptionIds": [
+      "E"
+    ],
+    "correctAnswers": [
+      "range"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-string-of-blank",
+    "question": "a string of _______",
+    "options": [
+      {
+        "id": "A",
+        "text": "carrots"
+      },
+      {
+        "id": "B",
+        "text": "camels"
+      },
+      {
+        "id": "C",
+        "text": "pearls"
+      },
+      {
+        "id": "D",
+        "text": "beads"
+      },
+      {
+        "id": "E",
+        "text": "necklace"
+      }
+    ],
+    "correctOptionIds": [
+      "B",
+      "C",
+      "D"
+    ],
+    "correctAnswers": [
+      "camels",
+      "pearls",
+      "beads"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-pack-of-blank",
+    "question": "a pack of _____",
+    "options": [
+      {
+        "id": "A",
+        "text": "cards"
+      },
+      {
+        "id": "B",
+        "text": "books"
+      },
+      {
+        "id": "C",
+        "text": "hounds"
+      },
+      {
+        "id": "D",
+        "text": "beads"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "cards",
+      "hounds"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-pile-of-blank",
+    "question": "a pile of __________",
+    "options": [
+      {
+        "id": "A",
+        "text": "sticks"
+      },
+      {
+        "id": "B",
+        "text": "books"
+      },
+      {
+        "id": "C",
+        "text": "clothes"
+      },
+      {
+        "id": "D",
+        "text": "hay"
+      }
+    ],
+    "correctOptionIds": [
+      "B",
+      "C"
+    ],
+    "correctAnswers": [
+      "books",
+      "clothes"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-hay",
+    "question": "a _____ of hay",
+    "options": [
+      {
+        "id": "A",
+        "text": "pile"
+      },
+      {
+        "id": "B",
+        "text": "bundle"
+      },
+      {
+        "id": "C",
+        "text": "bunch"
+      },
+      {
+        "id": "D",
+        "text": "cluster"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "bundle"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-clothes",
+    "question": "a _________ of clothes",
+    "options": [
+      {
+        "id": "A",
+        "text": "pile"
+      },
+      {
+        "id": "B",
+        "text": "bundle"
+      },
+      {
+        "id": "C",
+        "text": "bunch"
+      },
+      {
+        "id": "D",
+        "text": "cluster"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "B"
+    ],
+    "correctAnswers": [
+      "pile",
+      "bundle"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-sticks",
+    "question": "a _______ of sticks",
+    "options": [
+      {
+        "id": "A",
+        "text": "pile"
+      },
+      {
+        "id": "B",
+        "text": "bundle"
+      },
+      {
+        "id": "C",
+        "text": "bunch"
+      },
+      {
+        "id": "D",
+        "text": "cluster"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "bundle"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-school-of-blank",
+    "question": "a school of _______",
+    "options": [
+      {
+        "id": "A",
+        "text": "dolphins"
+      },
+      {
+        "id": "B",
+        "text": "geese"
+      },
+      {
+        "id": "C",
+        "text": "penguins"
+      }
+    ],
+    "correctOptionIds": [
+      "A"
+    ],
+    "correctAnswers": [
+      "dolphins"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-shoal-of",
+    "question": "a shoal of",
+    "options": [
+      {
+        "id": "A",
+        "text": "dolphins"
+      },
+      {
+        "id": "B",
+        "text": "geese"
+      },
+      {
+        "id": "C",
+        "text": "penguins"
+      },
+      {
+        "id": "D",
+        "text": "fish"
+      }
+    ],
+    "correctOptionIds": [
+      "D"
+    ],
+    "correctAnswers": [
+      "fish"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-class-of-blank",
+    "question": "a class of ________",
+    "options": [
+      {
+        "id": "A",
+        "text": "friends"
+      },
+      {
+        "id": "B",
+        "text": "scientists"
+      },
+      {
+        "id": "C",
+        "text": "teachers"
+      },
+      {
+        "id": "D",
+        "text": "students"
+      },
+      {
+        "id": "E",
+        "text": "pupils"
+      }
+    ],
+    "correctOptionIds": [
+      "D",
+      "E"
+    ],
+    "correctAnswers": [
+      "students",
+      "pupils"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-flight-of-blank",
+    "question": "a flight of ______",
+    "options": [
+      {
+        "id": "A",
+        "text": "birds"
+      },
+      {
+        "id": "B",
+        "text": "geese"
+      },
+      {
+        "id": "C",
+        "text": "locusts"
+      },
+      {
+        "id": "D",
+        "text": "stairs"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "D"
+    ],
+    "correctAnswers": [
+      "birds",
+      "stairs"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-directors",
+    "question": "a ______ of directors",
+    "options": [
+      {
+        "id": "A",
+        "text": "panel"
+      },
+      {
+        "id": "B",
+        "text": "staff"
+      },
+      {
+        "id": "C",
+        "text": "board"
+      }
+    ],
+    "correctOptionIds": [
+      "C"
+    ],
+    "correctAnswers": [
+      "board"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-judges",
+    "question": "a _____ of judges",
+    "options": [
+      {
+        "id": "A",
+        "text": "panel"
+      },
+      {
+        "id": "B",
+        "text": "staff"
+      },
+      {
+        "id": "C",
+        "text": "board"
+      },
+      {
+        "id": "D",
+        "text": "bench"
+      }
+    ],
+    "correctOptionIds": [
+      "A"
+    ],
+    "correctAnswers": [
+      "panel"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-blank-of-teachers",
+    "question": "a ________ of teachers",
+    "options": [
+      {
+        "id": "A",
+        "text": "panel"
+      },
+      {
+        "id": "B",
+        "text": "staff"
+      },
+      {
+        "id": "C",
+        "text": "board"
+      },
+      {
+        "id": "D",
+        "text": "bench"
+      },
+      {
+        "id": "E",
+        "text": "class"
+      }
+    ],
+    "correctOptionIds": [
+      "B"
+    ],
+    "correctAnswers": [
+      "staff"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-group-of-blank",
+    "question": "a group of ______",
+    "options": [
+      {
+        "id": "A",
+        "text": "dancers"
+      },
+      {
+        "id": "B",
+        "text": "students"
+      },
+      {
+        "id": "C",
+        "text": "islands"
+      },
+      {
+        "id": "D",
+        "text": "friends"
+      },
+      {
+        "id": "E",
+        "text": "teachers"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "correctAnswers": [
+      "dancers",
+      "students",
+      "islands",
+      "friends"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-lions",
+    "question": "a _____ of lions",
+    "options": [
+      {
+        "id": "A",
+        "text": "troop"
+      },
+      {
+        "id": "B",
+        "text": "group"
+      },
+      {
+        "id": "C",
+        "text": "pride"
+      },
+      {
+        "id": "D",
+        "text": "herd"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "troop",
+      "pride"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-company-of-blank",
+    "question": "a company of ______",
+    "options": [
+      {
+        "id": "A",
+        "text": "actors"
+      },
+      {
+        "id": "B",
+        "text": "dancers"
+      },
+      {
+        "id": "C",
+        "text": "soldiers"
+      },
+      {
+        "id": "D",
+        "text": "robbers"
+      },
+      {
+        "id": "E",
+        "text": "hounds"
+      }
+    ],
+    "correctOptionIds": [
+      "A",
+      "C"
+    ],
+    "correctAnswers": [
+      "actors",
+      "soldiers"
+    ],
+    "type": "multi-select"
+  },
+  {
+    "id": "a-blank-of-monkeys",
+    "question": "a _____ of monkeys",
+    "options": [
+      {
+        "id": "A",
+        "text": "troop"
+      },
+      {
+        "id": "B",
+        "text": "group"
+      },
+      {
+        "id": "C",
+        "text": "pride"
+      },
+      {
+        "id": "D",
+        "text": "herd"
+      }
+    ],
+    "correctOptionIds": [
+      "A"
+    ],
+    "correctAnswers": [
+      "troop"
+    ],
+    "type": "single-select"
+  },
+  {
+    "id": "a-troop-of-blank",
+    "question": "a troop of _______",
+    "options": [
+      {
+        "id": "A",
+        "text": "singers"
+      },
+      {
+        "id": "B",
+        "text": "lions"
+      },
+      {
+        "id": "C",
+        "text": "monkeys"
+      },
+      {
+        "id": "D",
+        "text": "dancers"
+      },
+      {
+        "id": "E",
+        "text": "hounds"
+      }
+    ],
+    "correctOptionIds": [
+      "B",
+      "C",
+      "D"
+    ],
+    "correctAnswers": [
+      "lions",
+      "monkeys",
+      "dancers"
+    ],
+    "type": "multi-select"
+  }
+]

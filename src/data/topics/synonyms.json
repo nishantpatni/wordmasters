@@ -1,0 +1,1049 @@
+[
+  {
+    "id": "aback",
+    "word": "Aback",
+    "synonyms": [
+      "Back",
+      "Behind",
+      "Rearward"
+    ]
+  },
+  {
+    "id": "abandon",
+    "word": "Abandon",
+    "synonyms": [
+      "Desert",
+      "Forsake",
+      "Leave"
+    ]
+  },
+  {
+    "id": "abase",
+    "word": "Abase",
+    "synonyms": [
+      "Disgrace",
+      "Dishonour",
+      "Humble"
+    ]
+  },
+  {
+    "id": "abduct",
+    "word": "Abduct",
+    "synonyms": [
+      "Capture",
+      "Kidnap",
+      "Seize"
+    ]
+  },
+  {
+    "id": "abjure",
+    "word": "Abjure",
+    "synonyms": [
+      "Recant",
+      "Recall",
+      "Withdraw"
+    ]
+  },
+  {
+    "id": "abradant",
+    "word": "Abradant",
+    "synonyms": [
+      "Harsh",
+      "Nasty",
+      "Offensive"
+    ]
+  },
+  {
+    "id": "abrupt",
+    "word": "Abrupt",
+    "synonyms": [
+      "Sudden"
+    ]
+  },
+  {
+    "id": "affluent",
+    "word": "Affluent",
+    "synonyms": [
+      "Wealthy",
+      "Prosperous",
+      "Opulent",
+      "Flourishing",
+      "Well-Off"
+    ]
+  },
+  {
+    "id": "ally",
+    "word": "Ally",
+    "synonyms": [
+      "Colleague",
+      "Partner",
+      "Accomplice"
+    ]
+  },
+  {
+    "id": "amend",
+    "word": "Amend",
+    "synonyms": [
+      "Improve",
+      "Ameliorate"
+    ]
+  },
+  {
+    "id": "amiable",
+    "word": "Amiable",
+    "synonyms": [
+      "Kind"
+    ]
+  },
+  {
+    "id": "ample",
+    "word": "Ample",
+    "synonyms": [
+      "Plentiful",
+      "Copious"
+    ]
+  },
+  {
+    "id": "assistance",
+    "word": "Assistance",
+    "synonyms": [
+      "Help"
+    ]
+  },
+  {
+    "id": "astonishment",
+    "word": "Astonishment",
+    "synonyms": [
+      "Surprise"
+    ]
+  },
+  {
+    "id": "astute",
+    "word": "Astute",
+    "synonyms": [
+      "Shrewd",
+      "Perceptive",
+      "Intelligent",
+      "Sagacious",
+      "Sharp-Witted"
+    ]
+  },
+  {
+    "id": "attentive",
+    "word": "Attentive",
+    "synonyms": [
+      "Alert"
+    ]
+  },
+  {
+    "id": "ban",
+    "word": "Ban",
+    "synonyms": [
+      "Taboo",
+      "Prohibition",
+      "Limitation"
+    ]
+  },
+  {
+    "id": "bandit",
+    "word": "Bandit",
+    "synonyms": [
+      "Thief",
+      "Brigand",
+      "Robber"
+    ]
+  },
+  {
+    "id": "benevolent",
+    "word": "Benevolent",
+    "synonyms": [
+      "Compassionate",
+      "Charitable",
+      "Gracious",
+      "Considerate",
+      "Gentle"
+    ]
+  },
+  {
+    "id": "betray",
+    "word": "Betray",
+    "synonyms": [
+      "Double-Cross",
+      "Trick",
+      "Deceive"
+    ]
+  },
+  {
+    "id": "blame",
+    "word": "Blame",
+    "synonyms": [
+      "Censure",
+      "Reprove",
+      "Upbraid"
+    ]
+  },
+  {
+    "id": "boisterous",
+    "word": "Boisterous",
+    "synonyms": [
+      "Raucous",
+      "Clamorous",
+      "Vociferous",
+      "Thunderous",
+      "Uproarious"
+    ]
+  },
+  {
+    "id": "bold",
+    "word": "Bold",
+    "synonyms": [
+      "Daring",
+      "Courageous",
+      "Fearless"
+    ]
+  },
+  {
+    "id": "brief",
+    "word": "Brief",
+    "synonyms": [
+      "Short"
+    ]
+  },
+  {
+    "id": "brittle",
+    "word": "Brittle",
+    "synonyms": [
+      "Frail",
+      "Fragile"
+    ]
+  },
+  {
+    "id": "browse",
+    "word": "Browse",
+    "synonyms": [
+      "Peruse",
+      "Examine",
+      "Scan"
+    ]
+  },
+  {
+    "id": "brutal",
+    "word": "Brutal",
+    "synonyms": [
+      "Cruel"
+    ]
+  },
+  {
+    "id": "calamity",
+    "word": "Calamity",
+    "synonyms": [
+      "Tragedy",
+      "Catastrophe",
+      "Disaster"
+    ]
+  },
+  {
+    "id": "candid",
+    "word": "Candid",
+    "synonyms": [
+      "Sincere",
+      "Open",
+      "Frank",
+      "Straightforward",
+      "Outspoken"
+    ]
+  },
+  {
+    "id": "careless",
+    "word": "Careless",
+    "synonyms": [
+      "Loose",
+      "Incautious",
+      "Indiscreet"
+    ]
+  },
+  {
+    "id": "cautious",
+    "word": "Cautious",
+    "synonyms": [
+      "Careful"
+    ]
+  },
+  {
+    "id": "celebrated",
+    "word": "Celebrated",
+    "synonyms": [
+      "Famous"
+    ]
+  },
+  {
+    "id": "certain",
+    "word": "Certain",
+    "synonyms": [
+      "Sure"
+    ]
+  },
+  {
+    "id": "chaos",
+    "word": "Chaos",
+    "synonyms": [
+      "Disorder"
+    ]
+  },
+  {
+    "id": "choose",
+    "word": "Choose",
+    "synonyms": [
+      "Discriminate",
+      "Differentiate",
+      "Select"
+    ]
+  },
+  {
+    "id": "classify",
+    "word": "Classify",
+    "synonyms": [
+      "Arrange"
+    ]
+  },
+  {
+    "id": "commence",
+    "word": "Commence",
+    "synonyms": [
+      "Start"
+    ]
+  },
+  {
+    "id": "conclude",
+    "word": "Conclude",
+    "synonyms": [
+      "Terminate",
+      "Finalize",
+      "Wrap Up",
+      "Complete",
+      "Close"
+    ]
+  },
+  {
+    "id": "confiscate",
+    "word": "Confiscate",
+    "synonyms": [
+      "Seize"
+    ]
+  },
+  {
+    "id": "conquest",
+    "word": "Conquest",
+    "synonyms": [
+      "Victory"
+    ]
+  },
+  {
+    "id": "courteous",
+    "word": "Courteous",
+    "synonyms": [
+      "Polite"
+    ]
+  },
+  {
+    "id": "deceive",
+    "word": "Deceive",
+    "synonyms": [
+      "Mislead",
+      "Victimize",
+      "Betray",
+      "Cheat"
+    ]
+  },
+  {
+    "id": "defend",
+    "word": "Defend",
+    "synonyms": [
+      "Protect",
+      "Shield",
+      "Shelter"
+    ]
+  },
+  {
+    "id": "deficiency",
+    "word": "Deficiency",
+    "synonyms": [
+      "Shortage"
+    ]
+  },
+  {
+    "id": "dense",
+    "word": "Dense",
+    "synonyms": [
+      "Thick",
+      "Opaque",
+      "Solid"
+    ]
+  },
+  {
+    "id": "destiny",
+    "word": "Destiny",
+    "synonyms": [
+      "Fate",
+      "Fortune",
+      "Doom"
+    ]
+  },
+  {
+    "id": "destitute",
+    "word": "Destitute",
+    "synonyms": [
+      "Impoverished",
+      "Needy",
+      "Underprivileged",
+      "Deprived",
+      "Penniless"
+    ]
+  },
+  {
+    "id": "determination",
+    "word": "Determination",
+    "synonyms": [
+      "Firmness"
+    ]
+  },
+  {
+    "id": "disaster",
+    "word": "Disaster",
+    "synonyms": [
+      "Misfortune",
+      "Catastrophe",
+      "Calamity"
+    ]
+  },
+  {
+    "id": "discourse",
+    "word": "Discourse",
+    "synonyms": [
+      "Sermon",
+      "Dissertation"
+    ]
+  },
+  {
+    "id": "drowsy",
+    "word": "Drowsy",
+    "synonyms": [
+      "Sleepy"
+    ]
+  },
+  {
+    "id": "eager",
+    "word": "Eager",
+    "synonyms": [
+      "Impatient",
+      "Anxious",
+      "Keen"
+    ]
+  },
+  {
+    "id": "earthy",
+    "word": "Earthy",
+    "synonyms": [
+      "Coarse",
+      "Dull",
+      "Natural"
+    ]
+  },
+  {
+    "id": "ebb",
+    "word": "Ebb",
+    "synonyms": [
+      "Decline",
+      "Recede",
+      "Decay"
+    ]
+  },
+  {
+    "id": "eclipse",
+    "word": "Eclipse",
+    "synonyms": [
+      "Darken",
+      "Diminish",
+      "Obscure"
+    ]
+  },
+  {
+    "id": "edible",
+    "word": "Edible",
+    "synonyms": [
+      "Eatable"
+    ]
+  },
+  {
+    "id": "elaborate",
+    "word": "Elaborate",
+    "synonyms": [
+      "Gaudy",
+      "Decorated",
+      "Showy"
+    ]
+  },
+  {
+    "id": "elegant",
+    "word": "Elegant",
+    "synonyms": [
+      "Graceful",
+      "Exquisite",
+      "Refined",
+      "Charming",
+      "Attractive"
+    ]
+  },
+  {
+    "id": "elude",
+    "word": "Elude",
+    "synonyms": [
+      "Baffle",
+      "Avoid",
+      "Cheat"
+    ]
+  },
+  {
+    "id": "emancipate",
+    "word": "Emancipate",
+    "synonyms": [
+      "Liberate",
+      "Release",
+      "Free"
+    ]
+  },
+  {
+    "id": "eminent",
+    "word": "Eminent",
+    "synonyms": [
+      "Famous"
+    ]
+  },
+  {
+    "id": "enormous",
+    "word": "Enormous",
+    "synonyms": [
+      "Colossal",
+      "Gigantic",
+      "Immense",
+      "Monumental",
+      "Massive"
+    ]
+  },
+  {
+    "id": "enquire",
+    "word": "Enquire",
+    "synonyms": [
+      "Ask"
+    ]
+  },
+  {
+    "id": "eradicate",
+    "word": "Eradicate",
+    "synonyms": [
+      "Eliminate",
+      "Exterminate",
+      "Destroy"
+    ]
+  },
+  {
+    "id": "esteem",
+    "word": "Esteem",
+    "synonyms": [
+      "Honour",
+      "Pride",
+      "Value"
+    ]
+  },
+  {
+    "id": "facilitate",
+    "word": "Facilitate",
+    "synonyms": [
+      "Promote",
+      "Aid",
+      "Help"
+    ]
+  },
+  {
+    "id": "fanatical",
+    "word": "Fanatical",
+    "synonyms": [
+      "Enthusiastic",
+      "Devoted",
+      "Zealous"
+    ]
+  },
+  {
+    "id": "fierce",
+    "word": "Fierce",
+    "synonyms": [
+      "Brutal",
+      "Dangerous",
+      "Violent"
+    ]
+  },
+  {
+    "id": "frail",
+    "word": "Frail",
+    "synonyms": [
+      "Delicate",
+      "Feeble",
+      "Fragile",
+      "Powerless",
+      "Infirm"
+    ]
+  },
+  {
+    "id": "frugal",
+    "word": "Frugal",
+    "synonyms": [
+      "Thrifty",
+      "Economical",
+      "Sparing"
+    ]
+  },
+  {
+    "id": "fruitful",
+    "word": "Fruitful",
+    "synonyms": [
+      "Productive",
+      "Luxuriant",
+      "Fertile"
+    ]
+  },
+  {
+    "id": "gallantry",
+    "word": "Gallantry",
+    "synonyms": [
+      "Heroism",
+      "Bravery",
+      "Courage"
+    ]
+  },
+  {
+    "id": "gaze",
+    "word": "Gaze",
+    "synonyms": [
+      "Stare",
+      "Peer",
+      "Reconnoiter"
+    ]
+  },
+  {
+    "id": "generosity",
+    "word": "Generosity",
+    "synonyms": [
+      "Hospitality",
+      "Charity",
+      "Kindness"
+    ]
+  },
+  {
+    "id": "grasp",
+    "word": "Grasp",
+    "synonyms": [
+      "Grip",
+      "Hold",
+      "Clutch"
+    ]
+  },
+  {
+    "id": "grievance",
+    "word": "Grievance",
+    "synonyms": [
+      "Hardship",
+      "Injury",
+      "Complaint"
+    ]
+  },
+  {
+    "id": "growl",
+    "word": "Growl",
+    "synonyms": [
+      "Snarl",
+      "Bark",
+      "Cry"
+    ]
+  },
+  {
+    "id": "habitat",
+    "word": "Habitat",
+    "synonyms": [
+      "Environment",
+      "Territory",
+      "Surroundings"
+    ]
+  },
+  {
+    "id": "harass",
+    "word": "Harass",
+    "synonyms": [
+      "Annoy",
+      "Attack",
+      "Bother"
+    ]
+  },
+  {
+    "id": "hasty",
+    "word": "Hasty",
+    "synonyms": [
+      "Hurry"
+    ]
+  },
+  {
+    "id": "hinder",
+    "word": "Hinder",
+    "synonyms": [
+      "Obstruct",
+      "Impede",
+      "Thwart"
+    ]
+  },
+  {
+    "id": "humane",
+    "word": "Humane",
+    "synonyms": [
+      "Kind"
+    ]
+  },
+  {
+    "id": "immaculate",
+    "word": "Immaculate",
+    "synonyms": [
+      "Spotless",
+      "Pristine",
+      "Hygienic",
+      "Unsoiled",
+      "Flawless"
+    ]
+  },
+  {
+    "id": "infinite",
+    "word": "Infinite",
+    "synonyms": [
+      "Endless",
+      "Boundless",
+      "Everlasting"
+    ]
+  },
+  {
+    "id": "initiate",
+    "word": "Initiate",
+    "synonyms": [
+      "Commence",
+      "Inaugurate",
+      "Launch",
+      "Originate",
+      "Embark"
+    ]
+  },
+  {
+    "id": "instill",
+    "word": "Instill",
+    "synonyms": [
+      "Infuse",
+      "Implant",
+      "Teach"
+    ]
+  },
+  {
+    "id": "intrepid",
+    "word": "Intrepid",
+    "synonyms": [
+      "Valiant",
+      "Heroic",
+      "Dauntless",
+      "Courageous",
+      "Bold"
+    ]
+  },
+  {
+    "id": "invoke",
+    "word": "Invoke",
+    "synonyms": [
+      "Call",
+      "Summon"
+    ]
+  },
+  {
+    "id": "irate",
+    "word": "Irate",
+    "synonyms": [
+      "Furious",
+      "Incensed",
+      "Enraged",
+      "Wrathful",
+      "Livid"
+    ]
+  },
+  {
+    "id": "jubilant",
+    "word": "Jubilant",
+    "synonyms": [
+      "Ecstatic",
+      "Delighted",
+      "Elated",
+      "Gleeful",
+      "Overjoyed"
+    ]
+  },
+  {
+    "id": "knowledge",
+    "word": "Knowledge",
+    "synonyms": [
+      "Power"
+    ]
+  },
+  {
+    "id": "luminous",
+    "word": "Luminous",
+    "synonyms": [
+      "Radiant",
+      "Gleaming",
+      "Brilliant",
+      "Dazzling",
+      "Vivid"
+    ]
+  },
+  {
+    "id": "lure",
+    "word": "Lure",
+    "synonyms": [
+      "Entice",
+      "Coax",
+      "Persuade"
+    ]
+  },
+  {
+    "id": "malice",
+    "word": "Malice",
+    "synonyms": [
+      "Malevolence",
+      "Spite",
+      "Hatred"
+    ]
+  },
+  {
+    "id": "melancholy",
+    "word": "Melancholy",
+    "synonyms": [
+      "Sorrowful",
+      "Despondent",
+      "Gloomy",
+      "Forlorn",
+      "Dejected"
+    ]
+  },
+  {
+    "id": "minuscule",
+    "word": "Minuscule",
+    "synonyms": [
+      "Tiny",
+      "Microscopic",
+      "Petite",
+      "Diminutive",
+      "Infinitesimal"
+    ]
+  },
+  {
+    "id": "motionless",
+    "word": "Motionless",
+    "synonyms": [
+      "Still"
+    ]
+  },
+  {
+    "id": "mute",
+    "word": "Mute",
+    "synonyms": [
+      "Silent"
+    ]
+  },
+  {
+    "id": "mysterious",
+    "word": "Mysterious",
+    "synonyms": [
+      "Unknown"
+    ]
+  },
+  {
+    "id": "oblation",
+    "word": "Oblation",
+    "synonyms": [
+      "Gift",
+      "Offering"
+    ]
+  },
+  {
+    "id": "odious",
+    "word": "Odious",
+    "synonyms": [
+      "Offensive",
+      "Hateful"
+    ]
+  },
+  {
+    "id": "perception",
+    "word": "Perception",
+    "synonyms": [
+      "Observation",
+      "Insight",
+      "Judgment",
+      "Understanding"
+    ]
+  },
+  {
+    "id": "pitiful",
+    "word": "Pitiful",
+    "synonyms": [
+      "Compassionate",
+      "Sympathetic",
+      "Consoling"
+    ]
+  },
+  {
+    "id": "prompt",
+    "word": "Prompt",
+    "synonyms": [
+      "Quick"
+    ]
+  },
+  {
+    "id": "propagate",
+    "word": "Propagate",
+    "synonyms": [
+      "Broadcast",
+      "Proclaim",
+      "Advertise"
+    ]
+  },
+  {
+    "id": "recruit",
+    "word": "Recruit",
+    "synonyms": [
+      "Novice",
+      "Apprentice",
+      "Amateur"
+    ]
+  },
+  {
+    "id": "regent",
+    "word": "Regent",
+    "synonyms": [
+      "Viceroy",
+      "Deputy",
+      "Substitute"
+    ]
+  },
+  {
+    "id": "reveal",
+    "word": "Reveal",
+    "synonyms": [
+      "Show"
+    ]
+  },
+  {
+    "id": "robust",
+    "word": "Robust",
+    "synonyms": [
+      "Sturdy",
+      "Mighty",
+      "Resilient",
+      "Potent",
+      "Formidable"
+    ]
+  },
+  {
+    "id": "scorching",
+    "word": "Scorching",
+    "synonyms": [
+      "Blazing",
+      "Sweltering",
+      "Fiery",
+      "Searing",
+      "Torrid"
+    ]
+  },
+  {
+    "id": "scorn",
+    "word": "Scorn",
+    "synonyms": [
+      "Despise",
+      "Abhor",
+      "Condemn"
+    ]
+  },
+  {
+    "id": "serene",
+    "word": "Serene",
+    "synonyms": [
+      "Peaceful",
+      "Tranquil",
+      "Composed",
+      "Hushed",
+      "Placid"
+    ]
+  },
+  {
+    "id": "souvenir",
+    "word": "Souvenir",
+    "synonyms": [
+      "Memorial",
+      "Memento",
+      "Relic"
+    ]
+  },
+  {
+    "id": "swift",
+    "word": "Swift",
+    "synonyms": [
+      "Rapid",
+      "Expeditious",
+      "Fleet",
+      "Brisk",
+      "Accelerated"
+    ]
+  },
+  {
+    "id": "tenebrous",
+    "word": "Tenebrous",
+    "synonyms": [
+      "Shadowy",
+      "Dim",
+      "Murky",
+      "Obscure",
+      "Gloomy"
+    ]
+  },
+  {
+    "id": "unparalleled",
+    "word": "Unparalleled",
+    "synonyms": [
+      "Unique",
+      "Rare",
+      "Matchless"
+    ]
+  },
+  {
+    "id": "vindictive",
+    "word": "Vindictive",
+    "synonyms": [
+      "Malicious",
+      "Spiteful",
+      "Cruel",
+      "Harsh",
+      "Unkind"
+    ]
+  },
+  {
+    "id": "weary",
+    "word": "Weary",
+    "synonyms": [
+      "Fatigued",
+      "Drained",
+      "Exhausted",
+      "Worn-Out",
+      "Drowsy"
+    ]
+  }
+]

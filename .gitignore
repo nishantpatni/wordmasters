@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.local
+*.local
+
+# Design artifacts (large binaries / temp extracts)
+design/temp_docx/
+
+# Raw source PDFs and zip archives (tracked separately from processed JSONs)
+data/pdfs/*.pdf
+data/pdfs/*.xlsx
+data/pdfs/*.zip
+
+# Old scattered JSON output folders (now consolidated in src/data/topics/)
+data/pdfs/word_masters_json_outputs/
+data/pdfs/word_masters_more_json_outputs/
