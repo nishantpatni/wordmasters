@@ -1,15 +1,53 @@
-What's new in today's update:
+What's new in today's update (20 June 2025):
 
-We've made the quiz smarter and more challenging by testing you in both directions for every topic — not just one way.
+────────────────────────────────────────
+ONE WORD SUBSTITUTIONS — 27 new words added
+────────────────────────────────────────
+The topic now covers a lot more ground. New additions include:
 
-- Synonyms — You'll now sometimes be given a synonym and asked to find the original word, not just the other way around.
+Scientists & Specialists
+  Astronaut, Astronomer, Archaeologist, Botanist, Zoologist,
+  Meteorologist, Seismologist, Geologist, Psychologist, Entomologist
 
-- Antonyms — Same idea: sometimes you get the antonym and have to name the word it belongs to.
+People
+  Monarch, Bibliophile, Philanthropist, Zoophile, Biographer,
+  Spectator, Cartoonist, Thief, Hunter, Traveller
 
-- Collective Nouns — New "reverse" questions like "A bunch of ___ ?" alongside the usual "What is the collective noun for flowers?"
+Places
+  Monastery, Zoo
 
-- Oxymorons — New fill-in-the-blank style: "Complete the oxymoron: Act ___" — so you're tested on the pair itself, not just its meaning.
+Others
+  Herbivore, Carnivore, Omnivore, Anthology, Voyage
 
-- Multiple correct answers — For topics like collective nouns and synonyms, some questions now ask you to select ALL correct answers, since a word can have more than one valid synonym or collective noun. At least 1 in 5 questions will be this type.
+────────────────────────────────────────
+COLLECTIVE NOUNS — Extra Practice added
+────────────────────────────────────────
+35 hand-picked tricky questions are now available as extra practice
+for Collective Nouns. These cover commonly confused and lesser-known
+collective nouns (e.g. a troop of lions/monkeys, a shoal of fish,
+a flight of stairs, a string of camels/pearls/beads).
 
-Everything else (idioms, similes, proverbs, one-word substitutions) was already testing both directions — no change there.
+Extra practice questions always appear first in your session, so
+you'll tackle the trickiest ones before moving to the full set.
+
+────────────────────────────────────────
+SYNONYMS — Smarter, harder distractors
+────────────────────────────────────────
+Synonym questions now use words from the same meaning family as the
+wrong choices. For example, if the answer is "Serene", the options
+might be Placid, Tranquil, and Composed — not random unrelated words.
+
+This makes the questions genuinely challenging and helps you learn
+the fine differences between similar words.
+
+────────────────────────────────────────
+Previous update:
+
+We made the quiz test you in both directions for every topic.
+
+- Synonyms — sometimes given a synonym, asked to find the original word
+- Antonyms — same idea in reverse
+- Collective Nouns — reverse questions like "A bunch of ___?"
+- Oxymorons — fill-in-the-blank: "Complete the oxymoron: Act ___"
+- Multiple correct answers — select ALL that apply for synonyms,
+  collective nouns, and similes (at least 1 in 5 questions)
