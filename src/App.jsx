@@ -7,7 +7,7 @@ import Results      from './screens/Results.jsx';
 import ReviewScreen from './screens/Review.jsx';
 import Admin        from './screens/Admin.jsx';
 import Revise       from './screens/Revise.jsx';
-import { buildTest, buildRepractice, batchUpdateScores, updateStreak, getScores, saveScores } from './engine/quiz.js';
+import { buildTest, buildRepractice, batchUpdateScores, updateStreak, getScores, saveScores, addCoins } from './engine/quiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
 
 function toLogRows(username, results) {
@@ -89,6 +89,7 @@ export default function App() {
     if (!isPracticeMode) {
       batchUpdateScores(user.username, results);
       updateStreak(user.username);
+      addCoins(user.username, results.filter(r => r.correct).length * 10);
       saveScoresToSheets(user.username, getScores(user.username));
       logQuizAttempts(toLogRows(user.username, results));
     }
@@ -105,6 +106,7 @@ export default function App() {
   const handleQuit = useCallback((partialResults) => {
     if (!isPracticeMode && partialResults.length > 0) {
       batchUpdateScores(user.username, partialResults);
+      addCoins(user.username, partialResults.filter(r => r.correct).length * 10);
       saveScoresToSheets(user.username, getScores(user.username));
       logQuizAttempts(toLogRows(user.username, partialResults));
     }

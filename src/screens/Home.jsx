@@ -3,6 +3,7 @@ import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { getScores, getMeta, memoryScore, isDue } from '../engine/quiz.js';
 import { USER_CHANGELOG } from '../data/changelog.js';
 
+
 export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, onLogout }) {
   const scores  = getScores(user.username);
   const meta    = getMeta(user.username);
@@ -13,6 +14,7 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
   const strongItems = Object.values(scores).filter(r => memoryScore(r) >= 70).length;
   const avgScore   = attempted === 0 ? 0 :
     Math.round(Object.values(scores).reduce((s, r) => s + memoryScore(r), 0) / attempted);
+  const coins = meta.coins || 0;
 
   const [changelogOpen, setChangelogOpen] = useState(true);
 
@@ -23,14 +25,12 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
 
   return (
     <div style={styles.page}>
-      {/* Sync banner */}
       {syncing && (
         <div style={{ background: '#E3FDDB', color: '#197A56', textAlign: 'center', fontSize: 12, fontWeight: 700, padding: '6px 0', letterSpacing: 0.3 }}>
           ☁️ Syncing scores from cloud…
         </div>
       )}
 
-      {/* Header */}
       <div style={styles.header}>
         <div style={styles.logo}>
           <img src="/logo.png" alt="" style={{ width: 28, height: 28, objectFit: 'contain', marginRight: 8 }} />
@@ -70,15 +70,32 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
               <text x="70" y="90" textAnchor="middle" style={{ fontSize: 10, fill: '#9CA3AF' }}>{totalItems} total words</text>
             </svg>
           </div>
+
+          {/* AsanCoins + AsanScore highlight row */}
+          <div style={styles.asanRow}>
+            <div style={styles.asanBadge}>
+              <span style={{ fontSize: 22 }}>🪙</span>
+              <div>
+                <div style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 22, color: '#B45309', lineHeight: 1 }}>{coins.toLocaleString()}</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: '#B45309', textTransform: 'uppercase', letterSpacing: 0.5, opacity: 0.7 }}>AsanCoins</div>
+              </div>
+            </div>
+            <div style={{ width: 1, background: '#DCD5CE', alignSelf: 'stretch' }} />
+            <div style={styles.asanBadge}>
+              <span style={{ fontSize: 22 }}>📊</span>
+              <div>
+                <div style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 22, color: '#197A56', lineHeight: 1 }}>{avgScore}%</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: '#197A56', textTransform: 'uppercase', letterSpacing: 0.5, opacity: 0.7 }}>AsanScore</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Stats grid */}
         <div style={styles.statsGrid}>
           {[
-            { icon: '📚', val: totalItems,     label: 'Total Items',  color: '#212427' },
-            { icon: '⏰', val: due,             label: 'Due Today',    color: '#DC2626' },
-            { icon: '💪', val: strongItems,     label: 'Strong (70+)', color: '#21BF61' },
-            { icon: '📊', val: `${avgScore}%`,  label: 'Avg Score',    color: '#197A56' },
+            { icon: '⏰', val: due,          label: 'Due Today',    color: '#DC2626' },
+            { icon: '💪', val: strongItems,  label: 'Strong (70+)', color: '#21BF61' },
           ].map(s => (
             <div key={s.label} style={styles.statCard}>
               <div style={{ fontSize: 26, marginBottom: 4 }}>{s.icon}</div>
@@ -174,6 +191,8 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
         <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, fontWeight: 600 }}>
           {meta.sessions} sessions completed
         </div>
+
+
       </div>
     </div>
   );
@@ -187,6 +206,8 @@ const styles = {
   logoutBtn: { background: '#F2F2F2', color: '#212427', border: '1px solid #DCD5CE', borderRadius: 10, padding: '6px 12px', fontSize: 12, fontWeight: 700, cursor: 'pointer' },
   body:      { padding: '24px 16px 48px', maxWidth: 560, margin: '0 auto' },
   greeting:  { fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, color: '#212427' },
+  asanRow:   { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, background: '#fff', border: '1px solid #DCD5CE', borderRadius: 18, overflow: 'hidden', marginBottom: 16 },
+  asanBadge: { display: 'flex', alignItems: 'center', gap: 10, padding: '14px 28px', flex: 1, justifyContent: 'center' },
   statsGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 },
   statCard:  { background: '#fff', borderRadius: 18, padding: 14, textAlign: 'center', boxShadow: '0 1px 6px rgba(0,0,0,0.05)', border: '1px solid #DCD5CE' },
   sectionTitle: { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 10 },
@@ -195,4 +216,5 @@ const styles = {
   changelogCard:   { background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', marginBottom: 20, overflow: 'hidden' },
   changelogHeader: { width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#F0FDF4', border: 'none', cursor: 'pointer', borderBottom: '1px solid #D1FAE5' },
   changelogEntry:  { display: 'flex', gap: 10, alignItems: 'flex-start', paddingTop: 10 },
+
 };

@@ -119,7 +119,15 @@ export function updateStreak(username) {
 
 export function getMeta(username) {
   const key = `wm_meta_${username}`;
-  return JSON.parse(localStorage.getItem(key) || '{"streak":0,"lastStudy":"","sessions":0}');
+  return JSON.parse(localStorage.getItem(key) || '{"streak":0,"lastStudy":"","sessions":0,"coins":0}');
+}
+
+export function addCoins(username, amount) {
+  if (!amount) return;
+  const key = `wm_meta_${username}`;
+  const meta = getMeta(username);
+  meta.coins = (meta.coins || 0) + amount;
+  localStorage.setItem(key, JSON.stringify(meta));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
