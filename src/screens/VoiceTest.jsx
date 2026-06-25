@@ -5,6 +5,13 @@ const MATCH_THRESHOLD = 0.9;
 const TIP_MS          = 3000;
 const LISTEN_SECS     = 20;
 
+const AFFIRMATIVES = [
+  'Nice one!', "That's good!", 'Love it!', "Yep, that's right!", 'You got it!',
+  'You nailed it!', 'Great going!', 'Well played!', "That's the way!", 'Perfect!',
+  'Spot on!', 'Exactly!', 'Looking good!', 'Solid work!', 'Boom, correct!',
+  "That's a win!", 'Nicely done!', "You're getting it!", 'So good!', 'Keep going!',
+];
+
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 // ── Fuzzy word matching ───────────────────────────────────────────────────────
@@ -109,6 +116,8 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const txRef      = useRef('');   txRef.current      = transcript;
   const startRef   = useRef(null);
   const submitRef  = useRef(null);
+  const affirmTRef = useRef(null);
+  const [affirmMsg, setAffirmMsg] = useState(null);
 
   function stopRec() {
     clearInterval(tickRef.current);
@@ -128,7 +137,14 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     const correct = score >= MATCH_THRESHOLD;
     const coins   = correct ? 10 : 0;
 
-    if (correct) setPoints(p => p + coins);
+    if (correct) {
+      setPoints(p => p + coins);
+      const msg = AFFIRMATIVES[Math.floor(Math.random() * AFFIRMATIVES.length)];
+      setAffirmMsg(msg);
+      clearTimeout(affirmTRef.current);
+      affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
+      setTimeout(() => ttsSay(cur.answer), 450);
+    }
 
     const newRes = {
       itemId: cur.itemId, topicId: cur.topicId, correct,
@@ -250,6 +266,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     stopRec();
     window.speechSynthesis?.cancel();
     clearTimeout(tipTRef.current);
+    clearTimeout(affirmTRef.current);
   }, []);
 
   function handleQuit() {
@@ -411,7 +428,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
               </div>
             )}
             <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8, color: '#9CA3AF', margin: '10px 0 8px' }}>
-              {tipData.correct ? 'The idiom:' : 'Correct answer:'}
+              {tipData.correct ? 'You got it:' : 'Correct answer:'}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
               {tipData.wordResults.map((w, i) => (
@@ -430,10 +447,38 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
         </div>
       )}
 
+      {/* ── Affirmative pop ── */}
+      {affirmMsg && (
+        <div style={{
+          position: 'fixed', top: '42%', left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 60, pointerEvents: 'none',
+          animation: 'affirmPop 1.6s ease forwards',
+          fontFamily: "'Fredoka', cursive",
+          fontSize: 28, fontWeight: 600,
+          color: meta.color,
+          background: meta.bg,
+          padding: '11px 22px',
+          borderRadius: 18,
+          boxShadow: '0 6px 24px rgba(0,0,0,0.13)',
+          whiteSpace: 'nowrap',
+          border: `1.5px solid ${meta.color}30`,
+        }}>
+          {affirmMsg}
+        </div>
+      )}
+
       <style>{`
         @keyframes micPulse {
           0%, 100% { transform: scale(1);    opacity: 1; }
           50%       { transform: scale(1.2); opacity: 0.85; }
+        }
+        @keyframes affirmPop {
+          0%   { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.72); }
+          18%  { opacity: 1; transform: translateX(-50%) translateY(-6px) scale(1.12); }
+          38%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+          68%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+          100% { opacity: 0; transform: translateX(-50%) translateY(-18px) scale(0.88); }
         }
       `}</style>
     </div>
