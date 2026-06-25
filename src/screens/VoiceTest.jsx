@@ -222,6 +222,17 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     };
   }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Enter key submits in reviewing phase
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === 'Enter' && phase === 'reviewing' && transcript.trim()) {
+        submitRef.current(transcript);
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [phase, transcript]);
+
   // Unmount cleanup
   useEffect(() => () => {
     stopRec();
@@ -346,6 +357,12 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
                     Submit →
                   </button>
                 </div>
+                {transcript.trim() && (
+                  <div style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: '#C4C2B9' }}>
+                    <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5, padding: '2px 8px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>Enter</kbd>
+                    {' '}to submit
+                  </div>
+                )}
               </div>
             )}
 
