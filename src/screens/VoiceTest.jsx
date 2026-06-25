@@ -143,8 +143,8 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
       setAffirmMsg(msg);
       clearTimeout(affirmTRef.current);
       affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
-      setTimeout(() => ttsSay(cur.answer), 450);
     }
+    setTimeout(() => ttsSay(cur.answer), 450);
 
     const newRes = {
       itemId: cur.itemId, topicId: cur.topicId, correct,
