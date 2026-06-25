@@ -46,6 +46,18 @@ function ttsSay(text, onEnd) {
   window.speechSynthesis.speak(u);
 }
 
+// ── Per-topic labels ──────────────────────────────────────────────────────────
+const TOPIC_VOICE_LABELS = {
+  idioms:      { question: 'What idiom means…',     instruction: 'Speak the idiom' },
+  oneWordSubs: { question: 'One word for…',          instruction: 'Say the one-word answer' },
+  proverbs:    { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
+  oxymorons:   { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
+  similes:     { question: 'Complete the simile',    instruction: 'Say the missing word(s)' },
+};
+function voiceLabel(topicId) {
+  return TOPIC_VOICE_LABELS[topicId] || { question: 'Say the answer…', instruction: 'Speak your answer' };
+}
+
 // ── Chrome-only gate ──────────────────────────────────────────────────────────
 function NotSupported({ onBack }) {
   return (
@@ -211,7 +223,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
       if (!fired) { fired = true; startRef.current(); }
     }, 4500);
 
-    ttsSay(q.prompt, () => {
+    ttsSay(q.ttsPrompt || q.prompt, () => {
       if (!fired) { fired = true; clearTimeout(fallback); startRef.current(); }
     });
 
@@ -292,7 +304,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
           {/* Card header: topic badge + timer */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
             <span style={{ ...S.badge, background: meta.bg, color: meta.color }}>
-              {meta.icon} Idioms · 🎤 Voice
+              {meta.icon} {meta.name} · 🎤 Voice
             </span>
             {phase === 'listening' && (
               <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 18, fontWeight: 500, color: timeLeft <= 5 ? '#DC2626' : '#9CA3AF' }}>
@@ -302,9 +314,9 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
           </div>
 
           {/* Meaning */}
-          <div style={S.label}>What idiom means…</div>
+          <div style={S.label}>{voiceLabel(q.topicId).question}</div>
           <div style={S.meaning}>{q.prompt}</div>
-          <button onClick={() => ttsSay(q.prompt)} style={S.replayBtn}>🔉 Hear again</button>
+          <button onClick={() => ttsSay(q.ttsPrompt || q.prompt)} style={S.replayBtn}>🔉 Hear again</button>
 
           {/* Phase-specific UI */}
           <div style={{ marginTop: 24 }}>
@@ -324,7 +336,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
                 <div style={S.center}>
                   <span style={{ fontSize: 52, display: 'inline-block', animation: 'micPulse 1s ease-in-out infinite' }}>🎤</span>
                   <div style={{ ...S.stateLabel, color: '#DC2626', fontWeight: 700 }}>
-                    Speak the idiom now…
+                    {voiceLabel(q.topicId).instruction}…
                   </div>
                 </div>
                 <div style={S.txBox}>

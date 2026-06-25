@@ -35,7 +35,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, s
             count={ALL_TOPIC_DATA[tid]?.length ?? 0}
             onStart={onStart}
             onRevise={onRevise}
-            onVoiceStart={tid === 'idioms' ? onVoiceStart : undefined}
+            onVoiceStart={['idioms','oneWordSubs','proverbs','oxymorons','similes'].includes(tid) ? onVoiceStart : undefined}
           />
         ))}
       </div>

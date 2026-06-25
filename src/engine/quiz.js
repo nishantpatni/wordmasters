@@ -774,14 +774,39 @@ export function buildTest(topicId, count, scores = {}) {
 }
 
 // ── Voice Quiz ────────────────────────────────────────────────────────────────
-// Returns questions shaped { itemId, topicId, prompt, answer } for VoiceTest.
-// Currently only idioms is supported (meaning → say the idiom).
+// Returns questions shaped { itemId, topicId, prompt, ttsPrompt?, answer } for VoiceTest.
+// ttsPrompt overrides prompt for TTS when the display text isn't ideal to speak aloud.
+function itemToVoiceQ(topicId, item) {
+  switch (topicId) {
+    case 'idioms':
+      return { prompt: item.meaning, answer: item.idiom };
+    case 'oneWordSubs':
+      return { prompt: item.phrase, answer: item.word };
+    case 'proverbs':
+      return { prompt: item.meaning, answer: item.proverb };
+    case 'oxymorons':
+      return { prompt: item.meaning.split(' / ')[0], answer: item.phrase };
+    case 'similes': {
+      const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
+      if (!m) return null;
+      return {
+        prompt:    `As ${m[1]} as ___`,
+        ttsPrompt: `As ${m[1]} as...?`,
+        answer:    m[2].replace(/[/\\]/g, ' ').replace(/\s+/g, ' ').trim(),
+      };
+    }
+    default:
+      return null;
+  }
+}
+
 export function buildVoiceTest(topicId, count) {
   const raw = ALL_TOPIC_DATA[topicId] || [];
-  return shuffle([...raw]).slice(0, Math.min(count, raw.length)).map(item => ({
-    itemId:  item.id,
-    topicId,
-    prompt:  item.meaning,
-    answer:  item.idiom,
-  }));
+  return shuffle([...raw])
+    .map(item => {
+      const q = itemToVoiceQ(topicId, item);
+      return q ? { itemId: item.id, topicId, ...q } : null;
+    })
+    .filter(Boolean)
+    .slice(0, count);
 }
