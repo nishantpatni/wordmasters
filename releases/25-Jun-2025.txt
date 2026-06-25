@@ -1,0 +1,79 @@
+Word Masters — Release Notes
+25 June 2025
+============================================================
+
+WHAT'S NEW
+----------
+
+🎤  Voice Quiz (5 topics)
+    A brand-new quiz mode where you speak your answers instead of tapping.
+    Available for: Idioms, One Word Substitutions, Proverbs, Oxymorons,
+    and Similes.
+
+    How it works:
+    • The app reads the clue aloud (e.g. the meaning of an idiom).
+    • You speak the answer — the mic picks it up and checks it.
+    • Auto-submit is on by default: as soon as you stop talking, your
+      answer is evaluated. You can turn this off to review/edit the
+      transcript first, or re-record.
+    • Correct answers need to match ~90% of the words (small typos /
+      speech-to-text errors are forgiven).
+    • After each answer you'll hear the correct phrase spoken aloud,
+      and see each word coloured green (matched) or red (missed).
+    • Press Enter to submit in manual mode.
+    • Works in Chrome on desktop only (uses the Web Speech API).
+
+    To start: pick any of the 5 supported topics → tap the 🎤 50 or
+    🎤 100 button.
+
+
+🗣️  MCQ Voice Input (hands-free mode)
+    You can now answer the regular multiple-choice quiz by voice too.
+    Enable it in the quiz settings panel (⚙️ button, top-left).
+
+    How it works:
+    • After the question term is read aloud, the mic activates.
+    • Say a number — "one", "two", "three", or "four" — to pick that
+      option.
+    • Or just say the answer text; the app matches your words to the
+      closest option.
+    • If nothing matches, you'll hear a double-beep and a "try again"
+      prompt — then the mic restarts automatically.
+    • Disabled automatically on multi-select questions.
+    • Works in Chrome on desktop only.
+
+
+⚙️  Quiz Settings Panel
+    A new ⚙️ button appears in the top-left of every quiz. Tap it to
+    access:
+    • Speak key term — read the question word/phrase aloud at the
+      start of each question (was the 🔊 button; now also here).
+    • Speak correct answer — after each correct pick, hear the answer
+      spoken aloud. On by default.
+    • 🎤 Voice input — hands-free MCQ answering (see above).
+    All settings are remembered between sessions.
+
+
+🎉  Affirmative Animations
+    Correct answers now celebrate with a random encouraging message
+    that pops up and floats away:
+    "Nice one!", "You nailed it!", "Spot on!", "Boom, correct!",
+    "Well played!", "That's a win!" — 20 phrases in rotation.
+
+
+📝  Quiz Button Icons
+    The 50 and 100 question buttons now show 📝 (MCQ) or 🎤 (Voice)
+    icons so it's clear at a glance which mode you're launching.
+
+
+BUG FIX
+-------
+    Underscores in question prompts (e.g. "Complete: Act ___") are
+    now correctly pronounced as "blank" by the text-to-speech engine
+    instead of being read as "underscore underscore underscore".
+
+
+============================================================
+Previous release: 20 Jun 2025 — 27 new One Word Substitutions,
+35 Collective Noun tricky questions, smarter Synonyms distractors.
+============================================================

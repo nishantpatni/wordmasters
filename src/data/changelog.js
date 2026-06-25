@@ -1,5 +1,14 @@
 export const USER_CHANGELOG = [
   {
+    date: '25 Jun 2025',
+    entries: [
+      { icon: '🎤', topic: 'Voice Quiz', text: 'New quiz mode for Idioms, One Word Subs, Proverbs, Oxymorons & Similes — hear the clue, speak the answer. Auto-submits when you stop talking. Chrome on desktop only.' },
+      { icon: '🗣️', topic: 'MCQ Voice Input', text: 'Turn on 🎤 Voice Input in quiz settings (⚙️) — say "one", "two", "three" or speak the answer text to pick an option hands-free.' },
+      { icon: '⚙️', topic: 'Quiz Settings', text: 'New settings panel in every quiz — toggle speaking the key term, speaking the correct answer, and voice input. All remembered between sessions.' },
+      { icon: '🎉', topic: 'Affirmatives', text: 'Correct answers now animate with a random cheer — "Nice one!", "You nailed it!", "Spot on!", "Boom, correct!" and 16 more.' },
+    ],
+  },
+  {
     date: '20 Jun 2025',
     entries: [
       { icon: '📝', topic: 'One Word Substitutions', text: '27 new words added — scientists (astronomer, botanist, geologist…), places (monastery, zoo), and more.' },
