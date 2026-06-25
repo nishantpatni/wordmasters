@@ -2,7 +2,7 @@ import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 
 const COUNT_OPTIONS = [50, 100];
 
-export default function TopicSelect({ onStart, onBack, onRevise, syncing }) {
+export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, syncing }) {
   return (
     <div style={styles.page} className="fade-in">
       <div style={styles.header}>
@@ -35,6 +35,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, syncing }) {
             count={ALL_TOPIC_DATA[tid]?.length ?? 0}
             onStart={onStart}
             onRevise={onRevise}
+            onVoiceStart={tid === 'idioms' ? onVoiceStart : undefined}
           />
         ))}
       </div>
@@ -42,7 +43,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, syncing }) {
   );
 }
 
-function TopicCard({ meta, count, onStart, onRevise, highlight }) {
+function TopicCard({ meta, count, onStart, onRevise, onVoiceStart, highlight }) {
   const comingSoon = !!meta.comingSoon;
   return (
     <div style={{ ...styles.card, border: highlight ? `2px solid #96F878` : '1px solid #DCD5CE', opacity: comingSoon ? 0.6 : 1 }}>
@@ -72,6 +73,17 @@ function TopicCard({ meta, count, onStart, onRevise, highlight }) {
                 onMouseLeave={e => { e.currentTarget.style.background = meta.bg; e.currentTarget.style.color = meta.color; }}
               >
                 {n} Qs
+              </button>
+            ))}
+            {onVoiceStart && COUNT_OPTIONS.map(n => (
+              <button
+                key={`v${n}`}
+                onClick={() => onVoiceStart(meta.id, n)}
+                style={{ ...styles.countBtn, background: '#FFF7ED', color: '#D97706', border: '1.5px solid #D97706' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#D97706'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#FFF7ED'; e.currentTarget.style.color = '#D97706'; }}
+              >
+                🎤 {n}
               </button>
             ))}
           </div>

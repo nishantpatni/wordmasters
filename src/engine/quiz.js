@@ -772,3 +772,16 @@ export function buildTest(topicId, count, scores = {}) {
 
   return enforceMultiselectRatio(topicId, questions);
 }
+
+// ── Voice Quiz ────────────────────────────────────────────────────────────────
+// Returns questions shaped { itemId, topicId, prompt, answer } for VoiceTest.
+// Currently only idioms is supported (meaning → say the idiom).
+export function buildVoiceTest(topicId, count) {
+  const raw = ALL_TOPIC_DATA[topicId] || [];
+  return shuffle([...raw]).slice(0, Math.min(count, raw.length)).map(item => ({
+    itemId:  item.id,
+    topicId,
+    prompt:  item.meaning,
+    answer:  item.idiom,
+  }));
+}

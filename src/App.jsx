@@ -7,7 +7,8 @@ import Results      from './screens/Results.jsx';
 import ReviewScreen from './screens/Review.jsx';
 import Admin        from './screens/Admin.jsx';
 import Revise       from './screens/Revise.jsx';
-import { buildTest, buildRepractice, batchUpdateScores, updateStreak, getScores, saveScores, addCoins } from './engine/quiz.js';
+import VoiceTest    from './screens/VoiceTest.jsx';
+import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateStreak, getScores, saveScores, addCoins } from './engine/quiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
 
 function toLogRows(username, results) {
@@ -23,7 +24,7 @@ function toLogRows(username, results) {
   }));
 }
 
-// screen: 'login' | 'home' | 'topic-select' | 'test' | 'review' | 'results' | 'admin'
+// screen: 'login' | 'home' | 'topic-select' | 'test' | 'voice-test' | 'review' | 'results' | 'admin'
 export default function App() {
   const [screen,          setScreen]          = useState('login');
   const [user,            setUser]            = useState(null);
@@ -57,6 +58,14 @@ export default function App() {
   const handleLogout = useCallback(() => {
     setUser(null);
     setScreen('login');
+  }, []);
+
+  const handleStartVoiceTest = useCallback((topicId, count) => {
+    const qs = buildVoiceTest(topicId, count);
+    setQuestions(qs);
+    setTestConfig({ topicId, count });
+    setIsPracticeMode(false);
+    setScreen('voice-test');
   }, []);
 
   const handleStartTest = useCallback(async (topicId, count) => {
@@ -155,7 +164,8 @@ export default function App() {
     <>
       {screen === 'login'        && <Login onLogin={handleLogin} />}
       {screen === 'home'         && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
-      {screen === 'topic-select' && <TopicSelect onStart={handleStartTest} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'topic-select' && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} />}
       {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} />}
