@@ -39,7 +39,7 @@ function scoreMatch(answer, transcript) {
 function ttsSay(text, onEnd) {
   if (!window.speechSynthesis) { onEnd?.(); return; }
   window.speechSynthesis.cancel();
-  const u  = new SpeechSynthesisUtterance(text);
+  const u  = new SpeechSynthesisUtterance(text.replace(/_{2,}/g, 'blank'));
   u.rate   = 0.85;
   u.lang   = 'en-US';
   if (onEnd) u.onend = onEnd;

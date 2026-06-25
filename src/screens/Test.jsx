@@ -90,7 +90,7 @@ function TimerRing({ timeLeft, total, answered }) {
 function ttsSpeak(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
+  const utt = new SpeechSynthesisUtterance(text.replace(/_{2,}/g, 'blank'));
   utt.rate = 0.88;
   utt.lang = 'en-US';
   window.speechSynthesis.speak(utt);
