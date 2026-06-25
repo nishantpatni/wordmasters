@@ -4,6 +4,13 @@ import { TOPIC_META } from '../data/topicData.js';
 const TIMER_SECS     = 10;
 const FEEDBACK_DELAY = 2500; // time to read the explanation before advancing
 
+const AFFIRMATIVES = [
+  'Nice one!', "That's good!", 'Love it!', "Yep, that's right!", 'You got it!',
+  'You nailed it!', 'Great going!', 'Well played!', "That's the way!", 'Perfect!',
+  'Spot on!', 'Exactly!', 'Looking good!', 'Solid work!', 'Boom, correct!',
+  "That's a win!", 'Nicely done!', "You're getting it!", 'So good!', 'Keep going!',
+];
+
 // ── Web Audio sounds ──────────────────────────────────────────────────────────
 function playCorrect() {
   try {
@@ -111,6 +118,9 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [flash,         setFlash]        = useState(null);
   const [results,       setResults]      = useState([]);
   const [ttsOn,         setTtsOn]        = useState(() => localStorage.getItem('wm_tts') !== 'off');
+  const [speakAns,      setSpeakAns]     = useState(() => localStorage.getItem('wm_speak_ans') !== 'off');
+  const [settingsOpen,  setSettingsOpen] = useState(false);
+  const [affirmMsg,     setAffirmMsg]    = useState(null);
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -131,6 +141,10 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const flashTRef     = useRef(null);
   const ttsOnRef      = useRef(ttsOn);
   ttsOnRef.current    = ttsOn;
+  const speakAnsRef   = useRef(speakAns);
+  speakAnsRef.current = speakAns;
+  const affirmTRef    = useRef(null);
+  const settingsPanelRef = useRef(null);
 
   idxRef.current     = idx;
   resultsRef.current = results;
@@ -158,6 +172,22 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     setTtsOn(next);
     localStorage.setItem('wm_tts', next ? 'on' : 'off');
     if (!next) window.speechSynthesis?.cancel();
+  }
+
+  function toggleSpeakAns() {
+    const next = !speakAnsRef.current;
+    setSpeakAns(next);
+    localStorage.setItem('wm_speak_ans', next ? 'on' : 'off');
+  }
+
+  function showAffirmative(correctAnswer) {
+    const msg = AFFIRMATIVES[Math.floor(Math.random() * AFFIRMATIVES.length)];
+    setAffirmMsg(msg);
+    clearTimeout(affirmTRef.current);
+    affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
+    if (speakAnsRef.current) {
+      setTimeout(() => ttsSpeak(correctAnswer), 450);
+    }
   }
 
   // ── Timer fires when 10s runs out ─────────────────────────────────────────
@@ -208,6 +238,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       setFlash('+10');
       clearTimeout(flashTRef.current);
       flashTRef.current = setTimeout(() => setFlash(null), 1600);
+      showAffirmative(q.options[q.correctIndex] ?? '');
     }
 
     const updated = [...resultsRef.current, {
@@ -248,6 +279,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       setFlash('+10');
       clearTimeout(flashTRef.current);
       flashTRef.current = setTimeout(() => setFlash(null), 1600);
+      showAffirmative(q.correctIndices.map(i => q.options[i]).join(' and '));
     }
 
     const updated = [...resultsRef.current, {
@@ -292,11 +324,22 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     };
   }, [idx]);
 
+  // Close settings panel on outside click
+  useEffect(() => {
+    if (!settingsOpen) return;
+    function onOutside(e) {
+      if (!settingsPanelRef.current?.contains(e.target)) setSettingsOpen(false);
+    }
+    document.addEventListener('mousedown', onOutside);
+    return () => document.removeEventListener('mousedown', onOutside);
+  }, [settingsOpen]);
+
   // Cleanup on unmount
   useEffect(() => () => {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
     clearTimeout(flashTRef.current);
+    clearTimeout(affirmTRef.current);
     window.speechSynthesis?.cancel();
   }, []);
 
@@ -416,6 +459,13 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           0%   { transform: rotateY(0deg); }
           100% { transform: rotateY(360deg); }
         }
+        @keyframes affirmPop {
+          0%   { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.72); }
+          18%  { opacity: 1; transform: translateX(-50%) translateY(-6px) scale(1.12); }
+          38%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+          68%  { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+          100% { opacity: 0; transform: translateX(-50%) translateY(-18px) scale(0.88); }
+        }
         @media (min-width: 768px) {
           .test-page { background: transparent !important; }
           .timer-fill { display: block; }
@@ -441,12 +491,36 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
 
       {/* ── Header ── */}
       <div style={{ ...styles.header, position: 'relative', zIndex: 2 }}>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ position: 'relative', display: 'flex', gap: 8 }} ref={settingsPanelRef}>
           <button onClick={handleQuit} style={styles.backBtn}>✕ Quit</button>
           <button onClick={toggleTts} style={{ ...styles.backBtn, fontSize: 16, padding: '7px 10px' }}
             title={ttsOn ? 'Mute voice' : 'Unmute voice'}>
             {ttsOn ? '🔊' : '🔇'}
           </button>
+          <button
+            onClick={() => setSettingsOpen(p => !p)}
+            style={{ ...styles.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? '#212427' : '#6B7280', background: settingsOpen ? '#F2F2F2' : 'transparent' }}
+            title="Settings"
+          >⚙️</button>
+          {settingsOpen && (
+            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', padding: '14px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', zIndex: 30, minWidth: 240 }}>
+              <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 12 }}>Quiz Settings</div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
+                <input type="checkbox" checked={ttsOn} onChange={toggleTts} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>Speak key term</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Read the question term aloud</div>
+                </div>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+                <input type="checkbox" checked={speakAns} onChange={toggleSpeakAns} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>Speak correct answer</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Hear the answer after each correct pick</div>
+                </div>
+              </label>
+            </div>
+          )}
         </div>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -595,6 +669,27 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           )}
         </div>
       </div>
+
+      {/* ── Affirmative pop ── */}
+      {affirmMsg && (
+        <div style={{
+          position: 'fixed', top: '42%', left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 50, pointerEvents: 'none',
+          animation: 'affirmPop 1.6s ease forwards',
+          fontFamily: "'Fredoka', cursive",
+          fontSize: 28, fontWeight: 600,
+          color: meta.color,
+          background: meta.bg,
+          padding: '11px 22px',
+          borderRadius: 18,
+          boxShadow: '0 6px 24px rgba(0,0,0,0.13)',
+          whiteSpace: 'nowrap',
+          border: `1.5px solid ${meta.color}30`,
+        }}>
+          {affirmMsg}
+        </div>
+      )}
     </div>
   );
 }
