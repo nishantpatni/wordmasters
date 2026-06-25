@@ -72,7 +72,7 @@ function TopicCard({ meta, count, onStart, onRevise, onVoiceStart, highlight }) 
                 onMouseEnter={e => { e.currentTarget.style.background = meta.color; e.currentTarget.style.color = '#fff'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = meta.bg; e.currentTarget.style.color = meta.color; }}
               >
-                {n} Qs
+                📝 {n}
               </button>
             ))}
             {onVoiceStart && COUNT_OPTIONS.map(n => (

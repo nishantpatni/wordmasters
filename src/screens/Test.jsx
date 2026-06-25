@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
 const TIMER_SECS     = 10;
 const FEEDBACK_DELAY = 2500; // time to read the explanation before advancing
 
@@ -46,6 +48,22 @@ function playWrong() {
   } catch {}
 }
 
+function playRetry() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [[480, 0], [480, 0.16]].forEach(([freq, t]) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.12, ctx.currentTime + t);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.08);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + 0.1);
+    });
+  } catch {}
+}
+
 function playTimeout() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -87,13 +105,42 @@ function TimerRing({ timeLeft, total, answered }) {
 }
 
 // ── TTS helpers ───────────────────────────────────────────────────────────────
-function ttsSpeak(text) {
-  if (!window.speechSynthesis) return;
+function ttsSpeak(text, onEnd) {
+  if (!window.speechSynthesis) { onEnd?.(); return; }
   window.speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(text.replace(/_{2,}/g, 'blank'));
   utt.rate = 0.88;
   utt.lang = 'en-US';
+  if (onEnd) utt.onend = onEnd;
   window.speechSynthesis.speak(utt);
+}
+
+// ── Voice-input option matching ───────────────────────────────────────────────
+function matchTranscriptToOption(transcript, q) {
+  const t     = transcript.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').trim();
+  const words = new Set(t.split(/\s+/).filter(Boolean));
+
+  // Number / ordinal matching — checked first (most common usage)
+  const aliases = [
+    ['1', 'one', 'won', 'first'],
+    ['2', 'two', 'second'],
+    ['3', 'three', 'third'],
+    ['4', 'four', 'fourth'],
+  ];
+  for (let i = 0; i < aliases.length; i++) {
+    if (i >= q.options.length) break;
+    if (aliases[i].some(kw => words.has(kw))) return i;
+  }
+
+  // Word-overlap: content words (length > 2) in spoken text vs each option
+  let best = -1, bestScore = 0;
+  q.options.forEach((opt, i) => {
+    const optW = opt.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+    if (!optW.length) return;
+    const score = optW.filter(w => words.has(w)).length / optW.length;
+    if (score > bestScore) { bestScore = score; best = i; }
+  });
+  return bestScore >= 0.5 ? best : null;
 }
 
 function getKeyTerm(prompt) {
@@ -119,8 +166,11 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [results,       setResults]      = useState([]);
   const [ttsOn,         setTtsOn]        = useState(() => localStorage.getItem('wm_tts') !== 'off');
   const [speakAns,      setSpeakAns]     = useState(() => localStorage.getItem('wm_speak_ans') !== 'off');
-  const [settingsOpen,  setSettingsOpen] = useState(false);
-  const [affirmMsg,     setAffirmMsg]    = useState(null);
+  const [settingsOpen,   setSettingsOpen]  = useState(false);
+  const [affirmMsg,      setAffirmMsg]     = useState(null);
+  const [voiceInput,     setVoiceInput]    = useState(() => localStorage.getItem('wm_voice_mcq') === 'on');
+  const [voiceListening, setVoiceListening] = useState(false);
+  const [voiceNoMatch,   setVoiceNoMatch]  = useState(false);
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -143,8 +193,12 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   ttsOnRef.current    = ttsOn;
   const speakAnsRef   = useRef(speakAns);
   speakAnsRef.current = speakAns;
-  const affirmTRef    = useRef(null);
+  const affirmTRef       = useRef(null);
   const settingsPanelRef = useRef(null);
+  const voiceInputRef    = useRef(false);   voiceInputRef.current  = voiceInput;
+  const isMultiRef       = useRef(false);   isMultiRef.current     = isMulti;
+  const voiceRecogRef    = useRef(null);
+  const startVoiceRef    = useRef(null);
 
   idxRef.current     = idx;
   resultsRef.current = results;
@@ -163,6 +217,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   function handleQuit() {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
+    stopVoiceInput();
     window.speechSynthesis?.cancel();
     onQuit(resultsRef.current);
   }
@@ -190,10 +245,76 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     }
   }
 
+  function stopVoiceInput() {
+    setVoiceListening(false);
+    setVoiceNoMatch(false);
+    if (voiceRecogRef.current) {
+      try {
+        voiceRecogRef.current.onend = voiceRecogRef.current.onresult = voiceRecogRef.current.onerror = null;
+        voiceRecogRef.current.stop();
+      } catch {}
+      voiceRecogRef.current = null;
+    }
+  }
+
+  function startVoiceInput() {
+    if (!SR || !voiceInputRef.current || answeredRef.current || isMultiRef.current) return;
+    stopVoiceInput();
+    const r = new SR();
+    r.continuous = false; r.interimResults = false; r.lang = 'en-US';
+    voiceRecogRef.current = r;
+    let handled = false;
+
+    r.onresult = e => {
+      handled = true;
+      voiceRecogRef.current = null;
+      const spoken = e.results[0]?.[0]?.transcript || '';
+      const matchIdx = matchTranscriptToOption(spoken, questions[idxRef.current]);
+      if (matchIdx !== null && !answeredRef.current) {
+        setVoiceListening(false);
+        handleSelectRef.current(matchIdx);
+      } else {
+        playRetry();
+        setVoiceListening(false);
+        setVoiceNoMatch(true);
+        setTimeout(() => { setVoiceNoMatch(false); startVoiceRef.current?.(); }, 1400);
+      }
+    };
+
+    r.onend = () => {
+      if (voiceRecogRef.current === r) voiceRecogRef.current = null;
+      if (!handled && !answeredRef.current && voiceInputRef.current && !isMultiRef.current) {
+        setTimeout(() => startVoiceRef.current?.(), 300);
+      } else if (!handled) {
+        setVoiceListening(false);
+      }
+    };
+
+    r.onerror = e => {
+      voiceRecogRef.current = null;
+      setVoiceListening(false);
+      if (e.error !== 'not-allowed' && !answeredRef.current && voiceInputRef.current && !isMultiRef.current) {
+        setTimeout(() => startVoiceRef.current?.(), 500);
+      }
+    };
+
+    try { r.start(); setVoiceListening(true); } catch { setVoiceListening(false); }
+  }
+
+  function toggleVoiceInput() {
+    const next = !voiceInputRef.current;
+    setVoiceInput(next);
+    localStorage.setItem('wm_voice_mcq', next ? 'on' : 'off');
+    if (!next) stopVoiceInput();
+  }
+
+  startVoiceRef.current = startVoiceInput;
+
   // ── Timer fires when 10s runs out ─────────────────────────────────────────
   function triggerTimeout() {
     if (answeredRef.current) return;
     answeredRef.current = true;
+    stopVoiceInput();
     playTimeout();
     setTimedOut(true);
     setShowExp(true);
@@ -226,6 +347,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   function handleSelect(optIdx) {
     if (answeredRef.current || isMulti) return;
     answeredRef.current = true;
+    stopVoiceInput();
     clearInterval(intervalRef.current);
 
     const correct = optIdx === q.correctIndex;
@@ -303,7 +425,16 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     clearInterval(intervalRef.current);
     clearTimeout(feedbackRef.current);
 
-    if (ttsOnRef.current) ttsSpeak(getKeyTerm(questions[idxRef.current]?.prompt ?? ''));
+    stopVoiceInput();
+    let voiceDelayT;
+    const keyTerm = getKeyTerm(questions[idxRef.current]?.prompt ?? '');
+    if (ttsOnRef.current) {
+      ttsSpeak(keyTerm, () => {
+        if (voiceInputRef.current && !isMultiRef.current) startVoiceRef.current?.();
+      });
+    } else if (voiceInputRef.current && !isMultiRef.current) {
+      voiceDelayT = setTimeout(() => startVoiceRef.current?.(), 300);
+    }
 
     const doTimeout = () => triggerTimeout();
 
@@ -321,6 +452,8 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     return () => {
       clearInterval(intervalRef.current);
       clearTimeout(feedbackRef.current);
+      clearTimeout(voiceDelayT);
+      stopVoiceInput();
     };
   }, [idx]);
 
@@ -340,6 +473,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     clearTimeout(feedbackRef.current);
     clearTimeout(flashTRef.current);
     clearTimeout(affirmTRef.current);
+    stopVoiceInput();
     window.speechSynthesis?.cancel();
   }, []);
 
@@ -459,6 +593,10 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           0%   { transform: rotateY(0deg); }
           100% { transform: rotateY(360deg); }
         }
+        @keyframes micPulse {
+          0%, 100% { transform: scale(1);    opacity: 1; }
+          50%       { transform: scale(1.25); opacity: 0.8; }
+        }
         @keyframes affirmPop {
           0%   { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.72); }
           18%  { opacity: 1; transform: translateX(-50%) translateY(-6px) scale(1.12); }
@@ -512,11 +650,18 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
                   <div style={{ fontSize: 11, color: '#9CA3AF' }}>Read the question term aloud</div>
                 </div>
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
                 <input type="checkbox" checked={speakAns} onChange={toggleSpeakAns} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>Speak correct answer</div>
                   <div style={{ fontSize: 11, color: '#9CA3AF' }}>Hear the answer after each correct pick</div>
+                </div>
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5 }}>
+                <input type="checkbox" checked={voiceInput} onChange={toggleVoiceInput} disabled={!SR} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>🎤 Voice input{!SR ? ' (Chrome only)' : ''}</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Say a number or the option text to answer</div>
                 </div>
               </label>
             </div>
@@ -632,6 +777,17 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
             >
               Submit ({multiSel.size} selected)
             </button>
+          )}
+
+          {/* Voice input status — shown when voice mode is on for single-select */}
+          {voiceInput && !answered && !isMulti && (
+            <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              {voiceNoMatch
+                ? <><span>🔁</span><span style={{ color: '#DC2626' }}>Couldn't catch that — try again</span></>
+                : voiceListening
+                  ? <><span style={{ display: 'inline-block', animation: 'micPulse 1s ease-in-out infinite' }}>🎤</span><span style={{ color: '#197A56' }}>Listening…</span></>
+                  : <span style={{ color: '#C4C2B9' }}>⏳ Voice ready…</span>}
+            </div>
           )}
 
           {/* Keyboard hint — only shown before answering */}
