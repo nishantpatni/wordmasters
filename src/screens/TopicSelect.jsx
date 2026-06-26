@@ -2,7 +2,7 @@ import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 
 const COUNT_OPTIONS = [50, 100];
 
-export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, syncing }) {
+export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, onTeachStart, syncing }) {
   return (
     <div style={styles.page} className="fade-in">
       <div style={styles.header}>
@@ -36,6 +36,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, s
             onStart={onStart}
             onRevise={onRevise}
             onVoiceStart={['idioms','oneWordSubs','proverbs','oxymorons','similes'].includes(tid) ? onVoiceStart : undefined}
+            onTeachStart={onTeachStart}
           />
         ))}
       </div>
@@ -43,7 +44,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, s
   );
 }
 
-function TopicCard({ meta, count, onStart, onRevise, onVoiceStart, highlight }) {
+function TopicCard({ meta, count, onStart, onRevise, onVoiceStart, onTeachStart, highlight }) {
   const comingSoon = !!meta.comingSoon;
   return (
     <div style={{ ...styles.card, border: highlight ? `2px solid #96F878` : '1px solid #DCD5CE', opacity: comingSoon ? 0.6 : 1 }}>
@@ -86,6 +87,16 @@ function TopicCard({ meta, count, onStart, onRevise, onVoiceStart, highlight }) 
                 🎤 {n}
               </button>
             ))}
+            {onTeachStart && (
+              <button
+                onClick={() => onTeachStart(meta.id)}
+                style={{ ...styles.countBtn, background: '#EFF6FF', color: '#2563EB', border: '1.5px solid #2563EB' }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#2563EB'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#EFF6FF'; e.currentTarget.style.color = '#2563EB'; }}
+              >
+                📖 9
+              </button>
+            )}
           </div>
           <button
             onClick={() => onRevise(meta.id)}

@@ -8,7 +8,8 @@ import ReviewScreen from './screens/Review.jsx';
 import Admin        from './screens/Admin.jsx';
 import Revise       from './screens/Revise.jsx';
 import VoiceTest    from './screens/VoiceTest.jsx';
-import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateStreak, getScores, saveScores, addCoins } from './engine/quiz.js';
+import TeachAndAsk  from './screens/TeachAndAsk.jsx';
+import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs } from './engine/quiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
 
 function toLogRows(username, results) {
@@ -35,6 +36,7 @@ export default function App() {
   const [homeKey,         setHomeKey]         = useState(0);
   const [syncing,         setSyncing]         = useState(false);
   const [reviseTopicId,   setReviseTopicId]   = useState(null);
+  const [teachTopicId,    setTeachTopicId]    = useState(null);
   const [isPracticeMode,  setIsPracticeMode]  = useState(false);
   const [practiceItems,   setPracticeItems]   = useState([]); // wrong results to repractice
 
@@ -100,7 +102,9 @@ export default function App() {
       updateStreak(user.username);
       addCoins(user.username, results.filter(r => r.correct).length * 10);
       saveScoresToSheets(user.username, getScores(user.username));
-      logQuizAttempts(toLogRows(user.username, results));
+      const logRows = toLogRows(user.username, results);
+      saveAttemptLogs(user.username, logRows);
+      logQuizAttempts(logRows);
     }
     setTestResults(results);
     const hasWrong = results.some(r => !r.correct);
@@ -117,7 +121,9 @@ export default function App() {
       batchUpdateScores(user.username, partialResults);
       addCoins(user.username, partialResults.filter(r => r.correct).length * 10);
       saveScoresToSheets(user.username, getScores(user.username));
-      logQuizAttempts(toLogRows(user.username, partialResults));
+      const logRows = toLogRows(user.username, partialResults);
+      saveAttemptLogs(user.username, logRows);
+      logQuizAttempts(logRows);
     }
     setTestResults(partialResults);
     const hasWrong = partialResults.some(r => !r.correct);
@@ -148,6 +154,11 @@ export default function App() {
     setScreen('revise');
   }, []);
 
+  const handleStartTeach = useCallback((topicId) => {
+    setTeachTopicId(topicId);
+    setScreen('teach-ask');
+  }, []);
+
   const handleRetry = useCallback(() => {
     if (isPracticeMode) {
       const qs = buildRepractice(practiceItems);
@@ -164,12 +175,13 @@ export default function App() {
     <>
       {screen === 'login'        && <Login onLogin={handleLogin} />}
       {screen === 'home'         && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
-      {screen === 'topic-select' && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'topic-select' && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
       {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} />}
       {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} />}
       {screen === 'results'      && <Results results={testResults} topicId={testConfig?.topicId} onRetry={handleRetry} onHome={goHome} onRepractice={handleRepractice} isPractice={isPracticeMode} />}
+      {screen === 'teach-ask'    && <TeachAndAsk topicId={teachTopicId} username={user?.username} onQuit={goHome} />}
       {screen === 'admin'        && <Admin onBack={user?.role === 'admin' ? handleLogout : goHome} />}
     </>
   );

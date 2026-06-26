@@ -101,6 +101,18 @@ export function isDue(record) {
   return (record.nextReview || todayStr()) <= todayStr();
 }
 
+// ── Attempt Log (local) ───────────────────────────────────────────────────────
+export function getAttemptLogs(username) {
+  try { return JSON.parse(localStorage.getItem(`wm_logs_${username}`) || '[]'); }
+  catch { return []; }
+}
+
+export function saveAttemptLogs(username, rows) {
+  const existing = getAttemptLogs(username);
+  const trimmed = [...existing, ...rows].slice(-500); // keep latest 500
+  localStorage.setItem(`wm_logs_${username}`, JSON.stringify(trimmed));
+}
+
 // ── Streak & Session Tracking ─────────────────────────────────────────────────
 export function updateStreak(username) {
   const key = `wm_meta_${username}`;
@@ -809,4 +821,24 @@ export function buildVoiceTest(topicId, count) {
     })
     .filter(Boolean)
     .slice(0, count);
+}
+
+// ── Teach Session ─────────────────────────────────────────────────────────────
+export function buildTeachSession(topicId, count = 9, scores = {}) {
+  const raw = ALL_TOPIC_DATA[topicId] || [];
+  const prioritized = prioritiseItems(raw, scores);
+  return prioritized.slice(0, Math.min(count, prioritized.length));
+}
+
+export function buildTeachMCQ(topicId, targetItem) {
+  const pool = ALL_TOPIC_DATA[topicId] || [];
+  const gen = GENERATORS[topicId];
+  if (!gen) return null;
+  try { return gen(targetItem, pool); } catch { return null; }
+}
+
+export function getVoiceQ(topicId, item) {
+  const q = itemToVoiceQ(topicId, item);
+  if (!q) return null;
+  return { itemId: item.id, topicId, ...q };
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
-import { getScores, saveScores, memoryScore } from '../engine/quiz.js';
+import { getScores, saveScores, memoryScore, getAttemptLogs } from '../engine/quiz.js';
 import { loadScoresFromSheets, loadLogsFromSheets } from '../services/sheetsService.js';
 import { USER_CHANGELOG, TECH_CHANGELOG } from '../data/changelog.js';
 
@@ -53,12 +53,19 @@ export default function Admin({ onBack }) {
   // Fetch logs when "Logs" tab is clicked
   useEffect(() => {
     if (view !== 'logs' || logs !== null) return;
+    // Show local logs immediately
+    const local = getAttemptLogs(activeUser);
+    setLogs(local);
+    // Then try to merge from Sheets
     let cancelled = false;
     setLogsLoading(true);
     loadLogsFromSheets(activeUser).then(result => {
       if (cancelled) return;
       setLogsLoading(false);
-      setLogs(result ?? []);
+      if (!Array.isArray(result)) return; // GAS not available or no logs action — local is enough
+      const seen = new Set(local.map(r => `${r.ts}_${r.itemId}`));
+      const extra = result.filter(r => !seen.has(`${r.ts}_${r.itemId}`));
+      if (extra.length) setLogs(prev => [...(prev || []), ...extra]);
     });
     return () => { cancelled = true; };
   }, [view, activeUser, logs]);
