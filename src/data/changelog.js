@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '26 Jun 2025',
+    entries: [
+      { icon: '📖', topic: 'Teach & Ask', text: 'New learning mode — tap 📖 9 on any topic to study 9 items before being quizzed. Cards show the term and meaning with voice-over. Then you answer MCQ, speak your answer (voice topics), and unscramble word-order puzzles. Each item must be answered correctly 3 times before the session ends.' },
+    ],
+  },
+  {
     date: '25 Jun 2025',
     entries: [
       { icon: '🎤', topic: 'Voice Quiz', text: 'New quiz mode for Idioms, One Word Subs, Proverbs, Oxymorons & Similes — hear the clue, speak the answer. Auto-submits when you stop talking. Chrome on desktop only.' },
