@@ -17,6 +17,7 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
   const coins = meta.coins || 0;
 
   const [changelogOpen, setChangelogOpen] = useState(true);
+  const [changelogAll,  setChangelogAll]  = useState(false);
 
   const circR = 54;
   const circ  = 2 * Math.PI * circR;
@@ -107,24 +108,40 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
 
         {/* What's New */}
         <div style={styles.changelogCard}>
-          <button
-            onClick={() => setChangelogOpen(o => !o)}
-            style={styles.changelogHeader}
-          >
+          <button onClick={() => { setChangelogOpen(o => !o); setChangelogAll(false); }} style={styles.changelogHeader}>
             <span style={{ fontWeight: 800, fontSize: 13, color: '#197A56' }}>🆕 What's New</span>
             <span style={{ fontSize: 12, color: '#B4B2A9', fontWeight: 700 }}>{USER_CHANGELOG[0].date} {changelogOpen ? '▲' : '▼'}</span>
           </button>
           {changelogOpen && (
             <div style={{ padding: '0 14px 14px' }}>
-              {USER_CHANGELOG[0].entries.map((e, i) => (
-                <div key={i} style={styles.changelogEntry}>
-                  <span style={{ fontSize: 16, minWidth: 22 }}>{e.icon}</span>
-                  <div>
-                    <span style={{ fontWeight: 800, fontSize: 12, color: '#212427' }}>{e.topic} — </span>
-                    <span style={{ fontSize: 12, color: '#6B7280' }}>{e.text}</span>
-                  </div>
+              {(changelogAll ? USER_CHANGELOG : [USER_CHANGELOG[0]]).map((release, ri) => (
+                <div key={ri}>
+                  {changelogAll && ri > 0 && (
+                    <div style={{ fontSize: 11, fontWeight: 800, color: '#197A56', background: '#E3FDDB', display: 'inline-block', borderRadius: 999, padding: '2px 10px', margin: '14px 0 6px' }}>
+                      {release.date}
+                    </div>
+                  )}
+                  {release.entries.map((e, i) => (
+                    <div key={i} style={styles.changelogEntry}>
+                      <span style={{ fontSize: 16, minWidth: 22 }}>{e.icon}</span>
+                      <div>
+                        <span style={{ fontWeight: 800, fontSize: 12, color: '#212427' }}>{e.topic} — </span>
+                        <span style={{ fontSize: 12, color: '#6B7280' }}>{e.text}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
+              {!changelogAll && USER_CHANGELOG.length > 1 && (
+                <button onClick={() => setChangelogAll(true)} style={styles.viewAllBtn}>
+                  View all updates ↓
+                </button>
+              )}
+              {changelogAll && (
+                <button onClick={() => setChangelogAll(false)} style={styles.viewAllBtn}>
+                  Show less ↑
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -216,5 +233,6 @@ const styles = {
   changelogCard:   { background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', marginBottom: 20, overflow: 'hidden' },
   changelogHeader: { width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: '#F0FDF4', border: 'none', cursor: 'pointer', borderBottom: '1px solid #D1FAE5' },
   changelogEntry:  { display: 'flex', gap: 10, alignItems: 'flex-start', paddingTop: 10 },
+  viewAllBtn:      { marginTop: 12, background: 'transparent', border: 'none', color: '#197A56', fontSize: 12, fontWeight: 800, cursor: 'pointer', padding: '4px 0', letterSpacing: 0.2 },
 
 };

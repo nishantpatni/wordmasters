@@ -228,18 +228,33 @@ let antSubIdx = 0;
 
 function genAntonymForward(item, pool) {
   const correct = item.antonym;
-  const confusions = getConfusions(correct);
-  let wrong;
-  if (confusions && confusions.length >= 3) {
-    wrong = pickDistinct(confusions, correct, 3);
-  } else {
-    wrong = pickDistinct(pool.filter(i => i.word !== item.word).map(i => i.antonym), correct, 3);
-  }
-  const opts = shuffle([correct, ...wrong]);
+
+  // All valid antonyms = direct data entries + synonyms of those antonyms via confusion sets
+  // (synonyms of a valid antonym are also valid antonyms)
   const validAntonyms = new Set(
     pool.filter(i => i.word.toLowerCase() === item.word.toLowerCase())
-      .map(i => i.antonym.toLowerCase())
+        .map(i => i.antonym.toLowerCase())
   );
+  for (const ant of [...validAntonyms]) {
+    const synGroup = getConfusions(ant);
+    if (synGroup) synGroup.forEach(s => validAntonyms.add(s.toLowerCase()));
+  }
+
+  // Distractors: prefer synonyms of the QUESTION WORD (clearly wrong — same meaning, not opposite)
+  // Fallback: antonyms of unrelated words, excluding anything that is a valid antonym
+  const questionWordSyns = getConfusions(item.word.toLowerCase());
+  let wrong;
+  if (questionWordSyns && questionWordSyns.length >= 3) {
+    wrong = pickDistinct(questionWordSyns, item.word, 3);
+  } else {
+    wrong = pickDistinct(
+      pool.filter(i => i.word.toLowerCase() !== item.word.toLowerCase() && !validAntonyms.has(i.antonym.toLowerCase()))
+          .map(i => i.antonym),
+      correct, 3
+    );
+  }
+
+  const opts = shuffle([correct, ...wrong]);
   const correctIndices = opts.reduce((acc, opt, i) => {
     if (validAntonyms.has(opt.toLowerCase())) acc.push(i);
     return acc;
