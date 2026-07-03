@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '3 Jul 2025',
+    entries: [
+      { icon: '🐾', topic: 'Collective Nouns', text: 'Fixed 6 incorrect answers in the tricky questions: "musicians" now correctly accepts "band" (not "team"); "roses" is single-select with "bouquet"; "chickens" question wording fixed; "clothes" accepts only "pile"; "lions" accepts only "pride"; "troop of ___" no longer includes lions as a valid answer.' },
+    ],
+  },
+  {
     date: '26 Jun 2025',
     entries: [
       { icon: '📖', topic: 'Teach & Ask', text: 'New learning mode — tap 📖 9 on any topic to study 9 items before being quizzed. Cards show the term and meaning with voice-over. Then you answer MCQ, speak your answer (voice topics), and unscramble word-order puzzles. Each item must be answered correctly 3 times before the session ends.' },

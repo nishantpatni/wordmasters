@@ -229,8 +229,8 @@ let antSubIdx = 0;
 function genAntonymForward(item, pool) {
   const correct = item.antonym;
 
-  // All valid antonyms = direct data entries + synonyms of those antonyms via confusion sets
-  // (synonyms of a valid antonym are also valid antonyms)
+  // Valid antonyms = direct entries + their confusion-set synonyms
+  // (synonyms of a valid antonym are also valid antonyms of the same word)
   const validAntonyms = new Set(
     pool.filter(i => i.word.toLowerCase() === item.word.toLowerCase())
         .map(i => i.antonym.toLowerCase())
@@ -240,13 +240,19 @@ function genAntonymForward(item, pool) {
     if (synGroup) synGroup.forEach(s => validAntonyms.add(s.toLowerCase()));
   }
 
-  // Distractors: prefer synonyms of the QUESTION WORD (clearly wrong — same meaning, not opposite)
-  // Fallback: antonyms of unrelated words, excluding anything that is a valid antonym
-  const questionWordSyns = getConfusions(item.word.toLowerCase());
-  let wrong;
-  if (questionWordSyns && questionWordSyns.length >= 3) {
-    wrong = pickDistinct(questionWordSyns, item.word, 3);
-  } else {
+  // Synonyms of the question word — must not be distractors (too easy to eliminate)
+  const qWordSyns = new Set((getConfusions(item.word.toLowerCase()) || []).map(s => s.toLowerCase()));
+
+  // Clean distractor pool: antonyms of other unrelated words,
+  // excluding anything that is a valid answer OR a synonym of the question word
+  const cleanPool = pool
+    .filter(i => i.word.toLowerCase() !== item.word.toLowerCase())
+    .map(i => i.antonym)
+    .filter(a => !validAntonyms.has(a.toLowerCase()) && !qWordSyns.has(a.toLowerCase()));
+
+  let wrong = pickDistinct(cleanPool, correct, 3);
+  // Fallback (very small data sets): allow non-valid antonyms from full pool
+  if (wrong.length < 3) {
     wrong = pickDistinct(
       pool.filter(i => i.word.toLowerCase() !== item.word.toLowerCase() && !validAntonyms.has(i.antonym.toLowerCase()))
           .map(i => i.antonym),
@@ -261,9 +267,7 @@ function genAntonymForward(item, pool) {
   }, []);
   const isMulti = correctIndices.length > 1;
   return makeQ('antonyms', item.id, 'mcq',
-    isMulti
-      ? `Select ALL antonyms of "${item.word}":`
-      : `What is the antonym of "${item.word}"?`,
+    isMulti ? `Select ALL antonyms of "${item.word}":` : `What is the antonym of "${item.word}"?`,
     opts, opts.indexOf(correct),
     `The antonym of "${item.word}" is "${item.antonym}".`,
     correctIndices
@@ -271,15 +275,44 @@ function genAntonymForward(item, pool) {
 }
 
 function genAntonymReverse(item, pool) {
-  const wrong = pickDistinct(
-    pool.filter(i => i.word !== item.word).map(i => i.word),
-    item.word, 3
+  // Valid answers: all words whose antonym matches item.antonym, plus their synonyms
+  const validWords = new Set(
+    pool.filter(i => i.antonym.toLowerCase() === item.antonym.toLowerCase())
+        .map(i => i.word.toLowerCase())
   );
+  for (const w of [...validWords]) {
+    const synGroup = getConfusions(w);
+    if (synGroup) synGroup.forEach(s => validWords.add(s.toLowerCase()));
+  }
+
+  // Synonyms of the question's antonym value — avoid as distractors
+  const antSyns = new Set((getConfusions(item.antonym.toLowerCase()) || []).map(s => s.toLowerCase()));
+
+  const cleanPool = pool
+    .filter(i => i.word.toLowerCase() !== item.word.toLowerCase())
+    .map(i => i.word)
+    .filter(w => !validWords.has(w.toLowerCase()) && !antSyns.has(w.toLowerCase()));
+
+  let wrong = pickDistinct(cleanPool, item.word, 3);
+  if (wrong.length < 3) {
+    wrong = pickDistinct(
+      pool.filter(i => i.word.toLowerCase() !== item.word.toLowerCase() && !validWords.has(i.word.toLowerCase()))
+          .map(i => i.word),
+      item.word, 3
+    );
+  }
+
   const opts = shuffle([item.word, ...wrong]);
+  const correctIndices = opts.reduce((acc, opt, i) => {
+    if (validWords.has(opt.toLowerCase())) acc.push(i);
+    return acc;
+  }, []);
+  const isMulti = correctIndices.length > 1;
   return makeQ('antonyms', item.id, 'mcq',
-    `What is the antonym of "${item.antonym}"?`,
+    isMulti ? `Select ALL antonyms of "${item.antonym}":` : `What is the antonym of "${item.antonym}"?`,
     opts, opts.indexOf(item.word),
-    `The antonym of "${item.antonym}" is "${item.word}".`
+    `The antonym of "${item.antonym}" is "${item.word}".`,
+    correctIndices
   );
 }
 
