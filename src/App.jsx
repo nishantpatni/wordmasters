@@ -10,7 +10,9 @@ import Revise       from './screens/Revise.jsx';
 import VoiceTest    from './screens/VoiceTest.jsx';
 import TeachAndAsk  from './screens/TeachAndAsk.jsx';
 import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs } from './engine/quiz.js';
+import { buildGeoTest, buildGeoVoiceTest, buildGeoRepractice } from './engine/geoQuiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
+import GeoTopicSelect from './screens/GeoTopicSelect.jsx';
 
 function toLogRows(username, results) {
   const ts = new Date().toISOString();
@@ -25,7 +27,8 @@ function toLogRows(username, results) {
   }));
 }
 
-// screen: 'login' | 'home' | 'topic-select' | 'test' | 'voice-test' | 'review' | 'results' | 'admin'
+// screen: 'login' | 'home' | 'topic-select' | 'geo-topic-select' | 'test' | 'voice-test' | 'review' | 'results' | 'admin'
+// testConfig.subject: 'english' | 'geography'
 export default function App() {
   const [screen,          setScreen]          = useState('login');
   const [user,            setUser]            = useState(null);
@@ -65,7 +68,15 @@ export default function App() {
   const handleStartVoiceTest = useCallback((topicId, count) => {
     const qs = buildVoiceTest(topicId, count);
     setQuestions(qs);
-    setTestConfig({ topicId, count });
+    setTestConfig({ topicId, count, subject: 'english' });
+    setIsPracticeMode(false);
+    setScreen('voice-test');
+  }, []);
+
+  const handleStartGeoVoiceTest = useCallback((topicId, count) => {
+    const qs = buildGeoVoiceTest(topicId, count);
+    setQuestions(qs);
+    setTestConfig({ topicId, count, subject: 'geography' });
     setIsPracticeMode(false);
     setScreen('voice-test');
   }, []);
@@ -84,7 +95,16 @@ export default function App() {
     setSyncing(false);
     const qs = buildTest(topicId, count, getScores(user.username));
     setQuestions(qs);
-    setTestConfig({ topicId, count });
+    setTestConfig({ topicId, count, subject: 'english' });
+    setIsPracticeMode(false);
+    setScreen('test');
+  }, [user]);
+
+  const handleStartGeoTest = useCallback((topicId, count) => {
+    const geoUser = `geo_${user.username}`;
+    const qs = buildGeoTest(topicId, count, getScores(geoUser));
+    setQuestions(qs);
+    setTestConfig({ topicId, count, subject: 'geography' });
     setIsPracticeMode(false);
     setScreen('test');
   }, [user]);
@@ -98,13 +118,17 @@ export default function App() {
 
   const handleTestComplete = useCallback((results) => {
     if (!isPracticeMode) {
-      batchUpdateScores(user.username, results);
+      const isGeo = testConfig?.subject === 'geography';
+      const scoreUser = isGeo ? `geo_${user.username}` : user.username;
+      batchUpdateScores(scoreUser, results);
       updateStreak(user.username);
       addCoins(user.username, results.filter(r => r.correct).length * 10);
-      saveScoresToSheets(user.username, getScores(user.username));
-      const logRows = toLogRows(user.username, results);
-      saveAttemptLogs(user.username, logRows);
-      logQuizAttempts(logRows);
+      if (!isGeo) {
+        saveScoresToSheets(user.username, getScores(user.username));
+        const logRows = toLogRows(user.username, results);
+        saveAttemptLogs(user.username, logRows);
+        logQuizAttempts(logRows);
+      }
     }
     setTestResults(results);
     const hasWrong = results.some(r => !r.correct);
@@ -114,16 +138,20 @@ export default function App() {
     } else {
       setScreen('results');
     }
-  }, [user, isPracticeMode]);
+  }, [user, isPracticeMode, testConfig]);
 
   const handleQuit = useCallback((partialResults) => {
     if (!isPracticeMode && partialResults.length > 0) {
-      batchUpdateScores(user.username, partialResults);
+      const isGeo = testConfig?.subject === 'geography';
+      const scoreUser = isGeo ? `geo_${user.username}` : user.username;
+      batchUpdateScores(scoreUser, partialResults);
       addCoins(user.username, partialResults.filter(r => r.correct).length * 10);
-      saveScoresToSheets(user.username, getScores(user.username));
-      const logRows = toLogRows(user.username, partialResults);
-      saveAttemptLogs(user.username, logRows);
-      logQuizAttempts(logRows);
+      if (!isGeo) {
+        saveScoresToSheets(user.username, getScores(user.username));
+        const logRows = toLogRows(user.username, partialResults);
+        saveAttemptLogs(user.username, logRows);
+        logQuizAttempts(logRows);
+      }
     }
     setTestResults(partialResults);
     const hasWrong = partialResults.some(r => !r.correct);
@@ -133,7 +161,7 @@ export default function App() {
     } else {
       goHome();
     }
-  }, [user, goHome, isPracticeMode]);
+  }, [user, goHome, isPracticeMode, testConfig]);
 
   const handleReviewContinue = useCallback(() => {
     if (reviewDest === 'results') setScreen('results');
@@ -141,13 +169,14 @@ export default function App() {
   }, [reviewDest, goHome]);
 
   const handleRepractice = useCallback((wrongResults) => {
-    const qs = buildRepractice(wrongResults);
+    const isGeo = testConfig?.subject === 'geography';
+    const qs = isGeo ? buildGeoRepractice(wrongResults) : buildRepractice(wrongResults);
     if (!qs.length) return;
     setPracticeItems(wrongResults);
     setQuestions(qs);
     setIsPracticeMode(true);
     setScreen('test');
-  }, []);
+  }, [testConfig]);
 
   const handleRevise = useCallback((topicId) => {
     setReviseTopicId(topicId);
@@ -161,21 +190,29 @@ export default function App() {
 
   const handleRetry = useCallback(() => {
     if (isPracticeMode) {
-      const qs = buildRepractice(practiceItems);
+      const isGeo = testConfig?.subject === 'geography';
+      const qs = isGeo ? buildGeoRepractice(practiceItems) : buildRepractice(practiceItems);
       if (qs.length) { setQuestions(qs); setScreen('test'); }
       return;
     }
     if (!testConfig) return setScreen('topic-select');
-    const qs = buildTest(testConfig.topicId, testConfig.count, getScores(user.username));
-    setQuestions(qs);
+    if (testConfig.subject === 'geography') {
+      const geoUser = `geo_${user.username}`;
+      const qs = buildGeoTest(testConfig.topicId, testConfig.count, getScores(geoUser));
+      setQuestions(qs);
+    } else {
+      const qs = buildTest(testConfig.topicId, testConfig.count, getScores(user.username));
+      setQuestions(qs);
+    }
     setScreen('test');
   }, [testConfig, user, isPracticeMode, practiceItems]);
 
   return (
     <>
       {screen === 'login'        && <Login onLogin={handleLogin} />}
-      {screen === 'home'         && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
-      {screen === 'topic-select' && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'home'          && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onStartGeo={() => setScreen('geo-topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
+      {screen === 'topic-select'  && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'geo-topic-select' && <GeoTopicSelect username={user.username} onStart={handleStartGeoTest} onVoiceStart={handleStartGeoVoiceTest} onBack={goHome} syncing={syncing} />}
       {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} />}
       {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}

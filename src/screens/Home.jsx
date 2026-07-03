@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
+import { ALL_GEO_DATA, GEO_TOPIC_META, GEO_TOPIC_ORDER } from '../data/geoTopicData.js';
 import { getScores, getMeta, memoryScore, isDue } from '../engine/quiz.js';
 import { USER_CHANGELOG } from '../data/changelog.js';
 
 
-export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, onLogout }) {
-  const scores  = getScores(user.username);
+export default function Home({ user, syncing, onStartTest, onStartGeo, onRevise, onAdmin, onLogout }) {
+  const scores    = getScores(user.username);
+  const geoScores = getScores(`geo_${user.username}`);
   const meta    = getMeta(user.username);
   const allItems = TOPIC_ORDER.flatMap(tid => ALL_TOPIC_DATA[tid].map(i => ({ ...i, topicId: tid })));
   const totalItems = allItems.length;
@@ -196,7 +198,7 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
           })}
         </div>
 
-        {/* CTA */}
+        {/* CTA — English */}
         <button
           onClick={onStartTest}
           style={styles.bigBtn}
@@ -208,6 +210,40 @@ export default function Home({ user, syncing, onStartTest, onRevise, onAdmin, on
         <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, fontWeight: 600 }}>
           {meta.sessions} sessions completed
         </div>
+
+        {/* ── Indian Geography section ── */}
+        <div style={{ ...styles.sectionTitle, marginTop: 32 }}>🗺️ Indian Geography</div>
+        {GEO_TOPIC_ORDER.map(tid => {
+          const m = GEO_TOPIC_META[tid];
+          const items = ALL_GEO_DATA[tid];
+          const ts = items.map(i => geoScores[i.id]).filter(Boolean);
+          const strong = ts.filter(r => memoryScore(r) >= 70).length;
+          const masteryPct = Math.round((strong / items.length) * 100);
+          return (
+            <div key={tid} style={{ ...styles.topicRow, marginBottom: 8, border: '1px solid #BAE6FD' }}>
+              <span style={{ fontSize: 18 }}>{m.icon}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>{m.name}</span>
+                  <span style={{ fontSize: 14, fontWeight: 800, color: ts.length > 0 ? m.color : '#9CA3AF' }}>
+                    {ts.length > 0 ? `${masteryPct}%` : `${items.length} items`}
+                  </span>
+                </div>
+                <div style={{ height: 6, background: '#F2F2F2', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${masteryPct}%`, background: m.color, borderRadius: 3, transition: 'width 0.6s' }} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        <button
+          onClick={onStartGeo}
+          style={{ ...styles.bigBtn, background: '#F0F9FF', color: '#0891B2', border: '2px solid #BAE6FD', marginTop: 8 }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F0F9FF'; e.currentTarget.style.color = '#0891B2'; }}
+        >
+          🗺️ Indian Geography →
+        </button>
 
 
       </div>

@@ -2,6 +2,7 @@ export const USER_CHANGELOG = [
   {
     date: '3 Jul 2025',
     entries: [
+      { icon: '🗺️', topic: 'Indian Geography', text: 'New subject! States & Capitals of India — all 28 states and 8 Union Territories. MCQ (both directions: name→capital and capital→name) and Voice Quiz modes. Tricky multi-capital questions (e.g. Chandigarh is capital of Haryana, Punjab, and the Chandigarh UT). Progress tracked separately from English Vocabulary. Access via "🗺️ Indian Geography →" on the home screen.' },
       { icon: '🐾', topic: 'Collective Nouns', text: 'Fixed 6 incorrect answers in the tricky questions: "musicians" now correctly accepts "band" (not "team"); "roses" is single-select with "bouquet"; "chickens" question wording fixed; "clothes" accepts only "pile"; "lions" accepts only "pride"; "troop of ___" no longer includes lions as a valid answer.' },
     ],
   },

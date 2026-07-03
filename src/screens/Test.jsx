@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
+import { GEO_TOPIC_META } from '../data/geoTopicData.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -177,7 +178,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const answered = isMulti ? (multiSubmitted || timedOut) : (sel !== null || timedOut);
 
   const fillPct  = ((TIMER_SECS - timeLeft) / TIMER_SECS) * 100;
-  const meta     = TOPIC_META[q.topicId] || { color: '#212427', bg: '#E3FDDB', name: q.topicId, icon: '📖' };
+  const meta     = TOPIC_META[q.topicId] || GEO_TOPIC_META[q.topicId] || { color: '#212427', bg: '#E3FDDB', name: q.topicId, icon: '📖' };
   const correctCount = results.filter(r => r.correct).length;
   const pct          = (idx / questions.length) * 100;
 

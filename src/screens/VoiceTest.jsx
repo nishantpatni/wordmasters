@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
+import { GEO_TOPIC_META } from '../data/geoTopicData.js';
 
 const MATCH_THRESHOLD = 0.9;
 const TIP_MS          = 3000;
@@ -55,11 +56,12 @@ function ttsSay(text, onEnd) {
 
 // ── Per-topic labels ──────────────────────────────────────────────────────────
 const TOPIC_VOICE_LABELS = {
-  idioms:      { question: 'What idiom means…',     instruction: 'Speak the idiom' },
-  oneWordSubs: { question: 'One word for…',          instruction: 'Say the one-word answer' },
-  proverbs:    { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
-  oxymorons:   { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
-  similes:     { question: 'Complete the simile',    instruction: 'Say the missing word(s)' },
+  idioms:          { question: 'What idiom means…',     instruction: 'Speak the idiom' },
+  oneWordSubs:     { question: 'One word for…',          instruction: 'Say the one-word answer' },
+  proverbs:        { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
+  oxymorons:       { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
+  similes:         { question: 'Complete the simile',    instruction: 'Say the missing word(s)' },
+  statesCapitals:  { question: 'Indian Geography',       instruction: 'Speak your answer' },
 };
 function voiceLabel(topicId) {
   return TOPIC_VOICE_LABELS[topicId] || { question: 'Say the answer…', instruction: 'Speak your answer' };
@@ -102,7 +104,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const [timeLeft,   setTimeLeft]  = useState(LISTEN_SECS);
 
   const q    = questions[idx];
-  const meta = TOPIC_META[q?.topicId] || { color: '#D97706', bg: '#FFFBEB', name: 'Idioms', icon: '💬' };
+  const meta = TOPIC_META[q?.topicId] || GEO_TOPIC_META[q?.topicId] || { color: '#D97706', bg: '#FFFBEB', name: 'Voice Quiz', icon: '🎤' };
   const pct  = (idx / questions.length) * 100;
   const correctCount = results.filter(r => r.correct).length;
 
