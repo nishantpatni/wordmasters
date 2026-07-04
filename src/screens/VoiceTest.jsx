@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
+import { getVoiceLang, speak } from '../utils/voice.js';
 
 const MATCH_THRESHOLD = 0.9;
 const TIP_MS          = 3000;
@@ -45,13 +46,7 @@ function scoreMatch(answer, transcript) {
 
 // ── TTS helper ────────────────────────────────────────────────────────────────
 function ttsSay(text, onEnd) {
-  if (!window.speechSynthesis) { onEnd?.(); return; }
-  window.speechSynthesis.cancel();
-  const u  = new SpeechSynthesisUtterance(text.replace(/_{2,}/g, 'blank'));
-  u.rate   = 0.85;
-  u.lang   = 'en-US';
-  if (onEnd) u.onend = onEnd;
-  window.speechSynthesis.speak(u);
+  speak(text, { rate: 0.85, onEnd });
 }
 
 // ── Per-topic labels ──────────────────────────────────────────────────────────
@@ -181,7 +176,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     const r = new SR();
     r.continuous      = false;
     r.interimResults  = true;
-    r.lang            = 'en-US';
+    r.lang            = getVoiceLang();
     recogRef.current  = r;
 
     r.onresult = e => {

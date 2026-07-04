@@ -3,6 +3,7 @@ import { TOPIC_META } from '../data/topicData.js';
 import { buildTeachSession, buildTeachMCQ, getVoiceQ, getScores, addCoins } from '../engine/quiz.js';
 import TeachCard from './TeachCard.jsx';
 import { AskMCQ, AskVoice, AskJumble, MasteryRow, MASTERY_REQUIRED } from './TeachAskQuestion.jsx';
+import { getVoiceLang, speak } from '../utils/voice.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
@@ -116,11 +117,7 @@ function scoreMatch(got, expected) {
 // ── TTS ───────────────────────────────────────────────────────────────────────
 
 function ttsSay(text, onEnd) {
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance((text || '').replace(/_{2,}/g, 'blank'));
-  utt.lang = 'en-US'; utt.rate = 0.9;
-  if (onEnd) utt.onend = onEnd;
-  window.speechSynthesis.speak(utt);
+  speak(text, { rate: 0.9, onEnd });
 }
 
 // ── Main Component ────────────────────────────────────────────────────────────
@@ -298,7 +295,7 @@ export default function TeachAndAsk({ topicId, username, onQuit }) {
     stopVoice();
     const rec = new SR();
     recRef.current = rec;
-    rec.lang = 'en-US'; rec.interimResults = true; rec.continuous = false;
+    rec.lang = getVoiceLang(); rec.interimResults = true; rec.continuous = false;
     let handled = false;
     rec.onresult = (e) => {
       handled = true;

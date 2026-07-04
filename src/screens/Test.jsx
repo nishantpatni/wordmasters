@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
+import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, speak } from '../utils/voice.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -107,13 +108,7 @@ function TimerRing({ timeLeft, total, answered }) {
 
 // ── TTS helpers ───────────────────────────────────────────────────────────────
 function ttsSpeak(text, onEnd) {
-  if (!window.speechSynthesis) { onEnd?.(); return; }
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text.replace(/_{2,}/g, 'blank'));
-  utt.rate = 0.88;
-  utt.lang = 'en-US';
-  if (onEnd) utt.onend = onEnd;
-  window.speechSynthesis.speak(utt);
+  speak(text, { rate: 0.88, onEnd });
 }
 
 // ── Voice-input option matching ───────────────────────────────────────────────
@@ -172,6 +167,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [voiceInput,     setVoiceInput]    = useState(() => localStorage.getItem('wm_voice_mcq') === 'on');
   const [voiceListening, setVoiceListening] = useState(false);
   const [voiceNoMatch,   setVoiceNoMatch]  = useState(false);
+  const [voiceLang,      setVoiceLangState] = useState(getVoiceLang);
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -262,7 +258,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     if (!SR || !voiceInputRef.current || answeredRef.current || isMultiRef.current) return;
     stopVoiceInput();
     const r = new SR();
-    r.continuous = false; r.interimResults = false; r.lang = 'en-US';
+    r.continuous = false; r.interimResults = false; r.lang = getVoiceLang();
     voiceRecogRef.current = r;
     let handled = false;
 
@@ -307,6 +303,11 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     setVoiceInput(next);
     localStorage.setItem('wm_voice_mcq', next ? 'on' : 'off');
     if (!next) stopVoiceInput();
+  }
+
+  function changeVoiceLang(lang) {
+    setVoiceLang(lang);
+    setVoiceLangState(lang);
   }
 
   startVoiceRef.current = startVoiceInput;
@@ -658,13 +659,26 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
                   <div style={{ fontSize: 11, color: '#9CA3AF' }}>Hear the answer after each correct pick</div>
                 </div>
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5, marginBottom: 12 }}>
                 <input type="checkbox" checked={voiceInput} onChange={toggleVoiceInput} disabled={!SR} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>🎤 Voice input{!SR ? ' (Chrome only)' : ''}</div>
                   <div style={{ fontSize: 11, color: '#9CA3AF' }}>Say a number or the option text to answer</div>
                 </div>
               </label>
+              <div style={{ borderTop: '1px solid #EEE9E2', paddingTop: 10 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: '#212427', marginBottom: 2 }}>🌐 Voice accent</div>
+                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>Applies to spoken questions/answers and voice recognition, everywhere in the app</div>
+                <select
+                  value={voiceLang}
+                  onChange={e => changeVoiceLang(e.target.value)}
+                  style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                >
+                  {VOICE_LANG_OPTIONS.map(o => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           )}
         </div>

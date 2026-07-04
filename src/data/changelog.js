@@ -1,5 +1,12 @@
 export const USER_CHANGELOG = [
   {
+    date: '4 Jul 2026',
+    entries: [
+      { icon: '🌐', topic: 'Voice Accent', text: 'New setting in Quiz Settings (⚙️) — choose US, Indian, or British English for spoken questions/answers and voice recognition. Remembered across the whole app.' },
+      { icon: '📝', topic: 'One Word Substitutions', text: 'Smarter wrong answers for 50+ more words (scientists, places, ranks, personality types, literary terms and more) — distractors now come from the same confusable family instead of random words.' },
+    ],
+  },
+  {
     date: '3 Jul 2025',
     entries: [
       { icon: '🗺️', topic: 'Indian Geography', text: 'New subject! States & Capitals of India — all 28 states and 8 Union Territories. MCQ (both directions: name→capital and capital→name) and Voice Quiz modes. Tricky multi-capital questions (e.g. Chandigarh is capital of Haryana, Punjab, and the Chandigarh UT). Progress tracked separately from English Vocabulary. Access via "🗺️ Indian Geography →" on the home screen.' },
@@ -40,6 +47,14 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '4 Jul 2026',
+    entries: [
+      'src/utils/voice.js — shared TTS/STT accent preference (wm_voice_lang in localStorage); speak() replaces the per-screen ttsSpeak/ttsSay helpers in Test.jsx, VoiceTest.jsx, TeachAndAsk.jsx',
+      'confusionSets.json — +10 new OWS groups (53 words) + Psychologist/Philologist added to the geologist group, sourced from confusion set one word subs.xlsx; overrides a few filler-only groups (old Monarch/Aristocrat/Autocrat, old Biography/Memoir/Hagiography) since those filler words were never real topic answers',
+      'one_word_substitutions.json confusion-group coverage: 31/151 → 81/151 entries now get thematically-related distractors',
+    ],
+  },
   {
     date: '20 Jun 2025',
     entries: [
