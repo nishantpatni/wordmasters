@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { getScores, saveScores, memoryScore, getAttemptLogs } from '../engine/quiz.js';
 import { loadScoresFromSheets, loadLogsFromSheets } from '../services/sheetsService.js';
@@ -19,7 +19,7 @@ function scoreBg(s) {
 
 export default function Admin({ onBack }) {
   const [activeUser,   setActiveUser]   = useState(USERS[0]);
-  const [view,         setView]         = useState('scores'); // 'scores' | 'logs' | 'changelog'
+  const [view,         setView]         = useState('scores'); // 'scores' | 'logs' | 'sessions' | 'changelog'
   const [sortBy,       setSortBy]       = useState('score');
   const [filterTopic,  setFilterTopic]  = useState('all');
   const [search,       setSearch]       = useState('');
@@ -28,12 +28,15 @@ export default function Admin({ onBack }) {
   const [logs,         setLogs]         = useState(null); // null = not fetched
   const [logsLoading,  setLogsLoading]  = useState(false);
   const [logFilter,    setLogFilter]    = useState('wrong'); // 'all' | 'wrong'
+  const [selectedSessionTs, setSelectedSessionTs] = useState(null); // null = session index, else detail
+  const [sessionFilter,     setSessionFilter]     = useState('wrong'); // 'wrong' | 'all'
 
   // Load scores from Sheets whenever user switches
   useEffect(() => {
     let cancelled = false;
     setScores(getScores(activeUser)); // show localStorage first
     setLogs(null); // clear logs for new user
+    setSelectedSessionTs(null);
     setScoresLoading(true);
     loadScoresFromSheets(activeUser).then(remote => {
       if (cancelled) return;
@@ -50,9 +53,9 @@ export default function Admin({ onBack }) {
     return () => { cancelled = true; };
   }, [activeUser]);
 
-  // Fetch logs when "Logs" tab is clicked
+  // Fetch logs when "Logs" or "Sessions" tab is clicked
   useEffect(() => {
-    if (view !== 'logs' || logs !== null) return;
+    if ((view !== 'logs' && view !== 'sessions') || logs !== null) return;
     // Show local logs immediately
     const local = getAttemptLogs(activeUser);
     setLogs(local);
@@ -119,6 +122,29 @@ export default function Admin({ onBack }) {
     URL.revokeObjectURL(url);
   }
 
+  // ── Sessions view data ───────────────────────────────────────────────────
+  const sessionGroups = useMemo(() => {
+    const map = new Map();
+    for (const row of logs ?? []) {
+      if (!map.has(row.ts)) map.set(row.ts, []);
+      map.get(row.ts).push(row);
+    }
+    return [...map.entries()].map(([ts, rows]) => {
+      const total   = rows.length;
+      const correct = rows.filter(r => r.correct).length;
+      const topics  = [...new Set(rows.map(r => r.topicId))];
+      return { ts, rows, total, correct, topics };
+    }).sort((a, b) => new Date(b.ts) - new Date(a.ts));
+  }, [logs]);
+
+  const visibleSessions = sessionGroups.filter(s =>
+    filterTopic === 'all' || s.topics.includes(filterTopic)
+  );
+
+  const selectedSession = selectedSessionTs
+    ? sessionGroups.find(s => s.ts === selectedSessionTs)
+    : null;
+
   // ── Logs view data ────────────────────────────────────────────────────────
   const visibleLogs = (logs ?? []).filter(row => {
     if (logFilter === 'wrong' && row.correct === true) return false;
@@ -155,6 +181,10 @@ export default function Admin({ onBack }) {
           <button onClick={() => setView('scores')}
             style={{ ...styles.toggleBtn, ...(view === 'scores' ? styles.toggleActive : {}) }}>
             📊 Scores
+          </button>
+          <button onClick={() => { setView('sessions'); setSelectedSessionTs(null); }}
+            style={{ ...styles.toggleBtn, ...(view === 'sessions' ? styles.toggleActive : {}) }}>
+            🗓️ Sessions
           </button>
           <button onClick={() => setView('logs')}
             style={{ ...styles.toggleBtn, ...(view === 'logs' ? styles.toggleActive : {}) }}>
@@ -259,6 +289,130 @@ export default function Admin({ onBack }) {
             )}
           </>
         )}
+
+        {/* ── SESSIONS VIEW ── */}
+        {view === 'sessions' && !selectedSession && (
+          <>
+            <div style={styles.filtersRow}>
+              <select value={filterTopic} onChange={e => setFilterTopic(e.target.value)} style={styles.select}>
+                <option value="all">All topics</option>
+                {TOPIC_ORDER.map(tid => (
+                  <option key={tid} value={tid}>{TOPIC_META[tid]?.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {logsLoading && (
+              <div style={styles.syncBanner}>⟳ Loading quiz sessions from Google Sheets…</div>
+            )}
+
+            {!logsLoading && logs !== null && visibleSessions.length === 0 && (
+              <div style={styles.empty}>No quiz sessions found.</div>
+            )}
+
+            {visibleSessions.length > 0 && (
+              <div style={styles.logList}>
+                {visibleSessions.map(s => {
+                  const pct = s.total ? Math.round((s.correct / s.total) * 100) : 0;
+                  const m = TOPIC_META[s.topics[0]] || { color: '#6C4EE0', bg: '#F5F3FF', icon: '📖', name: s.topics[0] };
+                  return (
+                    <div key={s.ts} style={styles.sessionCard}
+                      onClick={() => { setSelectedSessionTs(s.ts); setSessionFilter('wrong'); }}
+                      role="button"
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <span style={{ ...styles.logBadge, background: m.bg, color: m.color }}>
+                          {m.icon} {s.topics.length > 1 ? `${s.topics.length} topics` : m.name}
+                        </span>
+                        <span style={{ fontSize: 11, color: '#B4B2A9', fontWeight: 700 }}>
+                          {new Date(s.ts).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A18' }}>
+                          {s.total} question{s.total !== 1 ? 's' : ''}
+                        </span>
+                        <span style={{ background: scoreBg(pct), color: scoreColor(pct), borderRadius: 8, padding: '3px 10px', fontSize: 12, fontWeight: 800 }}>
+                          {s.correct}/{s.total} ({pct}%)
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div style={{ textAlign: 'center', fontSize: 12, color: '#B4B2A9', fontWeight: 700, marginTop: 12 }}>
+                  {visibleSessions.length} session{visibleSessions.length !== 1 ? 's' : ''} shown
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── SESSION DETAIL ── */}
+        {view === 'sessions' && selectedSession && (() => {
+          const pct = selectedSession.total ? Math.round((selectedSession.correct / selectedSession.total) * 100) : 0;
+          const detailRows = sessionFilter === 'wrong'
+            ? selectedSession.rows.filter(r => !r.correct)
+            : selectedSession.rows;
+          return (
+            <>
+              <button onClick={() => setSelectedSessionTs(null)} style={styles.backBtn}>← All sessions</button>
+
+              <div style={{ margin: '16px 0 14px' }}>
+                <div style={{ fontFamily: "'Fredoka',cursive", fontWeight: 500, fontSize: 18, color: '#212427' }}>
+                  {new Date(selectedSession.ts).toLocaleString()}
+                </div>
+                <div style={{ fontSize: 13, color: '#6B7280', fontWeight: 700, marginTop: 3 }}>
+                  {selectedSession.correct}/{selectedSession.total} correct ({pct}%)
+                </div>
+              </div>
+
+              <div style={styles.viewToggle}>
+                <button onClick={() => setSessionFilter('wrong')}
+                  style={{ ...styles.toggleBtn, ...(sessionFilter === 'wrong' ? styles.toggleActive : {}) }}>
+                  ❌ Revisions ({selectedSession.total - selectedSession.correct})
+                </button>
+                <button onClick={() => setSessionFilter('all')}
+                  style={{ ...styles.toggleBtn, ...(sessionFilter === 'all' ? styles.toggleActive : {}) }}>
+                  📄 Entire Set ({selectedSession.total})
+                </button>
+              </div>
+
+              {detailRows.length === 0 ? (
+                <div style={styles.empty}>🎉 No incorrect answers in this session!</div>
+              ) : (
+                <div style={styles.logList}>
+                  {detailRows.map((row, i) => {
+                    const m = TOPIC_META[row.topicId] || { color: '#6C4EE0', bg: '#F5F3FF', icon: '📖', name: row.topicId };
+                    const timedOut = row.selectedOption === 'timeout';
+                    return (
+                      <div key={i} style={{ ...styles.logCard, borderLeft: `3px solid ${row.correct ? '#10A07A' : '#DC2626'}` }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                          <span style={{ ...styles.logBadge, background: m.bg, color: m.color }}>{m.icon} {m.name}</span>
+                          {row.correct && <span style={{ fontSize: 11, color: '#10A07A', fontWeight: 800 }}>✓ Correct</span>}
+                        </div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: '#1A1A18', marginBottom: 8, lineHeight: 1.45 }}>
+                          {row.prompt}
+                        </div>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          <div style={{ flex: 1, minWidth: 120, background: row.correct ? '#E0F5EE' : '#FEF2F2', borderRadius: 8, padding: '7px 11px' }}>
+                            <div style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, color: '#9CA3AF', marginBottom: 3 }}>Answered</div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: row.correct ? '#0A6E56' : '#DC2626' }}>
+                              {timedOut ? '⏱ Timed out' : (row.selectedOption || '—')}
+                            </div>
+                          </div>
+                          <div style={{ flex: 1, minWidth: 120, background: '#E0F5EE', borderRadius: 8, padding: '7px 11px' }}>
+                            <div style={{ fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, color: '#9CA3AF', marginBottom: 3 }}>Correct</div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: '#0A6E56' }}>{row.correctAnswer || '—'}</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          );
+        })()}
 
         {/* ── LOGS VIEW ── */}
         {view === 'logs' && (
@@ -416,5 +570,6 @@ const styles = {
   tableRow:     { display: 'flex', padding: '11px 16px', borderBottom: '1px solid #DCD5CE', alignItems: 'center', transition: 'background 0.1s' },
   logList:      { display: 'flex', flexDirection: 'column', gap: 10 },
   logCard:      { background: '#fff', borderRadius: 14, padding: '14px 16px', border: '1px solid #DCD5CE' },
+  sessionCard:  { background: '#fff', borderRadius: 14, padding: '14px 16px', border: '1px solid #DCD5CE', cursor: 'pointer' },
   logBadge:     { borderRadius: 999, padding: '3px 10px', fontSize: 11, fontWeight: 700, letterSpacing: 0.3 },
 };
