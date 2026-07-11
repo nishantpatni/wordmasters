@@ -5,6 +5,7 @@ export const USER_CHANGELOG = [
       { icon: '🎤', topic: 'Voice Quiz', text: 'Now defaults to US English pronunciation and speech recognition instead of Indian English, which was mispronouncing some words. You can still switch accents in Quiz Settings (⚙️).' },
       { icon: '🔊', topic: 'Voice Quiz Sounds', text: 'New audio cues so you can play eyes-off-screen: a chime when a new question loads, a beep when the mic starts listening, and a correct/incorrect ding after you answer. On a miss, it now speaks back what it heard before reading out the correct answer.' },
       { icon: '✅', topic: 'Voice Quiz Review', text: 'If speech recognition misheard you but you actually said the right answer, tap "✓ I spoke correctly" on that question in the Review screen to mark it correct.' },
+      { icon: '🌑', topic: 'Voice Quiz Black Screen', text: 'New button turns the screen black so you can rest your eyes — the quiz keeps running by audio underneath. Tap Esc or "View Quiz" to come back.' },
       { icon: '🔄', topic: 'Oxymorons', text: 'Refreshed all 100 meanings with clearer wording, added "Almost Done", merged the two "Clearly Confused/Misunderstood" questions into one, and renamed a few phrases (Alone Together, Deceptively Honest, Awfully Good/Nice/Pretty/Delicious).' },
     ],
   },
