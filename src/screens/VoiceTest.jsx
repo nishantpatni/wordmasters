@@ -81,11 +81,11 @@ function playListenCue() {
   playChime([{ freq: 900, t: 0, dur: 0.11, peak: 0.16 }]);
 }
 
-// Correct answer
+// Correct answer — bright "coin win" ding
 function playCorrectCue() {
   playChime([
-    { freq: 523.25, t: 0,    dur: 0.20, peak: 0.22 },
-    { freq: 783.99, t: 0.13, dur: 0.22, peak: 0.22 },
+    { freq: 987.77,  t: 0,    dur: 0.09, type: 'square', peak: 0.16 },
+    { freq: 1318.51, t: 0.07, dur: 0.24, type: 'square', peak: 0.18 },
   ]);
 }
 

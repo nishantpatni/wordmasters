@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '11 Jul 2026',
+    entries: [
+      { icon: '🪙', topic: 'Voice Quiz Sounds', text: 'The correct-answer ding is now a brighter "coin win" sound.' },
+    ],
+  },
+  {
     date: '10 Jul 2026',
     entries: [
       { icon: '🎤', topic: 'Voice Quiz', text: 'Now defaults to US English pronunciation and speech recognition instead of Indian English, which was mispronouncing some words. You can still switch accents in Quiz Settings (⚙️).' },
@@ -57,6 +63,12 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '11 Jul 2026',
+    entries: [
+      'VoiceTest.jsx — playCorrectCue() switched from sine two-note chime to square-wave B5→E6 "coin win" ding',
+    ],
+  },
   {
     date: '10 Jul 2026',
     entries: [
