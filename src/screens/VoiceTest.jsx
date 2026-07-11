@@ -443,7 +443,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
                 <div style={S.center}>
                   <span style={{ fontSize: 52, display: 'inline-block', animation: 'micPulse 1s ease-in-out infinite' }}>🎤</span>
                   <div style={{ ...S.stateLabel, color: '#DC2626', fontWeight: 700 }}>
-                    {voiceLabel(q.topicId).instruction}…
+                    {q.instruction || voiceLabel(q.topicId).instruction}…
                   </div>
                 </div>
                 <div style={S.txBox}>

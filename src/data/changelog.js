@@ -3,6 +3,7 @@ export const USER_CHANGELOG = [
     date: '11 Jul 2026',
     entries: [
       { icon: '🪙', topic: 'Voice Quiz Sounds', text: 'The correct-answer ding is now a brighter "coin win" sound.' },
+      { icon: '🗺️', topic: 'Geography Voice Quiz', text: 'For capitals shared by more than one state/UT (e.g. Chandigarh — Haryana, Punjab, and Chandigarh UT), the voice quiz now asks you to name all of them and only marks it correct once you’ve said every one, in any order.' },
     ],
   },
   {
@@ -67,6 +68,7 @@ export const TECH_CHANGELOG = [
     date: '11 Jul 2026',
     entries: [
       'VoiceTest.jsx — playCorrectCue() switched from sine two-note chime to square-wave B5→E6 "coin win" ding',
+      'geoQuiz.js buildGeoVoiceTest() — reverse questions ("X is capital of?") now generated once per unique capital instead of once per item; capitals shared by >1 state/UT (only Chandigarh currently) get answer = comma-joined names, isMulti prompt/ttsPrompt/instruction. scoreMatch() in VoiceTest.jsx is already order-independent bag-of-words matching, so no scoring changes needed — all names must be spoken to hit the 0.9 MATCH_THRESHOLD',
     ],
   },
   {

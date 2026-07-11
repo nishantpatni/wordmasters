@@ -138,26 +138,44 @@ export function buildGeoTest(topicId, count, scores = {}) {
 }
 
 // ── Public: build voice test ──────────────────────────────────────────────────
-// Alternates forward ("Capital of X?") and reverse ("X is capital of?") per item.
-// For shared capitals (Chandigarh), the voice answer is the individual state name —
-// accepted as correct since VoiceTest does per-item matching.
+// Forward questions ("Capital of X?") are generated one per item.
+// Reverse questions ("Which state/UT has X as its capital?") are generated once
+// per unique capital — for a shared capital (e.g. Chandigarh → Haryana, Punjab,
+// Chandigarh UT) the answer requires ALL of them, in any order (scoreMatch is a
+// bag-of-words check, so order doesn't matter), and only counts as correct once
+// every name has been said.
 export function buildGeoVoiceTest(topicId, count) {
   const pool = ALL_GEO_DATA[topicId] || [];
-  return shuffle([...pool]).map((item, i) => {
-    if (i % 2 === 0) {
-      return {
-        itemId: item.id, topicId,
-        prompt:    `Capital of ${item.name}?`,
-        ttsPrompt: `What is the capital of ${item.name}?`,
-        answer:    item.capital,
-      };
-    }
+
+  const forwardQs = pool.map(item => ({
+    itemId: item.id, topicId,
+    prompt:    `Capital of ${item.name}?`,
+    ttsPrompt: `What is the capital of ${item.name}?`,
+    answer:    item.capital,
+  }));
+
+  const byCapital = new Map();
+  for (const item of pool) {
+    if (!byCapital.has(item.capital)) byCapital.set(item.capital, []);
+    byCapital.get(item.capital).push(item);
+  }
+  const reverseQs = [...byCapital.entries()].map(([capital, items]) => {
+    const names   = items.map(i => i.name);
+    const isMulti = names.length > 1;
     return {
-      itemId: item.id, topicId,
-      prompt: `Which state or UT has ${item.capital} as its capital?`,
-      answer: item.name,
+      itemId: items.map(i => i.id).join('+'), topicId,
+      prompt: isMulti
+        ? `Which states/UTs have ${capital} as their capital? Name all ${names.length}.`
+        : `Which state or UT has ${capital} as its capital?`,
+      ttsPrompt: isMulti
+        ? `Which states or union territories have ${capital} as their capital? Tell me all ${names.length} answers.`
+        : undefined,
+      instruction: isMulti ? `Say all ${names.length} names` : undefined,
+      answer: names.join(', '),
     };
-  }).slice(0, count);
+  });
+
+  return shuffle([...forwardQs, ...reverseQs]).slice(0, count);
 }
 
 // ── Public: repractice wrong answers ─────────────────────────────────────────
