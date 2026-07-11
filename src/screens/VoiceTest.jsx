@@ -5,6 +5,7 @@ import { getVoiceLang, speak } from '../utils/voice.js';
 
 const MATCH_THRESHOLD = 0.9;
 const TIP_MS          = 3000;
+const TIP_MS_WRONG    = 5200; // longer so "you said X — the answer is Y" has time to finish
 const LISTEN_SECS     = 20;
 
 const AFFIRMATIVES = [
@@ -47,6 +48,62 @@ function scoreMatch(answer, transcript) {
 // ── TTS helper ────────────────────────────────────────────────────────────────
 function ttsSay(text, onEnd) {
   speak(text, { rate: 0.85, onEnd });
+}
+
+// ── Web Audio cues — lets someone follow the whole quiz by ear, screen off ────
+function playChime(notes) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    notes.forEach(({ freq, t, dur, type = 'sine', peak = 0.2 }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = type; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime + t);
+      gain.gain.linearRampToValueAtTime(peak, ctx.currentTime + t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + dur);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + dur + 0.02);
+    });
+  } catch {}
+}
+
+// New question card appears
+function playNewQuestionCue() {
+  playChime([
+    { freq: 440,    t: 0,    dur: 0.10, type: 'triangle', peak: 0.14 },
+    { freq: 587.33, t: 0.09, dur: 0.15, type: 'triangle', peak: 0.14 },
+  ]);
+}
+
+// Mic just started listening
+function playListenCue() {
+  playChime([{ freq: 900, t: 0, dur: 0.11, peak: 0.16 }]);
+}
+
+// Correct answer
+function playCorrectCue() {
+  playChime([
+    { freq: 523.25, t: 0,    dur: 0.20, peak: 0.22 },
+    { freq: 783.99, t: 0.13, dur: 0.22, peak: 0.22 },
+  ]);
+}
+
+// Incorrect answer
+function playWrongCue() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(240, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.28);
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+  } catch {}
 }
 
 // ── Per-topic labels ──────────────────────────────────────────────────────────
@@ -97,6 +154,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const [points,     setPoints]    = useState(0);
   const [results,    setResults]   = useState([]);
   const [timeLeft,   setTimeLeft]  = useState(LISTEN_SECS);
+  const [blackScreen, setBlackScreen] = useState(false);
 
   const q    = questions[idx];
   const meta = TOPIC_META[q?.topicId] || GEO_TOPIC_META[q?.topicId] || { color: '#D97706', bg: '#FFFBEB', name: 'Voice Quiz', icon: '🎤' };
@@ -133,21 +191,33 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     const { score, wordResults } = scoreMatch(cur.answer, tx || '');
     const correct = score >= MATCH_THRESHOLD;
     const coins   = correct ? 10 : 0;
+    const heard   = (tx || '').trim();
 
     if (correct) {
+      playCorrectCue();
       setPoints(p => p + coins);
       const msg = AFFIRMATIVES[Math.floor(Math.random() * AFFIRMATIVES.length)];
       setAffirmMsg(msg);
       clearTimeout(affirmTRef.current);
       affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
+      setTimeout(() => ttsSay(cur.answer), 450);
+    } else {
+      playWrongCue();
+      // Say what was actually heard before the correct answer — lets a
+      // screen-off user tell a mishear apart from a genuine wrong answer.
+      setTimeout(() => {
+        ttsSay(heard ? `You said: ${heard}.` : `I didn't hear anything.`, () => {
+          ttsSay(`The answer is ${cur.answer}.`);
+        });
+      }, 450);
     }
-    setTimeout(() => ttsSay(cur.answer), 450);
 
     const newRes = {
       itemId: cur.itemId, topicId: cur.topicId, correct,
       selectedOption: tx || '(no speech)',
       correctAnswer:  cur.answer,
       prompt:         cur.prompt,
+      quizType:       'voice',
     };
     const updated = [...resultsRef.current, newRes];
     resultsRef.current = updated; // update immediately so quit captures this result
@@ -163,7 +233,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
         setResults(updated);
         setIdx(idxRef.current + 1);
       }
-    }, TIP_MS);
+    }, correct ? TIP_MS : TIP_MS_WRONG);
   }
 
   function startListening() {
@@ -172,6 +242,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     setTranscript('');
     setPhase('listening');
     setTimeLeft(LISTEN_SECS);
+    playListenCue();
 
     const r = new SR();
     r.continuous      = false;
@@ -230,18 +301,23 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     setTranscript('');
     setTipData(null);
     setTimeLeft(LISTEN_SECS);
+    playNewQuestionCue();
 
     let fired = false;
     const fallback = setTimeout(() => {
       if (!fired) { fired = true; startRef.current(); }
-    }, 4500);
+    }, 4800);
 
-    ttsSay(q.ttsPrompt || q.prompt, () => {
-      if (!fired) { fired = true; clearTimeout(fallback); startRef.current(); }
-    });
+    // Small gap after the chime so it doesn't talk over the TTS prompt.
+    const ttsTimer = setTimeout(() => {
+      ttsSay(q.ttsPrompt || q.prompt, () => {
+        if (!fired) { fired = true; clearTimeout(fallback); startRef.current(); }
+      });
+    }, 300);
 
     return () => {
       clearTimeout(fallback);
+      clearTimeout(ttsTimer);
       stopRec();
       window.speechSynthesis?.cancel();
     };
@@ -257,6 +333,16 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [phase, transcript]);
+
+  // Esc dismisses the black screen (quiz keeps running underneath either way)
+  useEffect(() => {
+    if (!blackScreen) return;
+    function onKey(e) {
+      if (e.key === 'Escape') setBlackScreen(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [blackScreen]);
 
   // Unmount cleanup
   useEffect(() => () => {
@@ -303,6 +389,13 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
           <div style={{ ...S.pill, background: '#FEF2F2', color: '#DC2626' }}>✗ {idx - correctCount}</div>
           <div style={{ ...S.pill, background: '#FFFBEB', color: '#D97706', fontFamily: "'Fredoka', cursive" }}>🪙 {points}</div>
           <div style={{ ...S.pill, background: '#F2F2F2', color: '#212427' }}>{idx + 1}/{questions.length}</div>
+          <button
+            onClick={() => setBlackScreen(true)}
+            style={S.blackScreenToggle}
+            title="Turn the screen black to avoid eye strain — the quiz keeps running by audio"
+          >
+            🌑
+          </button>
         </div>
       </div>
 
@@ -465,6 +558,23 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
         </div>
       )}
 
+      {/* ── Black screen (eye-strain relief — quiz keeps running by audio) ── */}
+      {blackScreen && (
+        <div style={S.blackOverlay}>
+          <button
+            onClick={() => setBlackScreen(false)}
+            style={S.blackCloseBtn}
+            aria-label="Exit black screen"
+          >
+            ✕
+          </button>
+          <div style={S.blackMsg}>Press <kbd style={S.blackKbd}>Esc</kbd> to view quiz</div>
+          <button onClick={() => setBlackScreen(false)} style={S.blackViewBtn}>
+            View Quiz →
+          </button>
+        </div>
+      )}
+
       <style>{`
         @keyframes micPulse {
           0%, 100% { transform: scale(1);    opacity: 1; }
@@ -503,4 +613,33 @@ const S = {
   submitBtn:  { flex: 1, borderRadius: 12, padding: '10px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', background: '#D97706', color: '#fff', border: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif" },
   overlay:    { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 100, padding: '0 16px 48px' },
   tipCard:    { background: '#fff', borderRadius: 24, padding: '24px 28px', textAlign: 'center', maxWidth: 400, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' },
+  blackScreenToggle: {
+    background: '#212427', color: '#fff', border: 'none', borderRadius: 999,
+    width: 30, height: 30, fontSize: 14, cursor: 'pointer', display: 'flex',
+    alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+  },
+  blackOverlay: {
+    position: 'fixed', inset: 0, background: '#000', zIndex: 200,
+    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+    gap: 22,
+  },
+  blackCloseBtn: {
+    position: 'fixed', top: 18, right: 18, background: 'rgba(255,255,255,0.08)',
+    color: '#fff', border: '1.5px solid rgba(255,255,255,0.25)', borderRadius: 999,
+    width: 44, height: 44, fontSize: 18, cursor: 'pointer', display: 'flex',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  blackMsg: {
+    color: 'rgba(255,255,255,0.55)', fontSize: 15, fontWeight: 600,
+    fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', alignItems: 'center', gap: 8,
+  },
+  blackKbd: {
+    background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)',
+    borderRadius: 6, padding: '2px 9px', fontFamily: 'monospace', fontSize: 13, color: '#fff',
+  },
+  blackViewBtn: {
+    background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)',
+    borderRadius: 15, padding: '12px 32px', fontFamily: "'Fredoka', cursive",
+    fontWeight: 500, fontSize: 16, cursor: 'pointer',
+  },
 };

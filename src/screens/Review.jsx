@@ -1,7 +1,9 @@
 import { TOPIC_META } from '../data/topicData.js';
 
-export default function ReviewScreen({ results, onContinue, continueLabel = 'Continue →', onRepractice }) {
-  const wrong = results.filter(r => !r.correct);
+export default function ReviewScreen({ results, onContinue, continueLabel = 'Continue →', onRepractice, onMarkCorrect }) {
+  const wrong = results
+    .map((r, i) => ({ ...r, _idx: i }))
+    .filter(r => !r.correct);
 
   return (
     <div style={styles.page}>
@@ -15,14 +17,21 @@ export default function ReviewScreen({ results, onContinue, continueLabel = 'Con
       </div>
 
       <div style={styles.list}>
-        {wrong.map((r, i) => {
+        {wrong.map(r => {
           const meta = TOPIC_META[r.topicId] || { color: '#212427', bg: '#E3FDDB', name: r.topicId, icon: '📖' };
           const timedOut = r.selectedOption === 'timeout';
           return (
-            <div key={i} style={styles.card}>
-              <span style={{ ...styles.badge, background: meta.bg, color: meta.color }}>
-                {meta.icon} {meta.name}
-              </span>
+            <div key={r._idx} style={styles.card}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <span style={{ ...styles.badge, background: meta.bg, color: meta.color }}>
+                  {meta.icon} {meta.name}
+                </span>
+                {r.quizType === 'voice' && onMarkCorrect && (
+                  <button onClick={() => onMarkCorrect(r._idx)} style={styles.markCorrectBtn}>
+                    ✓ I spoke correctly
+                  </button>
+                )}
+              </div>
 
               <div style={styles.prompt}>{r.prompt}</div>
 
@@ -75,6 +84,10 @@ const styles = {
                 border: '1px solid #DCD5CE', padding: '18px 18px 16px', marginBottom: 14 },
   badge:      { borderRadius: 999, padding: '4px 11px', fontSize: 11, fontWeight: 700,
                 letterSpacing: 0.3, display: 'inline-block', marginBottom: 12 },
+  markCorrectBtn: { background: '#E3FDDB', color: '#197A56', border: '1.5px solid #A8F0B8',
+                borderRadius: 999, padding: '5px 12px', fontSize: 11, fontWeight: 700,
+                cursor: 'pointer', whiteSpace: 'nowrap', marginBottom: 12,
+                fontFamily: "'Plus Jakarta Sans', sans-serif" },
   prompt:     { fontSize: 15, fontWeight: 700, color: '#212427', lineHeight: 1.55,
                 marginBottom: 14, whiteSpace: 'pre-line' },
   answerRow:  { display: 'flex', gap: 10, flexWrap: 'wrap' },

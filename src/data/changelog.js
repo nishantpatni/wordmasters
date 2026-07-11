@@ -1,5 +1,14 @@
 export const USER_CHANGELOG = [
   {
+    date: '10 Jul 2026',
+    entries: [
+      { icon: '🎤', topic: 'Voice Quiz', text: 'Now defaults to US English pronunciation and speech recognition instead of Indian English, which was mispronouncing some words. You can still switch accents in Quiz Settings (⚙️).' },
+      { icon: '🔊', topic: 'Voice Quiz Sounds', text: 'New audio cues so you can play eyes-off-screen: a chime when a new question loads, a beep when the mic starts listening, and a correct/incorrect ding after you answer. On a miss, it now speaks back what it heard before reading out the correct answer.' },
+      { icon: '✅', topic: 'Voice Quiz Review', text: 'If speech recognition misheard you but you actually said the right answer, tap "✓ I spoke correctly" on that question in the Review screen to mark it correct.' },
+      { icon: '🔄', topic: 'Oxymorons', text: 'Refreshed all 100 meanings with clearer wording, added "Almost Done", merged the two "Clearly Confused/Misunderstood" questions into one, and renamed a few phrases (Alone Together, Deceptively Honest, Awfully Good/Nice/Pretty/Delicious).' },
+    ],
+  },
+  {
     date: '4 Jul 2026',
     entries: [
       { icon: '🌐', topic: 'Voice Accent', text: 'New setting in Quiz Settings (⚙️) — choose US, Indian, or British English for spoken questions/answers and voice recognition. Remembered across the whole app.' },
@@ -47,6 +56,17 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '10 Jul 2026',
+    entries: [
+      'src/utils/voice.js — default voice accent is en-US; one-time localStorage migration (wm_voice_lang_us_default_migrated) bumps any browser with a saved en-IN preference back to en-US',
+      'results now carry a quizType field ("mcq" | "voice") set in Test.jsx and VoiceTest.jsx',
+      'VoiceTest.jsx — Web Audio cues (playNewQuestionCue/playListenCue/playCorrectCue/playWrongCue) at question-load, mic-start, and answer time; on a miss, chains two ttsSay() calls ("You said: X." → "The answer is Y.") before advancing; TIP_MS_WRONG (5200ms) replaces TIP_MS for wrong answers to give the extra TTS time to finish',
+      'App.jsx — score/coin/streak persistence (batchUpdateScores etc.) deferred from quiz-complete time to Review-screen-exit time, so Review screen corrections apply before scores are saved; extracted into persistComplete/persistPartial',
+      'src/screens/Review.jsx — onMarkCorrect prop; shows "✓ I spoke correctly" per wrong voice-quiz question, flips results[i].correct via App\'s handleMarkCorrect',
+      'src/data/topics/oxymorons.json — regenerated from data/pdfs/oxymorons examples UPDATED.pdf (still 100 entries): new almost-done id; along-together → alone-together; awfully-nice → awfully-good-nice-pretty-delicious; deceptive-honesty → deceptively-honest; clearly-confused + clearly-misunderstood merged into clearly-confused-misunderstood',
+    ],
+  },
   {
     date: '4 Jul 2026',
     entries: [

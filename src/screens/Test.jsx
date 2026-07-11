@@ -341,6 +341,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       selectedOption,
       correctAnswer,
       prompt: cur.prompt,
+      quizType: 'mcq',
     }];
     feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
   }
@@ -370,6 +371,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       selectedOption: q.options[optIdx] ?? '',
       correctAnswer:  q.options[q.correctIndex] ?? '',
       prompt:         q.prompt,
+      quizType:       'mcq',
     }];
     feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
   }
@@ -411,6 +413,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       selectedOption: [...multiSel].map(i => q.options[i]).join(', '),
       correctAnswer:  q.correctIndices.map(i => q.options[i]).join(' / '),
       prompt:         q.prompt,
+      quizType:       'mcq',
     }];
     feedbackRef.current = setTimeout(() => advance(updated), FEEDBACK_DELAY);
   }

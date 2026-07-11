@@ -116,57 +116,74 @@ export default function App() {
     setScreen('home');
   }, []);
 
-  const handleTestComplete = useCallback((results) => {
-    if (!isPracticeMode) {
-      const isGeo = testConfig?.subject === 'geography';
-      const scoreUser = isGeo ? `geo_${user.username}` : user.username;
-      batchUpdateScores(scoreUser, results);
-      updateStreak(user.username);
-      addCoins(user.username, results.filter(r => r.correct).length * 10);
-      if (!isGeo) {
-        saveScoresToSheets(user.username, getScores(user.username));
-        const logRows = toLogRows(user.username, results);
-        saveAttemptLogs(user.username, logRows);
-        logQuizAttempts(logRows);
-      }
+  // Persists results to scores/coins/streak/sheets. Called either immediately
+  // (perfect score, no review shown) or after the user has had a chance to
+  // fix voice-quiz mis-hears on the Review screen via "I spoke correctly".
+  const persistComplete = useCallback((results) => {
+    const isGeo = testConfig?.subject === 'geography';
+    const scoreUser = isGeo ? `geo_${user.username}` : user.username;
+    batchUpdateScores(scoreUser, results);
+    updateStreak(user.username);
+    addCoins(user.username, results.filter(r => r.correct).length * 10);
+    if (!isGeo) {
+      saveScoresToSheets(user.username, getScores(user.username));
+      const logRows = toLogRows(user.username, results);
+      saveAttemptLogs(user.username, logRows);
+      logQuizAttempts(logRows);
     }
+  }, [user, testConfig]);
+
+  const persistPartial = useCallback((results) => {
+    const isGeo = testConfig?.subject === 'geography';
+    const scoreUser = isGeo ? `geo_${user.username}` : user.username;
+    batchUpdateScores(scoreUser, results);
+    addCoins(user.username, results.filter(r => r.correct).length * 10);
+    if (!isGeo) {
+      saveScoresToSheets(user.username, getScores(user.username));
+      const logRows = toLogRows(user.username, results);
+      saveAttemptLogs(user.username, logRows);
+      logQuizAttempts(logRows);
+    }
+  }, [user, testConfig]);
+
+  const handleTestComplete = useCallback((results) => {
     setTestResults(results);
     const hasWrong = results.some(r => !r.correct);
     if (!isPracticeMode && hasWrong) {
       setReviewDest('results');
       setScreen('review');
     } else {
+      if (!isPracticeMode) persistComplete(results);
       setScreen('results');
     }
-  }, [user, isPracticeMode, testConfig]);
+  }, [isPracticeMode, persistComplete]);
 
   const handleQuit = useCallback((partialResults) => {
-    if (!isPracticeMode && partialResults.length > 0) {
-      const isGeo = testConfig?.subject === 'geography';
-      const scoreUser = isGeo ? `geo_${user.username}` : user.username;
-      batchUpdateScores(scoreUser, partialResults);
-      addCoins(user.username, partialResults.filter(r => r.correct).length * 10);
-      if (!isGeo) {
-        saveScoresToSheets(user.username, getScores(user.username));
-        const logRows = toLogRows(user.username, partialResults);
-        saveAttemptLogs(user.username, logRows);
-        logQuizAttempts(logRows);
-      }
-    }
     setTestResults(partialResults);
     const hasWrong = partialResults.some(r => !r.correct);
     if (!isPracticeMode && partialResults.length > 0 && hasWrong) {
       setReviewDest('home');
       setScreen('review');
     } else {
+      if (!isPracticeMode && partialResults.length > 0) persistPartial(partialResults);
       goHome();
     }
-  }, [user, goHome, isPracticeMode, testConfig]);
+  }, [goHome, isPracticeMode, persistPartial]);
 
+  // Fires once the user leaves the Review screen — persists using the current
+  // testResults, which may include "I spoke correctly" corrections made there.
   const handleReviewContinue = useCallback(() => {
+    if (!isPracticeMode) {
+      if (reviewDest === 'results') persistComplete(testResults);
+      else persistPartial(testResults);
+    }
     if (reviewDest === 'results') setScreen('results');
     else goHome();
-  }, [reviewDest, goHome]);
+  }, [reviewDest, goHome, isPracticeMode, testResults, persistComplete, persistPartial]);
+
+  const handleMarkCorrect = useCallback((idx) => {
+    setTestResults(prev => prev.map((r, i) => i === idx ? { ...r, correct: true, selfCorrected: true } : r));
+  }, []);
 
   const handleRepractice = useCallback((wrongResults) => {
     const isGeo = testConfig?.subject === 'geography';
@@ -216,7 +233,7 @@ export default function App() {
       {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} />}
       {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
-      {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} />}
+      {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} onMarkCorrect={handleMarkCorrect} />}
       {screen === 'results'      && <Results results={testResults} topicId={testConfig?.topicId} onRetry={handleRetry} onHome={goHome} onRepractice={handleRepractice} isPractice={isPracticeMode} />}
       {screen === 'teach-ask'    && <TeachAndAsk topicId={teachTopicId} username={user?.username} onQuit={goHome} />}
       {screen === 'admin'        && <Admin onBack={user?.role === 'admin' ? handleLogout : goHome} />}

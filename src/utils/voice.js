@@ -9,8 +9,17 @@ export const VOICE_LANG_OPTIONS = [
 ];
 
 const STORAGE_KEY = 'wm_voice_lang';
+// One-time migration: Indian English was mispronouncing some words, so any
+// browser that had it saved from before gets bumped back to the US default.
+const MIGRATION_KEY = 'wm_voice_lang_us_default_migrated';
 
 export function getVoiceLang() {
+  if (!localStorage.getItem(MIGRATION_KEY)) {
+    localStorage.setItem(MIGRATION_KEY, '1');
+    if (localStorage.getItem(STORAGE_KEY) === 'en-IN') {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
   return localStorage.getItem(STORAGE_KEY) || 'en-US';
 }
 
