@@ -1,5 +1,12 @@
 export const USER_CHANGELOG = [
   {
+    date: '13 Jul 2026',
+    entries: [
+      { icon: '🔤', topic: 'Voice Quiz Matching', text: 'Articles ("a", "an", "the") are no longer required or penalized when speaking your answer — say them or skip them, it won\'t affect scoring.' },
+      { icon: '🔊', topic: 'Voice Settings', text: 'New "specific voice" picker in Quiz Settings (⚙️) — if the accent dropdown still uses the wrong-sounding voice (a known Chrome/macOS quirk where the OS default voice isn\'t always what Chrome picks), you can now choose the exact installed voice by name. Voice quizzes also show a footer at the bottom with the voice/accent currently speaking.' },
+    ],
+  },
+  {
     date: '11 Jul 2026',
     entries: [
       { icon: '🪙', topic: 'Voice Quiz Sounds', text: 'The correct-answer ding is now a brighter "coin win" sound.' },

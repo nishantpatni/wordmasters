@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
-import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, speak } from '../utils/voice.js';
+import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak } from '../utils/voice.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -168,6 +168,8 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [voiceListening, setVoiceListening] = useState(false);
   const [voiceNoMatch,   setVoiceNoMatch]  = useState(false);
   const [voiceLang,      setVoiceLangState] = useState(getVoiceLang);
+  const [voiceName,      setVoiceNameState] = useState(getVoiceName);
+  const [availVoices,    setAvailVoices]    = useState([]);
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -308,7 +310,16 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   function changeVoiceLang(lang) {
     setVoiceLang(lang);
     setVoiceLangState(lang);
+    setVoiceName('');
+    setVoiceNameState('');
   }
+
+  function changeVoiceName(name) {
+    setVoiceName(name);
+    setVoiceNameState(name);
+  }
+
+  useEffect(() => onVoicesChanged(() => setAvailVoices(getVoicesForLang(voiceLang))), [voiceLang]);
 
   startVoiceRef.current = startVoiceInput;
 
@@ -681,6 +692,23 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
                     <option key={o.value} value={o.value}>{o.label}</option>
                   ))}
                 </select>
+                {availVoices.length > 0 && (
+                  <>
+                    <div style={{ fontSize: 11, color: '#9CA3AF', margin: '8px 0 4px' }}>
+                      Specific voice — pick this if the accent above still sounds like the wrong/muddled voice
+                    </div>
+                    <select
+                      value={voiceName}
+                      onChange={e => changeVoiceName(e.target.value)}
+                      style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                    >
+                      <option value="">Auto (browser default)</option>
+                      {availVoices.map(v => (
+                        <option key={v.name} value={v.name}>{v.name}{v.localService ? '' : ' (online)'}</option>
+                      ))}
+                    </select>
+                  </>
+                )}
               </div>
             </div>
           )}

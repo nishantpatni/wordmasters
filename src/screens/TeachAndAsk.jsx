@@ -4,6 +4,7 @@ import { buildTeachSession, buildTeachMCQ, getVoiceQ, getScores, addCoins } from
 import TeachCard from './TeachCard.jsx';
 import { AskMCQ, AskVoice, AskJumble, MasteryRow, MASTERY_REQUIRED } from './TeachAskQuestion.jsx';
 import { getVoiceLang, speak } from '../utils/voice.js';
+import VoiceFooter from '../components/VoiceFooter.jsx';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
@@ -101,9 +102,11 @@ function levenshtein(a, b) {
   return dp[m][n];
 }
 
+const ARTICLES = new Set(['a', 'an', 'the']);
+
 function scoreMatch(got, expected) {
-  const gw = got.toLowerCase().split(/\s+/).filter(Boolean);
-  const ew = expected.toLowerCase().split(/\s+/).filter(Boolean);
+  const gw = got.toLowerCase().split(/\s+/).filter(w => w && !ARTICLES.has(w));
+  const ew = expected.toLowerCase().split(/\s+/).filter(w => w && !ARTICLES.has(w));
   if (!gw.length || !ew.length) return { ratio: 0, matched: new Array(ew.length).fill(false) };
   let hits = 0;
   const matched = new Array(ew.length).fill(false);
@@ -401,6 +404,8 @@ export default function TeachAndAsk({ topicId, username, onQuit }) {
           {affirmMsg}
         </div>
       )}
+
+      {phase === 'ask' && queue[qIdx]?.type === 'voice' && <VoiceFooter />}
     </div>
   );
 }

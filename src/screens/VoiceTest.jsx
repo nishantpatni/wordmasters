@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
 import { getVoiceLang, speak } from '../utils/voice.js';
+import VoiceFooter from '../components/VoiceFooter.jsx';
 
 const MATCH_THRESHOLD = 0.9;
 const TIP_MS          = 3000;
@@ -30,10 +31,12 @@ function levenshtein(a, b) {
   return dp[m][n];
 }
 
+const ARTICLES = new Set(['a', 'an', 'the']);
+
 function scoreMatch(answer, transcript) {
   const norm     = s => s.toLowerCase().replace(/[^a-z\s]/g, '').trim();
-  const ansWords = norm(answer).split(/\s+/).filter(Boolean);
-  const spkWords = norm(transcript).split(/\s+/).filter(Boolean);
+  const ansWords = norm(answer).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+  const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
   const wordResults = ansWords.map(aw => {
     if (spkWords.includes(aw)) return { word: aw, matched: true };
     const maxDist = aw.length <= 4 ? 1 : 2;
@@ -588,6 +591,8 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
           100% { opacity: 0; transform: translateX(-50%) translateY(-18px) scale(0.88); }
         }
       `}</style>
+
+      <VoiceFooter />
     </div>
   );
 }
