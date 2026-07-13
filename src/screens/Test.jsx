@@ -83,14 +83,14 @@ function playTimeout() {
 }
 
 // ── Circular countdown ring shown in the card header ──────────────────────────
-function TimerRing({ timeLeft, total, answered }) {
+function TimerRing({ timeLeft, total, answered, paused }) {
   const r     = 18;
   const circ  = 2 * Math.PI * r;
   const offset = circ - (circ * timeLeft / total);
   const color  = timeLeft > 6 ? '#21BF61' : timeLeft > 3 ? '#F59E0B' : '#DC2626';
-  const urgent = timeLeft <= 3 && !answered;
+  const urgent = timeLeft <= 3 && !answered && !paused;
   return (
-    <svg width="46" height="46" viewBox="0 0 46 46" style={{ flexShrink: 0 }}>
+    <svg width="46" height="46" viewBox="0 0 46 46" style={{ flexShrink: 0, opacity: paused ? 0.5 : 1 }}>
       <circle cx="23" cy="23" r={r} fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="3.5" />
       <circle cx="23" cy="23" r={r} fill="none" stroke={answered ? '#21BF61' : color}
         strokeWidth="3.5" strokeDasharray={circ} strokeDashoffset={answered ? 0 : offset}
@@ -100,7 +100,7 @@ function TimerRing({ timeLeft, total, answered }) {
         style={{ fontSize: 13, fontWeight: 800, fill: answered ? '#21BF61' : color,
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           animation: urgent ? 'timerPulse 0.6s infinite' : 'none' }}>
-        {answered ? '✓' : timeLeft}
+        {paused ? '⏸' : answered ? '✓' : timeLeft}
       </text>
     </svg>
   );
@@ -198,6 +198,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const isMultiRef       = useRef(false);   isMultiRef.current     = isMulti;
   const voiceRecogRef    = useRef(null);
   const startVoiceRef    = useRef(null);
+  const settingsOpenRef  = useRef(false);   settingsOpenRef.current = settingsOpen;
 
   idxRef.current     = idx;
   resultsRef.current = results;
@@ -455,6 +456,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     const doTimeout = () => triggerTimeout();
 
     intervalRef.current = setInterval(() => {
+      if (settingsOpenRef.current) return; // paused while settings panel is open
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(intervalRef.current);
@@ -472,6 +474,17 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       stopVoiceInput();
     };
   }, [idx]);
+
+  // Pause gameplay while the settings panel is open: freeze the mic and let
+  // the countdown-skip in the tick above hold the timer. Resume on close.
+  useEffect(() => {
+    if (settingsOpen) {
+      stopVoiceInput();
+      window.speechSynthesis?.cancel();
+    } else if (voiceInputRef.current && !answeredRef.current && !isMultiRef.current) {
+      startVoiceRef.current?.();
+    }
+  }, [settingsOpen]);
 
   // Close settings panel on outside click
   useEffect(() => {
@@ -658,6 +671,9 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           >⚙️</button>
           {settingsOpen && (
             <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', padding: '14px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', zIndex: 30, minWidth: 240 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#D97706', background: '#FFFBEB', borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
+                ⏸ Game paused — timer's frozen while this is open
+              </div>
               <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 12 }}>Quiz Settings</div>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
                 <input type="checkbox" checked={ttsOn} onChange={toggleTts} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
@@ -755,7 +771,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
             <span style={{ ...styles.badge, background: meta.bg, color: meta.color }}>
               {meta.icon} {meta.name}
             </span>
-            <TimerRing timeLeft={timeLeft} total={TIMER_SECS} answered={answered} />
+            <TimerRing timeLeft={timeLeft} total={TIMER_SECS} answered={answered} paused={settingsOpen} />
           </div>
 
           {/* Prompt */}

@@ -4,13 +4,14 @@ import { buildTeachSession, buildTeachMCQ, getVoiceQ, getScores, addCoins } from
 import TeachCard from './TeachCard.jsx';
 import { AskMCQ, AskVoice, AskJumble, MasteryRow, MASTERY_REQUIRED } from './TeachAskQuestion.jsx';
 import { getVoiceLang, speak } from '../utils/voice.js';
+import { scoreMatchAny, formatAnswerList } from '../utils/voiceMatch.js';
 import VoiceFooter from '../components/VoiceFooter.jsx';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
 const TOTAL_ITEMS = 9;
 const AFFIRMATIVES = ['Nice one!', 'You nailed it!', 'Spot on!', 'Boom, correct!', 'Well played!', "That's a win!", 'Fantastic!', 'Perfect!', 'Brilliant!', 'Nailed it!', 'Outstanding!', 'Excellent!'];
-const VOICE_TOPICS = new Set(['idioms', 'oneWordSubs', 'proverbs', 'oxymorons', 'similes']);
+const VOICE_TOPICS = new Set(['idioms', 'oneWordSubs', 'proverbs', 'oxymorons', 'similes', 'antonyms', 'synonyms', 'collectiveNouns']);
 
 // ── Content helpers ───────────────────────────────────────────────────────────
 
@@ -90,31 +91,6 @@ function buildRefillQueue(setItems, mastery, topicId) {
     if (isMultiWord(getAnswerStr(topicId, item))) return toJumble(topicId, item);
     const q = buildTeachMCQ(topicId, item); return q ? { type: 'mcq', itemId: item.id, q } : null;
   }).filter(Boolean));
-}
-
-// ── Fuzzy match for voice ─────────────────────────────────────────────────────
-
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({ length: m + 1 }, (_, i) => Array.from({ length: n + 1 }, (_, j) => i === 0 ? j : j === 0 ? i : 0));
-  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
-    dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
-  return dp[m][n];
-}
-
-const ARTICLES = new Set(['a', 'an', 'the']);
-
-function scoreMatch(got, expected) {
-  const gw = got.toLowerCase().split(/\s+/).filter(w => w && !ARTICLES.has(w));
-  const ew = expected.toLowerCase().split(/\s+/).filter(w => w && !ARTICLES.has(w));
-  if (!gw.length || !ew.length) return { ratio: 0, matched: new Array(ew.length).fill(false) };
-  let hits = 0;
-  const matched = new Array(ew.length).fill(false);
-  for (const g of gw) {
-    const idx = ew.findIndex((e, i) => !matched[i] && levenshtein(g, e) <= (e.length <= 4 ? 1 : 2));
-    if (idx !== -1) { hits++; matched[idx] = true; }
-  }
-  return { ratio: hits / ew.length, matched };
 }
 
 // ── TTS ───────────────────────────────────────────────────────────────────────
@@ -284,12 +260,12 @@ export default function TeachAndAsk({ topicId, username, onQuit }) {
   submitRef.current = (tx) => {
     const q = queue[qIdx];
     if (!q || q.type !== 'voice') return;
-    const { ratio, matched } = scoreMatch(tx, q.q.answer);
-    const correct = ratio >= 0.85;
-    const words = q.q.answer.split(/\s+/).filter(Boolean);
-    setVTip({ matched, words, correct });
+    const answers = [q.q.answer, ...(q.q.altAnswers || [])];
+    const { score, wordResults, answer: matchedAnswer } = scoreMatchAny(answers, tx);
+    const correct = score >= 0.85;
+    setVTip({ matched: wordResults.map(w => w.matched), words: wordResults.map(w => w.word), correct });
     setVState('done');
-    ttsSay(correct ? q.q.answer : `The answer is: ${q.q.answer}`);
+    ttsSay(correct ? matchedAnswer : `The answer is: ${formatAnswerList(answers)}`);
     setTimeout(() => advanceQueue(correct), 3000);
   };
 

@@ -855,6 +855,32 @@ function itemToVoiceQ(topicId, item) {
         answer:    m[2].replace(/[/\\]/g, ' ').replace(/\s+/g, ' ').trim(),
       };
     }
+    case 'antonyms':
+      return { prompt: item.word, ttsPrompt: `What's the antonym of ${item.word}?`, answer: item.antonym };
+    case 'synonyms':
+      // Any one synonym is an acceptable answer — no need to say all of them.
+      return {
+        prompt:     item.word,
+        ttsPrompt:  `Say a synonym for ${item.word}`,
+        answer:     item.synonyms[0],
+        altAnswers: item.synonyms.slice(1),
+      };
+    case 'collectiveNouns': {
+      // Some nouns (e.g. "Flowers") have more than one valid collective —
+      // accept any of them, mirroring the MCQ's forced-multiselect handling.
+      const pool = ALL_TOPIC_DATA.collectiveNouns || [];
+      const altAnswers = [...new Set(
+        pool
+          .filter(i => i.noun.toLowerCase() === item.noun.toLowerCase() && i.collective.toLowerCase() !== item.collective.toLowerCase())
+          .map(i => i.collective)
+      )];
+      return {
+        prompt:    item.noun,
+        ttsPrompt: `What's the collective noun for a group of ${item.noun}?`,
+        answer:    item.collective,
+        altAnswers,
+      };
+    }
     default:
       return null;
   }

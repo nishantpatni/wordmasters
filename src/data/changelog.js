@@ -4,6 +4,8 @@ export const USER_CHANGELOG = [
     entries: [
       { icon: '🔤', topic: 'Voice Quiz Matching', text: 'Articles ("a", "an", "the") are no longer required or penalized when speaking your answer — say them or skip them, it won\'t affect scoring.' },
       { icon: '🔊', topic: 'Voice Settings', text: 'New "specific voice" picker in Quiz Settings (⚙️) — if the accent dropdown still uses the wrong-sounding voice (a known Chrome/macOS quirk where the OS default voice isn\'t always what Chrome picks), you can now choose the exact installed voice by name. Voice quizzes also show a footer at the bottom with the voice/accent currently speaking.' },
+      { icon: '🎤', topic: 'Voice Quiz', text: 'Now available for Synonyms, Antonyms & Collective Nouns too. For words with more than one valid synonym or collective noun, saying any one of them counts as correct.' },
+      { icon: '⏸️', topic: 'Quiz Settings', text: 'Opening Settings (⚙️) mid-quiz now pauses gameplay — the countdown timer freezes and the mic stops listening — in both MCQ and Voice quizzes, so you can change the voice accent or pick a specific voice without losing time.' },
     ],
   },
   {

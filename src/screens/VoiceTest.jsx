@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
-import { getVoiceLang, speak } from '../utils/voice.js';
+import {
+  VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang,
+  getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak,
+} from '../utils/voice.js';
+import { scoreMatchAny, formatAnswerList } from '../utils/voiceMatch.js';
 import VoiceFooter from '../components/VoiceFooter.jsx';
 
 const MATCH_THRESHOLD = 0.9;
@@ -17,36 +21,6 @@ const AFFIRMATIVES = [
 ];
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-// ── Fuzzy word matching ───────────────────────────────────────────────────────
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  const dp = Array.from({ length: m + 1 }, (_, i) => [i]);
-  for (let j = 1; j <= n; j++) dp[0][j] = j;
-  for (let i = 1; i <= m; i++)
-    for (let j = 1; j <= n; j++)
-      dp[i][j] = a[i - 1] === b[j - 1]
-        ? dp[i - 1][j - 1]
-        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
-  return dp[m][n];
-}
-
-const ARTICLES = new Set(['a', 'an', 'the']);
-
-function scoreMatch(answer, transcript) {
-  const norm     = s => s.toLowerCase().replace(/[^a-z\s]/g, '').trim();
-  const ansWords = norm(answer).split(/\s+/).filter(w => w && !ARTICLES.has(w));
-  const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
-  const wordResults = ansWords.map(aw => {
-    if (spkWords.includes(aw)) return { word: aw, matched: true };
-    const maxDist = aw.length <= 4 ? 1 : 2;
-    return { word: aw, matched: spkWords.some(sw => levenshtein(aw, sw) <= maxDist) };
-  });
-  const score = ansWords.length
-    ? wordResults.filter(w => w.matched).length / ansWords.length
-    : 0;
-  return { score, wordResults };
-}
 
 // ── TTS helper ────────────────────────────────────────────────────────────────
 function ttsSay(text, onEnd) {
@@ -116,6 +90,9 @@ const TOPIC_VOICE_LABELS = {
   proverbs:        { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
   oxymorons:       { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
   similes:         { question: 'Complete the simile',    instruction: 'Say the missing word(s)' },
+  antonyms:        { question: 'What is the antonym of…', instruction: 'Speak the antonym' },
+  synonyms:        { question: 'Say a synonym for…',      instruction: 'Speak any one synonym' },
+  collectiveNouns: { question: 'Name the collective noun…', instruction: 'Speak the collective noun' },
   statesCapitals:  { question: 'Indian Geography',       instruction: 'Speak your answer' },
 };
 function voiceLabel(topicId) {
@@ -158,6 +135,10 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const [results,    setResults]   = useState([]);
   const [timeLeft,   setTimeLeft]  = useState(LISTEN_SECS);
   const [blackScreen, setBlackScreen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [voiceLang,  setVoiceLangState] = useState(getVoiceLang);
+  const [voiceName,  setVoiceNameState] = useState(getVoiceName);
+  const [availVoices, setAvailVoices]   = useState([]);
 
   const q    = questions[idx];
   const meta = TOPIC_META[q?.topicId] || GEO_TOPIC_META[q?.topicId] || { color: '#D97706', bg: '#FFFBEB', name: 'Voice Quiz', icon: '🎤' };
@@ -176,6 +157,9 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const submitRef  = useRef(null);
   const affirmTRef = useRef(null);
   const [affirmMsg, setAffirmMsg] = useState(null);
+  const settingsOpenRef = useRef(false); settingsOpenRef.current = settingsOpen;
+  const resumePhaseRef  = useRef(null);
+  const settingsPanelRef = useRef(null);
 
   function stopRec() {
     clearInterval(tickRef.current);
@@ -190,8 +174,9 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
 
   function submitAnswer(tx) {
     stopRec();
-    const cur = questions[idxRef.current];
-    const { score, wordResults } = scoreMatch(cur.answer, tx || '');
+    const cur     = questions[idxRef.current];
+    const answers = [cur.answer, ...(cur.altAnswers || [])];
+    const { score, wordResults, answer: matchedAnswer } = scoreMatchAny(answers, tx || '');
     const correct = score >= MATCH_THRESHOLD;
     const coins   = correct ? 10 : 0;
     const heard   = (tx || '').trim();
@@ -203,14 +188,14 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
       setAffirmMsg(msg);
       clearTimeout(affirmTRef.current);
       affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
-      setTimeout(() => ttsSay(cur.answer), 450);
+      setTimeout(() => ttsSay(matchedAnswer), 450);
     } else {
       playWrongCue();
       // Say what was actually heard before the correct answer — lets a
       // screen-off user tell a mishear apart from a genuine wrong answer.
       setTimeout(() => {
         ttsSay(heard ? `You said: ${heard}.` : `I didn't hear anything.`, () => {
-          ttsSay(`The answer is ${cur.answer}.`);
+          ttsSay(`The answer is ${formatAnswerList(answers)}.`);
         });
       }, 450);
     }
@@ -218,7 +203,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     const newRes = {
       itemId: cur.itemId, topicId: cur.topicId, correct,
       selectedOption: tx || '(no speech)',
-      correctAnswer:  cur.answer,
+      correctAnswer:  formatAnswerList(answers),
       prompt:         cur.prompt,
       quizType:       'voice',
     };
@@ -240,7 +225,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   }
 
   function startListening() {
-    if (!SR) return;
+    if (!SR || settingsOpenRef.current) return;
     stopRec();
     setTranscript('');
     setPhase('listening');
@@ -279,6 +264,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     r.start();
 
     tickRef.current = setInterval(() => {
+      if (settingsOpenRef.current) return; // paused while settings panel is open
       setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(tickRef.current);
@@ -293,6 +279,44 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   // Always point refs at latest function versions
   submitRef.current = submitAnswer;
   startRef.current  = startListening;
+
+  // Pause gameplay while the settings panel is open: stop the mic/TTS and
+  // remember whether we were actively waiting on speech, so we can resume
+  // listening fresh once the panel closes.
+  useEffect(() => {
+    if (settingsOpen) {
+      resumePhaseRef.current = (phase === 'ready' || phase === 'listening') ? phase : null;
+      stopRec();
+      window.speechSynthesis?.cancel();
+    } else if (resumePhaseRef.current) {
+      resumePhaseRef.current = null;
+      startRef.current?.();
+    }
+  }, [settingsOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function changeVoiceLang(lang) {
+    setVoiceLang(lang);
+    setVoiceLangState(lang);
+    setVoiceName('');
+    setVoiceNameState('');
+  }
+
+  function changeVoiceName(name) {
+    setVoiceName(name);
+    setVoiceNameState(name);
+  }
+
+  useEffect(() => onVoicesChanged(() => setAvailVoices(getVoicesForLang(voiceLang))), [voiceLang]);
+
+  // Close settings panel on outside click
+  useEffect(() => {
+    if (!settingsOpen) return;
+    function onOutside(e) {
+      if (settingsPanelRef.current && !settingsPanelRef.current.contains(e.target)) setSettingsOpen(false);
+    }
+    document.addEventListener('mousedown', onOutside);
+    return () => document.removeEventListener('mousedown', onOutside);
+  }, [settingsOpen]);
 
   // Per-question reset: TTS reads meaning, then start listening
   useEffect(() => {
@@ -375,8 +399,13 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
 
       {/* ── Header ── */}
       <div style={S.header}>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ position: 'relative', display: 'flex', gap: 8, alignItems: 'center' }} ref={settingsPanelRef}>
           <button onClick={handleQuit} style={S.backBtn}>✕ Quit</button>
+          <button
+            onClick={() => setSettingsOpen(p => !p)}
+            style={{ ...S.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? '#212427' : '#6B7280', background: settingsOpen ? '#F2F2F2' : 'transparent' }}
+            title="Settings"
+          >⚙️</button>
           <label style={S.autoLabel}>
             <input
               type="checkbox"
@@ -386,6 +415,41 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
             />
             Auto-submit
           </label>
+          {settingsOpen && (
+            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', padding: '14px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', zIndex: 30, minWidth: 260 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#D97706', background: '#FFFBEB', borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
+                ⏸ Game paused — mic and timer are off while this is open
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#212427', marginBottom: 2 }}>🌐 Voice accent</div>
+              <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>Applies to spoken questions and voice recognition, everywhere in the app</div>
+              <select
+                value={voiceLang}
+                onChange={e => changeVoiceLang(e.target.value)}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+              >
+                {VOICE_LANG_OPTIONS.map(o => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </select>
+              {availVoices.length > 0 && (
+                <>
+                  <div style={{ fontSize: 11, color: '#9CA3AF', margin: '8px 0 4px' }}>
+                    Specific voice — pick this if the accent above still sounds like the wrong/muddled voice
+                  </div>
+                  <select
+                    value={voiceName}
+                    onChange={e => changeVoiceName(e.target.value)}
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                  >
+                    <option value="">Auto (browser default)</option>
+                    {availVoices.map(v => (
+                      <option key={v.name} value={v.name}>{v.name}{v.localService ? '' : ' (online)'}</option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <div style={{ ...S.pill, background: '#E3FDDB', color: '#197A56' }}>✓ {correctCount}</div>
