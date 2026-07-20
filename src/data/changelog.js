@@ -3,7 +3,7 @@ export const USER_CHANGELOG = [
     date: '20 Jul 2026',
     entries: [
       { icon: '🎤', topic: 'Voice Quiz', text: 'Similes, Antonyms & Synonyms now ask for every correct completion in one go (e.g. "As bright as ___" expects diamond, flame, and sun — any order) instead of quizzing each one separately or accepting just one. The mic listening window now also scales with how much you need to say — longer answers get more time.' },
-      { icon: '🌙', topic: 'Dark Mode', text: 'The quiz-taking flow (MCQ quiz, Revise, Review, Results) now defaults to a dark theme to cut down on eye strain — toggle it off anytime in Quiz Settings (⚙️) during a quiz.' },
+      { icon: '🌙', topic: 'Dark Mode', text: 'The quiz-taking flow (MCQ quiz, Voice Quiz, Revise, Review, Results) now defaults to a dark theme to cut down on eye strain — toggle it off anytime in Quiz Settings (⚙️) during a quiz.' },
       { icon: '⬅️', topic: 'Back Button', text: 'Pressing Back no longer exits the app outright — it now steps back one screen at a time (quitting an in-progress quiz first, then topic selection, then home) before actually leaving.' },
       { icon: '📘', topic: 'New Topic: Vocabopedia Similes', text: 'Split off a new topic containing the 70 similes from the Vocabopedia list (MCQ, Voice Quiz, Revise, Teach & Ask). The original Similes topic keeps the rest.' },
     ],
