@@ -11,7 +11,7 @@ const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
 const TOTAL_ITEMS = 9;
 const AFFIRMATIVES = ['Nice one!', 'You nailed it!', 'Spot on!', 'Boom, correct!', 'Well played!', "That's a win!", 'Fantastic!', 'Perfect!', 'Brilliant!', 'Nailed it!', 'Outstanding!', 'Excellent!'];
-const VOICE_TOPICS = new Set(['idioms', 'oneWordSubs', 'proverbs', 'oxymorons', 'similes', 'antonyms', 'synonyms', 'collectiveNouns']);
+const VOICE_TOPICS = new Set(['idioms', 'oneWordSubs', 'proverbs', 'oxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
 
 // ── Content helpers ───────────────────────────────────────────────────────────
 
@@ -24,7 +24,8 @@ function getTeachContent(topicId, item) {
       const meaning = item.meaning.split(' / ')[0];
       return { front: item.phrase, back: meaning, tts: `${item.phrase}. ${meaning}` };
     }
-    case 'similes':      return { front: item.simile, back: null, tts: item.simile };
+    case 'similes':
+    case 'vocabopediaSimiles': return { front: item.simile, back: null, tts: item.simile };
     case 'synonyms': {
       const syns = Array.isArray(item.synonyms) ? item.synonyms.join(', ') : (item.synonym || '');
       return { front: item.word, back: `Synonyms: ${syns}`, tts: `${item.word}. Synonyms: ${syns}` };
@@ -42,7 +43,8 @@ function getAnswerStr(topicId, item) {
     case 'oneWordSubs':      return item.word;
     case 'proverbs':         return item.proverb;
     case 'oxymorons':        return item.phrase;
-    case 'similes': {
+    case 'similes':
+    case 'vocabopediaSimiles': {
       const m = item.simile?.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
       return m ? m[2].replace(/[/\\]/g, ' ').trim() : item.simile;
     }

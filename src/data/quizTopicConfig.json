@@ -23,6 +23,12 @@
     "multiselect": true,
     "minMultiselectRatio": 0.2
   },
+  "vocabopediaSimiles": {
+    "subtypes": ["fill_comparator", "fill_adjective"],
+    "subtypeWeights": { "fill_comparator": 0.5, "fill_adjective": 0.5 },
+    "multiselect": true,
+    "minMultiselectRatio": 0.2
+  },
   "idioms": {
     "subtypes": ["idiom_to_meaning", "meaning_to_idiom"],
     "subtypeWeights": { "idiom_to_meaning": 0.5, "meaning_to_idiom": 0.5 },

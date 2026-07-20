@@ -107,6 +107,7 @@ const TOPIC_VOICE_LABELS = {
   proverbs:        { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
   oxymorons:       { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
   similes:         { question: 'Complete the simile',    instruction: 'Say every missing word' },
+  vocabopediaSimiles: { question: 'Complete the simile', instruction: 'Say every missing word' },
   antonyms:        { question: 'What is the antonym of…', instruction: 'Speak every antonym' },
   synonyms:        { question: 'Say the synonyms for…',   instruction: 'Speak every synonym' },
   collectiveNouns: { question: 'Name the collective noun…', instruction: 'Speak the collective noun' },

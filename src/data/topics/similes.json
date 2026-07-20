@@ -28,20 +28,12 @@
     "simile": "As beautiful as a rainbow"
   },
   {
-    "id": "big-as-an-elephant",
-    "simile": "As big as an elephant"
-  },
-  {
     "id": "bitter-as-gall",
     "simile": "As bitter as gall"
   },
   {
     "id": "blind-as-a-bat",
     "simile": "As blind as a bat"
-  },
-  {
-    "id": "blue-as-the-sky",
-    "simile": "As blue as the sky"
   },
   {
     "id": "boundless-as-the-ocean",
@@ -52,68 +44,20 @@
     "simile": "As bounteous as nature"
   },
   {
-    "id": "brave-as-a-lion",
-    "simile": "As brave as a lion"
-  },
-  {
     "id": "brief-as-a-dream",
     "simile": "As brief as a dream"
-  },
-  {
-    "id": "bright-as-a-diamond",
-    "simile": "As bright as a diamond"
-  },
-  {
-    "id": "bright-as-a-flame",
-    "simile": "As bright as a flame"
-  },
-  {
-    "id": "bright-as-the-sun",
-    "simile": "As bright as the sun"
   },
   {
     "id": "brittle-as-glass",
     "simile": "As brittle as glass"
   },
   {
-    "id": "busy-as-a-bee",
-    "simile": "As busy as a bee"
-  },
-  {
     "id": "cheerful-as-a-lark",
     "simile": "As cheerful as a lark"
   },
   {
-    "id": "clear-as-crystal",
-    "simile": "As clear as crystal"
-  },
-  {
-    "id": "clear-as-day",
-    "simile": "As clear as day"
-  },
-  {
     "id": "clear-as-daylight",
     "simile": "As clear as daylight"
-  },
-  {
-    "id": "cold-as-ice",
-    "simile": "As cold as ice"
-  },
-  {
-    "id": "cold-as-marble",
-    "simile": "As cold as marble"
-  },
-  {
-    "id": "colorful-as-a-rainbow",
-    "simile": "As colorful as a rainbow"
-  },
-  {
-    "id": "cool-as-a-cucumber",
-    "simile": "As cool as a cucumber"
-  },
-  {
-    "id": "cool-as-the-breeze",
-    "simile": "As cool as the breeze"
   },
   {
     "id": "cosy-as-a-birds-nest",
@@ -148,16 +92,8 @@
     "simile": "As dead as a door nail"
   },
   {
-    "id": "deep-as-the-ocean",
-    "simile": "As deep as the ocean"
-  },
-  {
     "id": "distant-as-the-horizon",
     "simile": "As distant as the horizon"
-  },
-  {
-    "id": "dry-as-a-desert",
-    "simile": "As dry as a desert"
   },
   {
     "id": "eager-as-a-bridegroom",
@@ -176,88 +112,36 @@
     "simile": "As faithful as a dog"
   },
   {
-    "id": "fast-as-a-cheetah",
-    "simile": "As fast as a cheetah"
-  },
-  {
     "id": "fast-as-an-eagle",
     "simile": "As fast as an eagle"
-  },
-  {
-    "id": "firm-as-a-rock",
-    "simile": "As firm as a rock"
   },
   {
     "id": "fit-as-a-fiddle",
     "simile": "As fit as a fiddle"
   },
   {
-    "id": "flat-as-a-pancake",
-    "simile": "As flat as a pancake"
-  },
-  {
     "id": "free-as-air",
     "simile": "As free as air"
-  },
-  {
-    "id": "fresh-as-a-daisy",
-    "simile": "As fresh as a daisy"
   },
   {
     "id": "gaudy-as-a-butterfly",
     "simile": "As gaudy as a butterfly"
   },
   {
-    "id": "gentle-as-a-butterfly",
-    "simile": "As gentle as a butterfly"
-  },
-  {
-    "id": "gentle-as-a-lamb",
-    "simile": "As gentle as a lamb"
-  },
-  {
-    "id": "gentle-as-the-breeze",
-    "simile": "As gentle as the breeze"
-  },
-  {
     "id": "good-as-gold",
     "simile": "As good as gold"
-  },
-  {
-    "id": "graceful-as-a-swan",
-    "simile": "As graceful as a swan"
-  },
-  {
-    "id": "green-as-grass",
-    "simile": "As green as grass"
   },
   {
     "id": "happy-as-a-child",
     "simile": "As happy as a child"
   },
   {
-    "id": "happy-as-a-lark",
-    "simile": "As happy as a lark"
-  },
-  {
-    "id": "happy-as-sunshine",
-    "simile": "As happy as sunshine"
-  },
-  {
     "id": "harmless-as-a-dove",
     "simile": "As harmless as a dove"
   },
   {
-    "id": "heavy-as-lead",
-    "simile": "As heavy as lead"
-  },
-  {
     "id": "honest-as-a-mirror",
     "simile": "As honest as a mirror"
-  },
-  {
-    "id": "hungry-as-a-bear",
-    "simile": "As hungry as a bear"
   },
   {
     "id": "hungry-as-a-wolf",
@@ -296,32 +180,12 @@
     "simile": "As jealous as a cat"
   },
   {
-    "id": "light-as-a-feather",
-    "simile": "As light as a feather"
-  },
-  {
-    "id": "light-as-air",
-    "simile": "As light as air"
-  },
-  {
-    "id": "light-as-sunshine",
-    "simile": "As light as sunshine"
-  },
-  {
-    "id": "loud-as-thunder",
-    "simile": "As loud as thunder"
-  },
-  {
     "id": "mean-as-a-miser",
     "simile": "As mean as a miser"
   },
   {
     "id": "natural-as-life",
     "simile": "As natural as life"
-  },
-  {
-    "id": "neat-as-a-pin",
-    "simile": "As neat as a pin"
   },
   {
     "id": "new-as-a-day",
@@ -356,10 +220,6 @@
     "simile": "As piercing as light"
   },
   {
-    "id": "playful-as-a-puppy",
-    "simile": "As playful as a puppy"
-  },
-  {
     "id": "plump-as-a-partridge",
     "simile": "As plump as a partridge"
   },
@@ -368,44 +228,12 @@
     "simile": "As poor as a church mouse"
   },
   {
-    "id": "precious-as-gold",
-    "simile": "As precious as gold"
-  },
-  {
     "id": "pretty-as-a-picture",
     "simile": "As pretty as a picture"
   },
   {
-    "id": "proud-as-a-peacock",
-    "simile": "As proud as a peacock"
-  },
-  {
-    "id": "quick-as-a-flash",
-    "simile": "As quick as a flash"
-  },
-  {
-    "id": "quick-as-lightning",
-    "simile": "As quick as lightning"
-  },
-  {
-    "id": "quiet-as-a-mouse",
-    "simile": "As quiet as a mouse"
-  },
-  {
-    "id": "red-as-a-rose",
-    "simile": "As red as a rose"
-  },
-  {
     "id": "ripe-as-a-cherry",
     "simile": "As ripe as a cherry"
-  },
-  {
-    "id": "rough-as-sandpaper",
-    "simile": "As rough as sandpaper"
-  },
-  {
-    "id": "round-as-a-ball",
-    "simile": "As round as a ball"
   },
   {
     "id": "sacred-as-a-shrine",
@@ -420,52 +248,12 @@
     "simile": "As shapeless as an old shoe"
   },
   {
-    "id": "sharp-as-a-knife",
-    "simile": "As sharp as a knife"
-  },
-  {
-    "id": "shiny-as-a-mirror",
-    "simile": "As shiny as a mirror"
-  },
-  {
-    "id": "shiny-as-gold",
-    "simile": "As shiny as gold"
-  },
-  {
-    "id": "slippery-as-a-fish",
-    "simile": "As slippery as a fish"
-  },
-  {
-    "id": "slippery-as-ice",
-    "simile": "As slippery as ice"
-  },
-  {
     "id": "slow-as-a-snail",
     "simile": "As slow as a snail"
   },
   {
     "id": "sly-as-a-fox",
     "simile": "As sly as a fox"
-  },
-  {
-    "id": "smooth-as-cream",
-    "simile": "As smooth as cream"
-  },
-  {
-    "id": "smooth-as-glass",
-    "simile": "As smooth as glass"
-  },
-  {
-    "id": "smooth-as-silk",
-    "simile": "As smooth as silk"
-  },
-  {
-    "id": "soft-as-a-pillow",
-    "simile": "As soft as a pillow"
-  },
-  {
-    "id": "soft-as-cotton",
-    "simile": "As soft as cotton"
   },
   {
     "id": "sound-as-a-bell",
@@ -480,40 +268,8 @@
     "simile": "As spotless as fresh snow"
   },
   {
-    "id": "steady-as-a-rock",
-    "simile": "As steady as a rock"
-  },
-  {
-    "id": "still-as-a-statue",
-    "simile": "As still as a statue"
-  },
-  {
-    "id": "straight-as-an-arrow",
-    "simile": "As straight as an arrow"
-  },
-  {
-    "id": "strong-as-an-ox",
-    "simile": "As strong as an ox"
-  },
-  {
-    "id": "sweet-as-a-song",
-    "simile": "As sweet as a song"
-  },
-  {
-    "id": "sweet-as-honey",
-    "simile": "As sweet as honey"
-  },
-  {
-    "id": "sweet-as-sugar",
-    "simile": "As sweet as sugar"
-  },
-  {
     "id": "talkative-as-a-magpie",
     "simile": "As talkative as a magpie"
-  },
-  {
-    "id": "tall-as-a-giraffe",
-    "simile": "As tall as a giraffe"
   },
   {
     "id": "tranquil-as-the-summer-sea",
@@ -556,16 +312,8 @@
     "simile": "As watchful as a hawk"
   },
   {
-    "id": "white-as-snow",
-    "simile": "As white as snow"
-  },
-  {
     "id": "wily-as-a-fox",
     "simile": "As wily as a fox"
-  },
-  {
-    "id": "wise-as-an-owl",
-    "simile": "As wise as an owl"
   },
   {
     "id": "yielding-as-wax",

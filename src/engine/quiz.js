@@ -387,7 +387,7 @@ function parseSimile(simileStr) {
 
 let simileSubIdx = 0;
 
-function genSimile(item, pool) {
+function genSimile(item, pool, topicId = 'similes') {
   const { adjective, comparator } = parseSimile(item.simile);
 
   if (simileSubIdx++ % 2 === 0) {
@@ -398,7 +398,7 @@ function genSimile(item, pool) {
       correct, 3
     );
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('similes', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `Complete the simile: "as ${adjective} as ___"`,
       opts, opts.indexOf(correct), item.simile
     );
@@ -420,7 +420,7 @@ function genSimile(item, pool) {
     return acc;
   }, []);
   const isMulti = correctIndices.length > 1;
-  return makeQ('similes', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `Complete the simile: "as ___ as ${comparator}"`,
     opts, opts.indexOf(correct), item.simile,
     correctIndices
@@ -649,6 +649,7 @@ const GENERATORS = {
   idioms:          genIdiom,
   oneWordSubs:     genOneWord,
   similes:         genSimile,
+  vocabopediaSimiles: (item, pool) => genSimile(item, pool, 'vocabopediaSimiles'),
   oxymorons:       genOxymoron,
   collectiveNouns: genCollective,
   homophones:      genHomophone,
@@ -667,7 +668,7 @@ function genForcedMulti(topicId, item, pool) {
   if (topicId === 'synonyms') {
     return genSynonymForced(item, pool);
   }
-  if (topicId === 'similes') {
+  if (topicId === 'similes' || topicId === 'vocabopediaSimiles') {
     // fill_adjective direction can be multiselect when multiple adjectives share a comparator
     const { adjective, comparator } = parseSimile(item.simile);
     const correct = adjective;
@@ -686,7 +687,7 @@ function genForcedMulti(topicId, item, pool) {
       return acc;
     }, []);
     if (correctIndices.length <= 1) return null;
-    return makeQ('similes', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `Complete the simile: "as ___ as ${comparator}"`,
       opts, opts.indexOf(correct), item.simile, correctIndices
     );
@@ -849,7 +850,8 @@ function itemToVoiceQ(topicId, item) {
       return { prompt: item.meaning, answer: item.proverb };
     case 'oxymorons':
       return { prompt: item.meaning.split(' / ')[0], answer: item.phrase };
-    case 'similes': {
+    case 'similes':
+    case 'vocabopediaSimiles': {
       // Single-item form (used by Teach & Ask) — the full voice quiz uses
       // buildSimileVoiceQs() below to group same-stem items instead.
       const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
@@ -953,7 +955,7 @@ function buildAntonymVoiceQs(raw) {
 export function buildVoiceTest(topicId, count) {
   const raw = ALL_TOPIC_DATA[topicId] || [];
   let list;
-  if (topicId === 'similes') {
+  if (topicId === 'similes' || topicId === 'vocabopediaSimiles') {
     list = buildSimileVoiceQs(raw);
   } else if (topicId === 'antonyms') {
     list = buildAntonymVoiceQs(raw);

@@ -13,7 +13,8 @@ function getDisplay(topicId, item) {
     case 'collectiveNouns': return { left: item.noun,    right: item.collective };
     case 'idioms':          return { left: item.idiom,   right: item.meaning, tall: true };
     case 'oxymorons':       return { left: item.phrase,  right: item.meaning };
-    case 'similes': {
+    case 'similes':
+    case 'vocabopediaSimiles': {
       const m = item.simile.match(/^[Aa]s\s+(.+?)\s+[Aa]s\s+(.+)$/i);
       return m ? { left: `as ${m[1]} as…`, right: m[2] } : { left: item.simile, right: '' };
     }
