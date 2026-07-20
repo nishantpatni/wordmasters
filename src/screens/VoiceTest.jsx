@@ -5,13 +5,30 @@ import {
   VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang,
   getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak,
 } from '../utils/voice.js';
-import { scoreMatchAny, formatAnswerList } from '../utils/voiceMatch.js';
+import { scoreMatchAny, scoreMatchAll, formatAnswerList } from '../utils/voiceMatch.js';
 import VoiceFooter from '../components/VoiceFooter.jsx';
 
-const MATCH_THRESHOLD = 0.9;
-const TIP_MS          = 3000;
-const TIP_MS_WRONG    = 5200; // longer so "you said X — the answer is Y" has time to finish
-const LISTEN_SECS     = 20;
+const MATCH_THRESHOLD    = 0.9;
+const TIP_MS             = 3000;
+const TIP_MS_WRONG       = 5200; // longer so "you said X — the answer is Y" has time to finish
+const LISTEN_SECS_BASE   = 20;
+const LISTEN_SECS_PER_EXTRA_WORD = 3;
+
+function wordCountOf(s) {
+  return s.trim().split(/\s+/).filter(Boolean).length;
+}
+
+// Longer answers need more time to speak — add 3s per word beyond the first.
+// "All answers required" questions (requiredAnswers) must add up every word
+// the user needs to say; "any one of" questions (answer/altAnswers) only
+// need the longest single alternative, since the user only says one.
+function listenSecsFor(q) {
+  if (!q) return LISTEN_SECS_BASE;
+  const wordCount = q.requiredAnswers
+    ? q.requiredAnswers.reduce((sum, r) => sum + wordCountOf(r), 0)
+    : Math.max(...[q.answer, ...(q.altAnswers || [])].map(wordCountOf));
+  return LISTEN_SECS_BASE + LISTEN_SECS_PER_EXTRA_WORD * Math.max(0, wordCount - 1);
+}
 
 const AFFIRMATIVES = [
   'Nice one!', "That's good!", 'Love it!', "Yep, that's right!", 'You got it!',
@@ -89,9 +106,9 @@ const TOPIC_VOICE_LABELS = {
   oneWordSubs:     { question: 'One word for…',          instruction: 'Say the one-word answer' },
   proverbs:        { question: 'Which proverb means…',   instruction: 'Speak the proverb' },
   oxymorons:       { question: 'Name the oxymoron for…', instruction: 'Say the oxymoron' },
-  similes:         { question: 'Complete the simile',    instruction: 'Say the missing word(s)' },
-  antonyms:        { question: 'What is the antonym of…', instruction: 'Speak the antonym' },
-  synonyms:        { question: 'Say a synonym for…',      instruction: 'Speak any one synonym' },
+  similes:         { question: 'Complete the simile',    instruction: 'Say every missing word' },
+  antonyms:        { question: 'What is the antonym of…', instruction: 'Speak every antonym' },
+  synonyms:        { question: 'Say the synonyms for…',   instruction: 'Speak every synonym' },
   collectiveNouns: { question: 'Name the collective noun…', instruction: 'Speak the collective noun' },
   statesCapitals:  { question: 'Indian Geography',       instruction: 'Speak your answer' },
 };
@@ -124,7 +141,7 @@ function NotSupported({ onBack }) {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function VoiceTest({ questions, onComplete, onQuit }) {
+export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
   const [idx,        setIdx]       = useState(0);
   // phase: 'ready' | 'listening' | 'reviewing' | 'result' | 'mic-blocked'
   const [phase,      setPhase]     = useState('ready');
@@ -133,7 +150,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
   const [tipData,    setTipData]   = useState(null);
   const [points,     setPoints]    = useState(0);
   const [results,    setResults]   = useState([]);
-  const [timeLeft,   setTimeLeft]  = useState(LISTEN_SECS);
+  const [timeLeft,   setTimeLeft]  = useState(LISTEN_SECS_BASE);
   const [blackScreen, setBlackScreen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [voiceLang,  setVoiceLangState] = useState(getVoiceLang);
@@ -174,12 +191,17 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
 
   function submitAnswer(tx) {
     stopRec();
-    const cur     = questions[idxRef.current];
-    const answers = [cur.answer, ...(cur.altAnswers || [])];
-    const { score, wordResults, answer: matchedAnswer } = scoreMatchAny(answers, tx || '');
-    const correct = score >= MATCH_THRESHOLD;
-    const coins   = correct ? 10 : 0;
-    const heard   = (tx || '').trim();
+    const cur    = questions[idxRef.current];
+    const allMode = !!cur.requiredAnswers;
+    const answers = allMode ? cur.requiredAnswers : [cur.answer, ...(cur.altAnswers || [])];
+    const { score, wordResults, answer: matchedAnswer } = allMode
+      ? scoreMatchAll(cur.requiredAnswers, tx || '')
+      : scoreMatchAny(answers, tx || '');
+    const threshold  = allMode ? 1 : MATCH_THRESHOLD;
+    const correct    = score >= threshold;
+    const coins      = correct ? 10 : 0;
+    const heard      = (tx || '').trim();
+    const answerText = formatAnswerList(answers, allMode ? 'and' : 'or');
 
     if (correct) {
       playCorrectCue();
@@ -188,14 +210,14 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
       setAffirmMsg(msg);
       clearTimeout(affirmTRef.current);
       affirmTRef.current = setTimeout(() => setAffirmMsg(null), 1600);
-      setTimeout(() => ttsSay(matchedAnswer), 450);
+      setTimeout(() => ttsSay(allMode ? answerText : matchedAnswer), 450);
     } else {
       playWrongCue();
       // Say what was actually heard before the correct answer — lets a
       // screen-off user tell a mishear apart from a genuine wrong answer.
       setTimeout(() => {
         ttsSay(heard ? `You said: ${heard}.` : `I didn't hear anything.`, () => {
-          ttsSay(`The answer is ${formatAnswerList(answers)}.`);
+          ttsSay(`The answer is ${answerText}.`);
         });
       }, 450);
     }
@@ -203,14 +225,14 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     const newRes = {
       itemId: cur.itemId, topicId: cur.topicId, correct,
       selectedOption: tx || '(no speech)',
-      correctAnswer:  formatAnswerList(answers),
+      correctAnswer:  answerText,
       prompt:         cur.prompt,
       quizType:       'voice',
     };
     const updated = [...resultsRef.current, newRes];
     resultsRef.current = updated; // update immediately so quit captures this result
 
-    setTipData({ correct, wordResults, coins, score });
+    setTipData({ correct, wordResults, coins, score, threshold });
     setPhase('result');
 
     tipTRef.current = setTimeout(() => {
@@ -229,7 +251,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     stopRec();
     setTranscript('');
     setPhase('listening');
-    setTimeLeft(LISTEN_SECS);
+    setTimeLeft(listenSecsFor(q));
     playListenCue();
 
     const r = new SR();
@@ -327,7 +349,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     setPhase('ready');
     setTranscript('');
     setTipData(null);
-    setTimeLeft(LISTEN_SECS);
+    setTimeLeft(listenSecsFor(q));
     playNewQuestionCue();
 
     let fired = false;
@@ -385,6 +407,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
     clearTimeout(tipTRef.current);
     onQuit(resultsRef.current);
   }
+  if (quitRef) quitRef.current = handleQuit;
 
   function toggleAutoSub() {
     const n = !autoSub;
@@ -581,7 +604,7 @@ export default function VoiceTest({ questions, onComplete, onQuit }) {
             </div>
             {!tipData.correct && (
               <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 8 }}>
-                {Math.round(tipData.score * 100)}% match — need {Math.round(MATCH_THRESHOLD * 100)}%
+                {Math.round(tipData.score * 100)}% match — need {Math.round(tipData.threshold * 100)}%
               </div>
             )}
             <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8, color: '#9CA3AF', margin: '10px 0 8px' }}>

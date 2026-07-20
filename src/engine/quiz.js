@@ -834,7 +834,10 @@ export function buildTest(topicId, count, scores = {}) {
 }
 
 // ── Voice Quiz ────────────────────────────────────────────────────────────────
-// Returns questions shaped { itemId, topicId, prompt, ttsPrompt?, answer } for VoiceTest.
+// Returns questions shaped { itemId, topicId, prompt, ttsPrompt?, answer, altAnswers? }
+// for VoiceTest — any ONE of answer/altAnswers is accepted.
+// Or { itemId, topicId, prompt, ttsPrompt?, requiredAnswers } — ALL of
+// requiredAnswers must be spoken (in any order) to be marked correct.
 // ttsPrompt overrides prompt for TTS when the display text isn't ideal to speak aloud.
 function itemToVoiceQ(topicId, item) {
   switch (topicId) {
@@ -847,23 +850,26 @@ function itemToVoiceQ(topicId, item) {
     case 'oxymorons':
       return { prompt: item.meaning.split(' / ')[0], answer: item.phrase };
     case 'similes': {
+      // Single-item form (used by Teach & Ask) — the full voice quiz uses
+      // buildSimileVoiceQs() below to group same-stem items instead.
       const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
       if (!m) return null;
       return {
-        prompt:    `As ${m[1]} as ___`,
-        ttsPrompt: `As ${m[1]} as...?`,
-        answer:    m[2].replace(/[/\\]/g, ' ').replace(/\s+/g, ' ').trim(),
+        prompt:    `As ${m[1].trim()} as ___`,
+        ttsPrompt: `As ${m[1].trim()} as...?`,
+        answer:    expandSlashAlternates(m[2].replace(/\\/g, '/'))[0],
       };
     }
     case 'antonyms':
+      // Single-item form (used by Teach & Ask) — the full voice quiz uses
+      // buildAntonymVoiceQs() below to group same-word items instead.
       return { prompt: item.word, ttsPrompt: `What's the antonym of ${item.word}?`, answer: item.antonym };
     case 'synonyms':
-      // Any one synonym is an acceptable answer — no need to say all of them.
+      // All synonyms must be spoken (in any order).
       return {
-        prompt:     item.word,
-        ttsPrompt:  `Say a synonym for ${item.word}`,
-        answer:     item.synonyms[0],
-        altAnswers: item.synonyms.slice(1),
+        prompt:          item.word,
+        ttsPrompt:       item.synonyms.length > 1 ? `Say all the synonyms for ${item.word}` : `Say a synonym for ${item.word}`,
+        requiredAnswers: item.synonyms,
       };
     case 'collectiveNouns': {
       // Some nouns (e.g. "Flowers") have more than one valid collective —
@@ -886,15 +892,80 @@ function itemToVoiceQ(topicId, item) {
   }
 }
 
+// A completion like "two peas/beans" means "two peas" OR "two beans" — expand
+// the slash-alternated token into full standalone phrases.
+function expandSlashAlternates(phrase) {
+  const tokens = phrase.trim().split(/\s+/);
+  const slashIdx = tokens.findIndex(t => t.includes('/'));
+  if (slashIdx === -1) return [phrase.trim()];
+  return tokens[slashIdx].split('/').filter(Boolean).map(alt => {
+    const copy = [...tokens];
+    copy[slashIdx] = alt;
+    return copy.join(' ');
+  });
+}
+
+// Similes data has one JSON entry per completion (e.g. "As bright as a
+// diamond" / "...a flame" / "...the sun" are 3 separate items) — group them
+// by stem so the voice quiz asks the stem once and expects every completion.
+function buildSimileVoiceQs(raw) {
+  const groups = new Map();
+  for (const item of raw) {
+    const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
+    if (!m) continue;
+    const stem = m[1].trim().toLowerCase();
+    if (!groups.has(stem)) {
+      groups.set(stem, {
+        itemId:      item.id,
+        prompt:      `As ${m[1].trim()} as ___`,
+        ttsPrompt:   `As ${m[1].trim()} as...?`,
+        completions: new Set(),
+      });
+    }
+    expandSlashAlternates(m[2].replace(/\\/g, '/')).forEach(c => groups.get(stem).completions.add(c));
+  }
+  return [...groups.values()].map(g => ({
+    itemId:          g.itemId,
+    prompt:          g.prompt,
+    ttsPrompt:       g.ttsPrompt,
+    requiredAnswers: [...g.completions],
+  }));
+}
+
+// Antonyms data also has one JSON entry per valid antonym for some words
+// (e.g. "Amusing" → Serious/Dull/Solemn/Boring/Grave are 5 separate items) —
+// group them so the voice quiz expects every antonym.
+function buildAntonymVoiceQs(raw) {
+  const groups = new Map();
+  for (const item of raw) {
+    const key = item.word.trim().toLowerCase();
+    if (!groups.has(key)) groups.set(key, { itemId: item.id, word: item.word, antonyms: new Set() });
+    groups.get(key).antonyms.add(item.antonym.trim());
+  }
+  return [...groups.values()].map(g => ({
+    itemId:          g.itemId,
+    prompt:          g.word,
+    ttsPrompt:       g.antonyms.size > 1 ? `What are the antonyms of ${g.word}?` : `What's the antonym of ${g.word}?`,
+    requiredAnswers: [...g.antonyms],
+  }));
+}
+
 export function buildVoiceTest(topicId, count) {
   const raw = ALL_TOPIC_DATA[topicId] || [];
-  return shuffle([...raw])
-    .map(item => {
-      const q = itemToVoiceQ(topicId, item);
-      return q ? { itemId: item.id, topicId, ...q } : null;
-    })
-    .filter(Boolean)
-    .slice(0, count);
+  let list;
+  if (topicId === 'similes') {
+    list = buildSimileVoiceQs(raw);
+  } else if (topicId === 'antonyms') {
+    list = buildAntonymVoiceQs(raw);
+  } else {
+    list = raw
+      .map(item => {
+        const q = itemToVoiceQ(topicId, item);
+        return q ? { itemId: item.id, ...q } : null;
+      })
+      .filter(Boolean);
+  }
+  return shuffle(list.map(q => ({ topicId, ...q }))).slice(0, count);
 }
 
 // ── Teach Session ─────────────────────────────────────────────────────────────

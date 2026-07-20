@@ -14,8 +14,9 @@ export function levenshtein(a, b) {
   return dp[m][n];
 }
 
+const norm = s => s.toLowerCase().replace(/-/g, ' ').replace(/[^a-z\s]/g, '').trim();
+
 export function scoreMatch(answer, transcript) {
-  const norm     = s => s.toLowerCase().replace(/[^a-z\s]/g, '').trim();
   const ansWords = norm(answer).split(/\s+/).filter(w => w && !ARTICLES.has(w));
   const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
   const wordResults = ansWords.map(aw => {
@@ -41,8 +42,38 @@ export function scoreMatchAny(answers, transcript) {
   return best;
 }
 
-export function formatAnswerList(answers) {
+// Requires ALL of several valid answers (e.g. every completion of "as bright
+// as ___", or every antonym/synonym of a word) — order doesn't matter, but
+// each spoken word can only satisfy one required answer, so saying the same
+// word twice doesn't count for two different required answers.
+export function scoreMatchAll(requiredAnswers, transcript) {
+  const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+  const used = new Array(spkWords.length).fill(false);
+
+  function claim(word) {
+    let i = spkWords.findIndex((w, idx) => !used[idx] && w === word);
+    if (i === -1) {
+      const maxDist = word.length <= 4 ? 1 : 2;
+      i = spkWords.findIndex((w, idx) => !used[idx] && levenshtein(word, w) <= maxDist);
+    }
+    if (i === -1) return false;
+    used[i] = true;
+    return true;
+  }
+
+  const wordResults = requiredAnswers.map(reqAnswer => {
+    const reqWords = norm(reqAnswer).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+    const matched = reqWords.length > 0 && reqWords.every(claim);
+    return { word: reqAnswer, matched };
+  });
+  const score = requiredAnswers.length
+    ? wordResults.filter(w => w.matched).length / requiredAnswers.length
+    : 0;
+  return { score, wordResults };
+}
+
+export function formatAnswerList(answers, joiner = 'or') {
   if (answers.length === 1) return answers[0];
-  if (answers.length === 2) return `${answers[0]} or ${answers[1]}`;
-  return `${answers.slice(0, -1).join(', ')}, or ${answers[answers.length - 1]}`;
+  if (answers.length === 2) return `${answers[0]} ${joiner} ${answers[1]}`;
+  return `${answers.slice(0, -1).join(', ')}, ${joiner} ${answers[answers.length - 1]}`;
 }
