@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ALL_TOPIC_DATA, TOPIC_META } from '../data/topicData.js';
 import { getScores, memoryScore } from '../engine/quiz.js';
-// asaniSe theme applied
+import { getTheme } from '../utils/theme.js';
 
 // ── How to display each topic's items ─────────────────────────────────────────
 function getDisplay(topicId, item) {
@@ -26,18 +26,29 @@ function statusOf(rec) {
   return memoryScore(rec) >= 70 ? 'strong' : 'weak';
 }
 
-const STATUS_ORDER  = { unseen: 0, weak: 1, strong: 2 };
-const BADGE_STYLES  = {
-  unseen: { background: '#F2F2F2', color: '#9CA3AF' },
-  weak:   { background: '#FEF3C7', color: '#B45309' },
-  strong: { background: '#E3FDDB', color: '#197A56' },
-};
-const STRIPE_COLOR  = { unseen: '#DCD5CE', weak: '#FCD34D', strong: '#96F878' };
+const STATUS_ORDER = { unseen: 0, weak: 1, strong: 2 };
+
+function badgeStyles(theme) {
+  return {
+    unseen: { background: theme.pillNeutralBg, color: theme.textFaint },
+    weak:   { background: theme.warnBg, color: theme.warnText },
+    strong: { background: theme.correctBg, color: theme.correctText },
+  };
+}
+
+function stripeColor(theme) {
+  return { unseen: theme.optionBorder, weak: '#FCD34D', strong: '#96F878' };
+}
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function Revise({ topicId, username, onBack }) {
+export default function Revise({ topicId, username, onBack, darkMode }) {
   const [sortBy, setSortBy] = useState('status'); // 'status' | 'az' | 'score'
   const [search, setSearch] = useState('');
+
+  const theme       = getTheme(darkMode);
+  const styles       = themedStyles(theme);
+  const BADGE_STYLES = badgeStyles(theme);
+  const STRIPE_COLOR = stripeColor(theme);
 
   const meta   = TOPIC_META[topicId] || { color: '#6C4EE0', bg: '#F5F3FF', name: topicId, icon: '📖' };
   const items  = ALL_TOPIC_DATA[topicId] || [];
@@ -93,7 +104,7 @@ export default function Revise({ topicId, username, onBack }) {
         <div style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 18, color: meta.color }}>
           {meta.icon} {meta.name}
         </div>
-        <div style={{ fontSize: 12, fontWeight: 700, color: '#B4B2A9' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: theme.textFainter }}>
           {items.length} items
         </div>
       </div>
@@ -131,7 +142,7 @@ export default function Revise({ topicId, username, onBack }) {
 
       {/* Stats bar */}
       <div style={styles.statsBar}>
-        <span style={{ color: '#9CA3AF', fontWeight: 700 }}>New</span>
+        <span style={{ color: theme.textFaint, fontWeight: 700 }}>New</span>
         <span style={styles.statNum}>{counts.unseen}</span>
         <span style={styles.dot}>·</span>
         <span style={{ color: '#F59E0B', fontWeight: 700 }}>Weak</span>
@@ -178,7 +189,7 @@ export default function Revise({ topicId, username, onBack }) {
                 {status === 'strong' && `✓ ${score}%`}
               </span>
               {rec?.attempts > 0 && (
-                <div style={{ fontSize: 10, color: '#D1D5DB', marginTop: 3 }}>
+                <div style={{ fontSize: 10, color: theme.textFainter, marginTop: 3 }}>
                   {rec.correct}/{rec.attempts}
                 </div>
               )}
@@ -187,7 +198,7 @@ export default function Revise({ topicId, username, onBack }) {
         ))}
 
         {sorted.length === 0 && (
-          <div style={{ textAlign: 'center', color: '#B4B2A9', padding: '60px 0', fontSize: 14, fontWeight: 600 }}>
+          <div style={{ textAlign: 'center', color: theme.textFainter, padding: '60px 0', fontSize: 14, fontWeight: 600 }}>
             No results for "{search}"
           </div>
         )}
@@ -196,48 +207,50 @@ export default function Revise({ topicId, username, onBack }) {
   );
 }
 
-const styles = {
-  page: { minHeight: '100vh', background: '#F1EEEA', fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  header: {
-    background: '#fff', borderBottom: '1px solid #DCD5CE',
-    padding: '14px 20px', display: 'flex', alignItems: 'center',
-    justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 10,
-    boxShadow: '0 1px 6px rgba(0,0,0,0.04)',
-  },
-  backBtn: {
-    background: 'transparent', border: '1px solid #DCD5CE', borderRadius: 10,
-    padding: '7px 14px', fontSize: 14, fontWeight: 700, cursor: 'pointer', color: '#212427',
-  },
-  controls: {
-    padding: '10px 16px', display: 'flex', gap: 10, alignItems: 'center',
-    flexWrap: 'wrap', background: '#fff', borderBottom: '1px solid #DCD5CE',
-  },
-  searchInput: {
-    flex: 1, minWidth: 140, background: '#F2F2F2', border: '1px solid #DCD5CE',
-    borderRadius: 10, padding: '8px 12px', fontSize: 14, outline: 'none',
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-  },
-  sortBtn: {
-    borderRadius: 8, padding: '6px 12px', fontSize: 12, fontWeight: 700,
-    border: '1.5px solid #DCD5CE', background: 'transparent',
-    cursor: 'pointer', transition: 'all 0.15s', color: '#6B7280',
-  },
-  statsBar: {
-    padding: '7px 20px', display: 'flex', gap: 6, alignItems: 'center',
-    fontSize: 13, background: '#FAFAF9', borderBottom: '1px solid #DCD5CE',
-  },
-  statNum: { fontWeight: 800, color: '#212427' },
-  dot: { color: '#DCD5CE' },
-  list: { padding: '10px 16px 60px' },
-  row: {
-    display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14,
-    background: '#fff', borderRadius: 12, padding: '11px 14px', marginBottom: 7,
-    border: '1px solid #DCD5CE',
-  },
-  wordLeft:    { fontSize: 15, fontWeight: 700, color: '#212427' },
-  arrow:       { fontSize: 12, color: '#DCD5CE', flexShrink: 0 },
-  wordRight:   { fontSize: 14, fontWeight: 600, color: '#374151' },
-  proverbMain: { fontSize: 14, fontWeight: 700, color: '#212427', fontStyle: 'italic', marginBottom: 4 },
-  proverbSub:  { fontSize: 12, color: '#6B7280', fontWeight: 500, lineHeight: 1.5 },
-  pill: { borderRadius: 999, padding: '3px 9px', fontSize: 12, fontWeight: 700 },
-};
+function themedStyles(theme) {
+  return {
+    page: { minHeight: '100vh', background: theme.pageBg, fontFamily: "'Plus Jakarta Sans', sans-serif" },
+    header: {
+      background: theme.headerBg, borderBottom: `1px solid ${theme.headerBorder}`,
+      padding: '14px 20px', display: 'flex', alignItems: 'center',
+      justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 10,
+      boxShadow: theme.cardShadow,
+    },
+    backBtn: {
+      background: 'transparent', border: `1px solid ${theme.panelBorder}`, borderRadius: 10,
+      padding: '7px 14px', fontSize: 14, fontWeight: 700, cursor: 'pointer', color: theme.textPrimary,
+    },
+    controls: {
+      padding: '10px 16px', display: 'flex', gap: 10, alignItems: 'center',
+      flexWrap: 'wrap', background: theme.headerBg, borderBottom: `1px solid ${theme.headerBorder}`,
+    },
+    searchInput: {
+      flex: 1, minWidth: 140, background: theme.pillNeutralBg, border: `1px solid ${theme.panelBorder}`,
+      borderRadius: 10, padding: '8px 12px', fontSize: 14, outline: 'none', color: theme.textPrimary,
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+    },
+    sortBtn: {
+      borderRadius: 8, padding: '6px 12px', fontSize: 12, fontWeight: 700,
+      border: `1.5px solid ${theme.panelBorder}`, background: 'transparent',
+      cursor: 'pointer', transition: 'all 0.15s', color: theme.textMuted,
+    },
+    statsBar: {
+      padding: '7px 20px', display: 'flex', gap: 6, alignItems: 'center',
+      fontSize: 13, background: theme.optionBg, borderBottom: `1px solid ${theme.headerBorder}`,
+    },
+    statNum: { fontWeight: 800, color: theme.textPrimary },
+    dot: { color: theme.panelBorder },
+    list: { padding: '10px 16px 60px' },
+    row: {
+      display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14,
+      background: theme.cardBg, borderRadius: 12, padding: '11px 14px', marginBottom: 7,
+      border: `1px solid ${theme.cardBorder}`,
+    },
+    wordLeft:    { fontSize: 15, fontWeight: 700, color: theme.textPrimary },
+    arrow:       { fontSize: 12, color: theme.panelBorder, flexShrink: 0 },
+    wordRight:   { fontSize: 14, fontWeight: 600, color: theme.textMuted },
+    proverbMain: { fontSize: 14, fontWeight: 700, color: theme.textPrimary, fontStyle: 'italic', marginBottom: 4 },
+    proverbSub:  { fontSize: 12, color: theme.textMuted, fontWeight: 500, lineHeight: 1.5 },
+    pill: { borderRadius: 999, padding: '3px 9px', fontSize: 12, fontWeight: 700 },
+  };
+}

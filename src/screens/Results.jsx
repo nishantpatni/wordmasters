@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
+import { getTheme } from '../utils/theme.js';
 
 function Confetti({ active }) {
   const pieces = useRef([]);
@@ -26,7 +27,9 @@ function Confetti({ active }) {
   );
 }
 
-export default function Results({ results, topicId, onRetry, onHome, onRepractice, isPractice }) {
+export default function Results({ results, topicId, onRetry, onHome, onRepractice, isPractice, darkMode }) {
+  const theme  = getTheme(darkMode);
+  const styles = themedStyles(theme);
   const correct = results.filter(r => r.correct).length;
   const total   = results.length;
   const pct     = Math.round((correct / total) * 100);
@@ -58,16 +61,16 @@ export default function Results({ results, topicId, onRetry, onHome, onRepractic
         {/* Score ring */}
         <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
           <svg width="110" height="110" viewBox="0 0 110 110">
-            <circle cx="55" cy="55" r="40" fill="none" stroke="#F2F2F2" strokeWidth="10" />
+            <circle cx="55" cy="55" r="40" fill="none" stroke={theme.progressTrack} strokeWidth="10" />
             <circle cx="55" cy="55" r="40" fill="none"
               stroke={ringColor}
               strokeWidth="10" strokeDasharray={circ} strokeDashoffset={dash}
               strokeLinecap="round" transform="rotate(-90 55 55)"
               style={{ transition: 'stroke-dashoffset 1s ease' }} />
             <text x="55" y="50" textAnchor="middle"
-              style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, fill: '#212427' }}>{pct}%</text>
+              style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, fill: theme.textPrimary }}>{pct}%</text>
             <text x="55" y="68" textAnchor="middle"
-              style={{ fontSize: 11, fill: '#9CA3AF' }}>{correct}/{total}</text>
+              style={{ fontSize: 11, fill: theme.textFaint }}>{correct}/{total}</text>
           </svg>
         </div>
 
@@ -82,10 +85,10 @@ export default function Results({ results, topicId, onRetry, onHome, onRepractic
                 <div key={tid} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                   <span style={{ fontSize: 16 }}>{m.icon}</span>
                   <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 700, color: '#5A5850', marginBottom: 3 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 700, color: theme.textMuted, marginBottom: 3 }}>
                       <span>{m.name}</span><span>{s.correct}/{s.total}</span>
                     </div>
-                    <div style={{ height: 6, background: '#F2F2F2', borderRadius: 3, overflow: 'hidden' }}>
+                    <div style={{ height: 6, background: theme.progressTrack, borderRadius: 3, overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${tp}%`, background: m.color, borderRadius: 3, transition: 'width 0.6s' }} />
                     </div>
                   </div>
@@ -117,14 +120,16 @@ export default function Results({ results, topicId, onRetry, onHome, onRepractic
   );
 }
 
-const styles = {
-  page:           { minHeight: '100vh', background: '#F1EEEA', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  card:           { background: '#fff', borderRadius: 28, padding: '36px 28px', maxWidth: 440, width: '100%', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '1px solid #DCD5CE' },
-  titleText:      { fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, color: '#212427' },
-  breakdown:      { background: '#FAFAF9', borderRadius: 14, padding: 16, textAlign: 'left', marginTop: 4, border: '1px solid #DCD5CE' },
-  breakdownTitle: { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 12 },
-  primaryBtn:   { flex: 1, background: '#96F878', color: '#212427', border: 'none', borderRadius: 15, padding: 14, fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 17, cursor: 'pointer', transition: 'background 0.15s' },
-  secondaryBtn: { flex: 1, background: '#fff', color: '#212427', border: '1.5px solid #DCD5CE', borderRadius: 15, padding: 14, fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 17, cursor: 'pointer' },
-  practiceBtn:  { background: '#fff', color: '#212427', border: '1.5px solid #DCD5CE', borderRadius: 15, padding: '13px 14px', fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, cursor: 'pointer', width: '100%' },
-  practiceBadge:{ fontSize: 12, fontWeight: 700, color: '#9CA3AF', textAlign: 'center', letterSpacing: 0.3, padding: '6px 0' },
-};
+function themedStyles(theme) {
+  return {
+    page:           { minHeight: '100vh', background: theme.pageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" },
+    card:           { background: theme.cardBg, borderRadius: 28, padding: '36px 28px', maxWidth: 440, width: '100%', textAlign: 'center', boxShadow: theme.cardShadow, border: `1px solid ${theme.cardBorder}` },
+    titleText:      { fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, color: theme.textPrimary },
+    breakdown:      { background: theme.optionBg, borderRadius: 14, padding: 16, textAlign: 'left', marginTop: 4, border: `1px solid ${theme.cardBorder}` },
+    breakdownTitle: { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: theme.textFaint, marginBottom: 12 },
+    primaryBtn:   { flex: 1, background: '#96F878', color: '#212427', border: 'none', borderRadius: 15, padding: 14, fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 17, cursor: 'pointer', transition: 'background 0.15s' },
+    secondaryBtn: { flex: 1, background: theme.cardBg, color: theme.textPrimary, border: `1.5px solid ${theme.cardBorder}`, borderRadius: 15, padding: 14, fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 17, cursor: 'pointer' },
+    practiceBtn:  { background: theme.cardBg, color: theme.textPrimary, border: `1.5px solid ${theme.cardBorder}`, borderRadius: 15, padding: '13px 14px', fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, cursor: 'pointer', width: '100%' },
+    practiceBadge:{ fontSize: 12, fontWeight: 700, color: theme.textFaint, textAlign: 'center', letterSpacing: 0.3, padding: '6px 0' },
+  };
+}

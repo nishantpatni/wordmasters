@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
 import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak } from '../utils/voice.js';
+import { getTheme } from '../utils/theme.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -83,7 +84,7 @@ function playTimeout() {
 }
 
 // ── Circular countdown ring shown in the card header ──────────────────────────
-function TimerRing({ timeLeft, total, answered, paused }) {
+function TimerRing({ timeLeft, total, answered, paused, trackColor }) {
   const r     = 18;
   const circ  = 2 * Math.PI * r;
   const offset = circ - (circ * timeLeft / total);
@@ -91,7 +92,7 @@ function TimerRing({ timeLeft, total, answered, paused }) {
   const urgent = timeLeft <= 3 && !answered && !paused;
   return (
     <svg width="46" height="46" viewBox="0 0 46 46" style={{ flexShrink: 0, opacity: paused ? 0.5 : 1 }}>
-      <circle cx="23" cy="23" r={r} fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="3.5" />
+      <circle cx="23" cy="23" r={r} fill="none" stroke={trackColor} strokeWidth="3.5" />
       <circle cx="23" cy="23" r={r} fill="none" stroke={answered ? '#21BF61' : color}
         strokeWidth="3.5" strokeDasharray={circ} strokeDashoffset={answered ? 0 : offset}
         strokeLinecap="round" transform="rotate(-90 23 23)"
@@ -149,7 +150,7 @@ function getKeyTerm(prompt) {
   return prompt.split('\n')[0].replace(/\?$/, '').trim();
 }
 
-export default function TestScreen({ questions, onComplete, onQuit }) {
+export default function TestScreen({ questions, onComplete, onQuit, quitRef, darkMode, onToggleDarkMode }) {
   const [idx,           setIdx]          = useState(0);
   const [sel,           setSel]          = useState(null);       // single-select option idx
   const [multiSel,      setMultiSel]     = useState(new Set());  // multi-select
@@ -170,6 +171,9 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   const [voiceLang,      setVoiceLangState] = useState(getVoiceLang);
   const [voiceName,      setVoiceNameState] = useState(getVoiceName);
   const [availVoices,    setAvailVoices]    = useState([]);
+
+  const theme = getTheme(darkMode);
+  const S     = themedStyles(theme);
 
   const q       = questions[idx];
   const isMulti = q.correctIndices != null && q.correctIndices.length > 1;
@@ -221,6 +225,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     window.speechSynthesis?.cancel();
     onQuit(resultsRef.current);
   }
+  if (quitRef) quitRef.current = handleQuit;
 
   function toggleTts() {
     const next = !ttsOnRef.current;
@@ -509,9 +514,9 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   // Set body background so the red fill shows through the transparent page on desktop
   useEffect(() => {
     const prev = document.body.style.background;
-    document.body.style.background = '#F1EEEA';
+    document.body.style.background = theme.pageBg;
     return () => { document.body.style.background = prev; };
-  }, []);
+  }, [theme.pageBg]);
 
   // ── Keyboard: 1-4 selects/toggles options; Enter submits multi ────────────
   const handleSelectRef      = useRef(null);
@@ -540,13 +545,13 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     if (isMulti) {
       const isCorrectIdx = q.correctIndices.includes(oi);
       const isSelected   = multiSel.has(oi);
-      let bg = '#FAFAF9', border = '#DCD5CE', color = '#212427', anim = 'none';
+      let bg = theme.optionBg, border = theme.optionBorder, color = theme.textPrimary, anim = 'none';
       if (answered) {
-        if (isCorrectIdx && isSelected)       { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; anim = 'correctPop 0.45s ease'; }
-        else if (isCorrectIdx && !isSelected) { bg = '#FFF9E6'; border = '#F59E0B'; color = '#B45309'; }
-        else if (!isCorrectIdx && isSelected) { bg = '#FEF2F2'; border = '#DC2626'; color = '#DC2626'; anim = 'wrongShake 0.4s ease'; }
+        if (isCorrectIdx && isSelected)       { bg = theme.correctBg; border = theme.correctBorder; color = theme.correctText; anim = 'correctPop 0.45s ease'; }
+        else if (isCorrectIdx && !isSelected) { bg = theme.warnBg; border = theme.warnBorder; color = theme.warnText; }
+        else if (!isCorrectIdx && isSelected) { bg = theme.wrongBg; border = theme.wrongBorder; color = theme.wrongText; anim = 'wrongShake 0.4s ease'; }
       } else if (isSelected) {
-        bg = '#E3FDDB'; border = '#96F878'; color = '#197A56';
+        bg = theme.selectedBg; border = theme.selectedBorder; color = theme.selectedText;
       }
       return { background: bg, border: `1.5px solid ${border}`, color, animation: anim };
     }
@@ -554,11 +559,11 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
     // Single-select
     const isCorrect  = oi === q.correctIndex;
     const isSelected = oi === sel;
-    let bg = '#FAFAF9', border = '#DCD5CE', color = '#212427', anim = 'none';
+    let bg = theme.optionBg, border = theme.optionBorder, color = theme.textPrimary, anim = 'none';
     if (answered) {
-      if (isCorrect)                  { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; if (isSelected) anim = 'correctPop 0.45s ease'; }
-      else if (isSelected)            { bg = '#FEF2F2'; border = '#DC2626'; color = '#DC2626'; anim = 'wrongShake 0.4s ease'; }
-      else if (timedOut && isCorrect) { bg = '#E3FDDB'; border = '#21BF61'; color = '#197A56'; }
+      if (isCorrect)                  { bg = theme.correctBg; border = theme.correctBorder; color = theme.correctText; if (isSelected) anim = 'correctPop 0.45s ease'; }
+      else if (isSelected)            { bg = theme.wrongBg; border = theme.wrongBorder; color = theme.wrongText; anim = 'wrongShake 0.4s ease'; }
+      else if (timedOut && isCorrect) { bg = theme.correctBg; border = theme.correctBorder; color = theme.correctText; }
     }
     return { background: bg, border: `1.5px solid ${border}`, color, animation: anim };
   }
@@ -583,7 +588,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   }
 
   return (
-    <div style={styles.page} className="test-page">
+    <div style={S.page} className="test-page">
 
       {/* Red urgency fill — grows top→down as time runs out, desktop only */}
       <div className="timer-fill" style={{
@@ -657,52 +662,59 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
       `}</style>
 
       {/* ── Header ── */}
-      <div style={{ ...styles.header, position: 'relative', zIndex: 2 }}>
+      <div style={{ ...S.header, position: 'relative', zIndex: 2 }}>
         <div style={{ position: 'relative', display: 'flex', gap: 8 }} ref={settingsPanelRef}>
-          <button onClick={handleQuit} style={styles.backBtn}>✕ Quit</button>
-          <button onClick={toggleTts} style={{ ...styles.backBtn, fontSize: 16, padding: '7px 10px' }}
+          <button onClick={handleQuit} style={S.backBtn}>✕ Quit</button>
+          <button onClick={toggleTts} style={{ ...S.backBtn, fontSize: 16, padding: '7px 10px' }}
             title={ttsOn ? 'Mute voice' : 'Unmute voice'}>
             {ttsOn ? '🔊' : '🔇'}
           </button>
           <button
             onClick={() => setSettingsOpen(p => !p)}
-            style={{ ...styles.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? '#212427' : '#6B7280', background: settingsOpen ? '#F2F2F2' : 'transparent' }}
+            style={{ ...S.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? theme.textPrimary : theme.textMuted, background: settingsOpen ? theme.pillNeutralBg : 'transparent' }}
             title="Settings"
           >⚙️</button>
           {settingsOpen && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', padding: '14px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', zIndex: 30, minWidth: 240 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#D97706', background: '#FFFBEB', borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
+            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: theme.panelBg, borderRadius: 14, border: `1px solid ${theme.panelBorder}`, padding: '14px 16px', boxShadow: theme.panelShadow, zIndex: 30, minWidth: 240 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: theme.warnText, background: theme.warnBg, borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
                 ⏸ Game paused — timer's frozen while this is open
               </div>
-              <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 12 }}>Quiz Settings</div>
+              <div style={{ fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: theme.textFaint, marginBottom: 12 }}>Quiz Settings</div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
+                <input type="checkbox" checked={darkMode} onChange={onToggleDarkMode} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>🌙 Dark mode</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Easier on the eyes for long sessions</div>
+                </div>
+              </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
                 <input type="checkbox" checked={ttsOn} onChange={toggleTts} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>Speak key term</div>
-                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Read the question term aloud</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>Speak key term</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Read the question term aloud</div>
                 </div>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 10 }}>
                 <input type="checkbox" checked={speakAns} onChange={toggleSpeakAns} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>Speak correct answer</div>
-                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Hear the answer after each correct pick</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>Speak correct answer</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Hear the answer after each correct pick</div>
                 </div>
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5, marginBottom: 12 }}>
                 <input type="checkbox" checked={voiceInput} onChange={toggleVoiceInput} disabled={!SR} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>🎤 Voice input{!SR ? ' (Chrome only)' : ''}</div>
-                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Say a number or the option text to answer</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>🎤 Voice input{!SR ? ' (Chrome only)' : ''}</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Say a number or the option text to answer</div>
                 </div>
               </label>
-              <div style={{ borderTop: '1px solid #EEE9E2', paddingTop: 10 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: '#212427', marginBottom: 2 }}>🌐 Voice accent</div>
-                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>Applies to spoken questions/answers and voice recognition, everywhere in the app</div>
+              <div style={{ borderTop: `1px solid ${theme.panelDivider}`, paddingTop: 10 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, marginBottom: 2 }}>🌐 Voice accent</div>
+                <div style={{ fontSize: 11, color: theme.textFaint, marginBottom: 8 }}>Applies to spoken questions/answers and voice recognition, everywhere in the app</div>
                 <select
                   value={voiceLang}
                   onChange={e => changeVoiceLang(e.target.value)}
-                  style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                  style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1px solid ${theme.panelBorder}`, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: theme.textPrimary, background: theme.selectBg }}
                 >
                   {VOICE_LANG_OPTIONS.map(o => (
                     <option key={o.value} value={o.value}>{o.label}</option>
@@ -710,13 +722,13 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
                 </select>
                 {availVoices.length > 0 && (
                   <>
-                    <div style={{ fontSize: 11, color: '#9CA3AF', margin: '8px 0 4px' }}>
+                    <div style={{ fontSize: 11, color: theme.textFaint, margin: '8px 0 4px' }}>
                       Specific voice — pick this if the accent above still sounds like the wrong/muddled voice
                     </div>
                     <select
                       value={voiceName}
                       onChange={e => changeVoiceName(e.target.value)}
-                      style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                      style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1px solid ${theme.panelBorder}`, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: theme.textPrimary, background: theme.selectBg }}
                     >
                       <option value="">Auto (browser default)</option>
                       {availVoices.map(v => (
@@ -731,17 +743,17 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
         </div>
 
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ ...styles.pill, background: '#E3FDDB', color: '#197A56' }}>✓ {correctCount}</div>
-          <div style={{ ...styles.pill, background: '#FEF2F2', color: '#DC2626' }}>✗ {idx - correctCount}</div>
+          <div style={{ ...S.pill, background: theme.correctBg, color: theme.correctText }}>✓ {correctCount}</div>
+          <div style={{ ...S.pill, background: theme.wrongBg, color: theme.wrongText }}>✗ {idx - correctCount}</div>
 
           <div style={{ position: 'relative' }}>
             {flash && (
-              <div style={styles.coinFloat}>
+              <div style={S.coinFloat}>
                 <span style={{ animation: 'coinSpin 0.5s ease', display: 'inline-block' }}>🪙</span>
                 {' '}{flash}
               </div>
             )}
-            <div style={{ ...styles.pill, background: '#E3FDDB', color: '#197A56',
+            <div style={{ ...S.pill, background: theme.correctBg, color: theme.correctText,
               fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 15,
               boxShadow: flash ? '0 0 0 3px rgba(180,83,9,0.2)' : 'none',
               transition: 'box-shadow 0.2s' }}>
@@ -749,38 +761,38 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
             </div>
           </div>
 
-          <div style={{ ...styles.pill, background: '#F2F2F2', color: '#212427' }}>
+          <div style={{ ...S.pill, background: theme.pillNeutralBg, color: theme.textPrimary }}>
             {idx + 1}/{questions.length}
           </div>
         </div>
       </div>
 
       {/* ── Overall progress bar ── */}
-      <div style={{ height: 5, background: 'rgba(0,0,0,0.06)', position: 'relative', zIndex: 2 }}>
+      <div style={{ height: 5, background: theme.progressTrack, position: 'relative', zIndex: 2 }}>
         <div style={{ height: '100%', width: `${pct}%`,
           background: `linear-gradient(90deg, ${meta.color}, #E85D26)`,
           transition: 'width 0.4s ease' }} />
       </div>
 
       {/* ── Question card ── */}
-      <div style={{ ...styles.body, position: 'relative', zIndex: 2 }} className="quiz-body">
-        <div style={styles.card} className="pop-in quiz-card" key={idx}>
+      <div style={{ ...S.body, position: 'relative', zIndex: 2 }} className="quiz-body">
+        <div style={S.card} className="pop-in quiz-card" key={idx}>
 
           {/* Card header: topic badge + timer ring */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <span style={{ ...styles.badge, background: meta.bg, color: meta.color }}>
+            <span style={{ ...S.badge, background: meta.bg, color: meta.color }}>
               {meta.icon} {meta.name}
             </span>
-            <TimerRing timeLeft={timeLeft} total={TIMER_SECS} answered={answered} paused={settingsOpen} />
+            <TimerRing timeLeft={timeLeft} total={TIMER_SECS} answered={answered} paused={settingsOpen} trackColor={theme.ringTrack} />
           </div>
 
           {/* Prompt */}
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-            <div style={{ ...styles.prompt, flex: 1 }} className="quiz-prompt">{q.prompt}</div>
+            <div style={{ ...S.prompt, flex: 1 }} className="quiz-prompt">{q.prompt}</div>
             {ttsOn && (
               <button
                 onClick={() => ttsSpeak(getKeyTerm(q.prompt))}
-                style={styles.replayBtn}
+                style={S.replayBtn}
                 title="Replay"
               >🔉</button>
             )}
@@ -788,33 +800,33 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
 
           {/* Multi-select hint */}
           {isMulti && !answered && (
-            <div style={styles.multiHint}>
+            <div style={S.multiHint}>
               ☑ Select all correct answers, then tap Submit
             </div>
           )}
 
           {/* Options */}
-          <div style={styles.options}>
+          <div style={S.options}>
             {q.options.map((opt, oi) => {
               const os = optStyle(oi);
               return (
                 <button
                   key={oi}
                   onClick={() => isMulti ? handleMultiToggle(oi) : handleSelect(oi)}
-                  style={{ ...styles.optionBtn, ...os, cursor: answered ? 'default' : 'pointer' }}
+                  style={{ ...S.optionBtn, ...os, cursor: answered ? 'default' : 'pointer' }}
                   className="quiz-option"
-                  onMouseEnter={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#A8F0B8' : '#F2F2F2'; }}
-                  onMouseLeave={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? '#E3FDDB' : '#FAFAF9'; }}
+                  onMouseEnter={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? theme.selectedHoverBg : theme.optionHoverBg; }}
+                  onMouseLeave={e => { if (!answered) e.currentTarget.style.background = isMulti && multiSel.has(oi) ? theme.selectedBg : theme.optionBg; }}
                 >
-                  <span className="quiz-opt-letter" style={{ ...styles.optLetter,
+                  <span className="quiz-opt-letter" style={{ ...S.optLetter,
                     background: answered && (isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex)
                       ? 'rgba(16,160,122,0.2)'
                       : answered && (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)
                       ? 'rgba(220,38,38,0.15)'
                       : !answered && isMulti && multiSel.has(oi)
                       ? 'rgba(124,77,238,0.2)'
-                      : 'rgba(0,0,0,0.06)',
-                    color: answered && ((isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex) || (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)) ? 'inherit' : '#7A7870',
+                      : theme.letterBg,
+                    color: answered && ((isMulti ? q.correctIndices.includes(oi) : oi === q.correctIndex) || (isMulti ? (!q.correctIndices.includes(oi) && multiSel.has(oi)) : oi === sel)) ? 'inherit' : theme.letterText,
                   }}>
                     {oi + 1}
                   </span>
@@ -832,7 +844,7 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
               disabled={multiSel.size === 0}
               className="quiz-submit"
               style={{
-                ...styles.submitBtn,
+                ...S.submitBtn,
                 opacity: multiSel.size === 0 ? 0.45 : 1,
                 cursor: multiSel.size === 0 ? 'not-allowed' : 'pointer',
               }}
@@ -845,10 +857,10 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           {voiceInput && !answered && !isMulti && (
             <div style={{ marginTop: 14, textAlign: 'center', fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
               {voiceNoMatch
-                ? <><span>🔁</span><span style={{ color: '#DC2626' }}>Couldn't catch that — try again</span></>
+                ? <><span>🔁</span><span style={{ color: theme.wrongText }}>Couldn't catch that — try again</span></>
                 : voiceListening
-                  ? <><span style={{ display: 'inline-block', animation: 'micPulse 1s ease-in-out infinite' }}>🎤</span><span style={{ color: '#197A56' }}>Listening…</span></>
-                  : <span style={{ color: '#C4C2B9' }}>⏳ Voice ready…</span>}
+                  ? <><span style={{ display: 'inline-block', animation: 'micPulse 1s ease-in-out infinite' }}>🎤</span><span style={{ color: theme.correctText }}>Listening…</span></>
+                  : <span style={{ color: theme.textFainter }}>⏳ Voice ready…</span>}
             </div>
           )}
 
@@ -856,29 +868,29 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
           {!answered && !isMulti && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 14 }}>
               {[1,2,3,4].map(n => (
-                <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#C4C2B9' }}>
-                  <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
-                    padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>{n}</kbd>
+                <div key={n} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: theme.textFainter }}>
+                  <kbd style={{ background: theme.kbdBg, border: `1px solid ${theme.kbdBorder}`, borderRadius: 5,
+                    padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: theme.kbdText }}>{n}</kbd>
                 </div>
               ))}
             </div>
           )}
           {!answered && isMulti && (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 10, fontSize: 11, color: '#C4C2B9' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 10, fontSize: 11, color: theme.textFainter }}>
               {[1,2,3,4].map(n => (
-                <kbd key={n} style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
-                  padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>{n}</kbd>
+                <kbd key={n} style={{ background: theme.kbdBg, border: `1px solid ${theme.kbdBorder}`, borderRadius: 5,
+                  padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: theme.kbdText }}>{n}</kbd>
               ))}
               <span style={{ marginLeft: 4 }}>toggle · </span>
-              <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5,
-                padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>Enter</kbd>
+              <kbd style={{ background: theme.kbdBg, border: `1px solid ${theme.kbdBorder}`, borderRadius: 5,
+                padding: '2px 7px', fontFamily: 'monospace', fontSize: 11, color: theme.kbdText }}>Enter</kbd>
               <span>submit</span>
             </div>
           )}
 
           {/* Explanation panel */}
           {showExp && (
-            <div style={{ ...styles.explanation, background: meta.bg,
+            <div style={{ ...S.explanation, background: meta.bg,
               borderColor: `${meta.color}30`, color: meta.color }} className="fade-in">
               {timedOut
                 ? <><strong>⏱ Time&apos;s up!</strong> {q.explanation}</>
@@ -912,37 +924,39 @@ export default function TestScreen({ questions, onComplete, onQuit }) {
   );
 }
 
-const styles = {
-  page:       { minHeight: '100vh', background: '#F1EEEA', fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  header:     { background: '#fff', borderBottom: '1px solid #DCD5CE', padding: '12px 16px',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
-  backBtn:    { background: 'transparent', border: '1px solid #DCD5CE', borderRadius: 10,
-                padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', color: '#6B7280' },
-  pill:       { borderRadius: 999, padding: '5px 11px', fontSize: 13, fontWeight: 700 },
-  body:       { padding: '20px 16px 40px', maxWidth: 680, margin: '0 auto' },
-  card:       { background: '#fff', borderRadius: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-                border: '1px solid #DCD5CE', padding: '24px 22px' },
-  badge:      { borderRadius: 999, padding: '5px 12px', fontSize: 12, fontWeight: 700, letterSpacing: 0.3 },
-  prompt:     { fontSize: 17, fontWeight: 700, color: '#212427', lineHeight: 1.6,
-                marginBottom: 22, whiteSpace: 'pre-line' },
-  multiHint:  { fontSize: 12, fontWeight: 700, color: '#197A56', background: '#E3FDDB',
-                borderRadius: 8, padding: '6px 12px', marginBottom: 14, textAlign: 'center' },
-  options:    { display: 'flex', flexDirection: 'column', gap: 10 },
-  optionBtn:  { display: 'flex', alignItems: 'center', gap: 12, borderRadius: 14, padding: '13px 16px',
-                fontSize: 15, fontWeight: 600, transition: 'background 0.12s', textAlign: 'left',
-                width: '100%' },
-  optLetter:  { width: 28, height: 28, borderRadius: 8, flexShrink: 0, display: 'flex',
-                alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700 },
-  submitBtn:  { marginTop: 14, width: '100%', background: '#96F878',
-                color: '#212427', border: 'none', borderRadius: 14, padding: '13px 20px',
-                fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, transition: 'background 0.15s' },
-  explanation:{ marginTop: 18, borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600,
-                border: '1px solid', lineHeight: 1.6 },
-  replayBtn:  { background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 20,
-                padding: '2px 4px', flexShrink: 0, opacity: 0.55, marginTop: 2,
-                transition: 'opacity 0.15s' },
-  coinFloat:  { position: 'absolute', top: -34, left: '50%', transform: 'translateX(-50%)',
-                fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 18, color: '#197A56',
-                whiteSpace: 'nowrap', animation: 'coinFloat 1.5s ease forwards',
-                pointerEvents: 'none', zIndex: 10 },
-};
+function themedStyles(theme) {
+  return {
+    page:       { minHeight: '100vh', background: theme.pageBg, fontFamily: "'Plus Jakarta Sans', sans-serif" },
+    header:     { background: theme.headerBg, borderBottom: `1px solid ${theme.headerBorder}`, padding: '12px 16px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+    backBtn:    { background: 'transparent', border: `1px solid ${theme.panelBorder}`, borderRadius: 10,
+                  padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', color: theme.textMuted },
+    pill:       { borderRadius: 999, padding: '5px 11px', fontSize: 13, fontWeight: 700 },
+    body:       { padding: '20px 16px 40px', maxWidth: 680, margin: '0 auto' },
+    card:       { background: theme.cardBg, borderRadius: 24, boxShadow: theme.cardShadow,
+                  border: `1px solid ${theme.cardBorder}`, padding: '24px 22px' },
+    badge:      { borderRadius: 999, padding: '5px 12px', fontSize: 12, fontWeight: 700, letterSpacing: 0.3 },
+    prompt:     { fontSize: 17, fontWeight: 700, color: theme.textPrimary, lineHeight: 1.6,
+                  marginBottom: 22, whiteSpace: 'pre-line' },
+    multiHint:  { fontSize: 12, fontWeight: 700, color: theme.correctText, background: theme.correctBg,
+                  borderRadius: 8, padding: '6px 12px', marginBottom: 14, textAlign: 'center' },
+    options:    { display: 'flex', flexDirection: 'column', gap: 10 },
+    optionBtn:  { display: 'flex', alignItems: 'center', gap: 12, borderRadius: 14, padding: '13px 16px',
+                  fontSize: 15, fontWeight: 600, transition: 'background 0.12s', textAlign: 'left',
+                  width: '100%' },
+    optLetter:  { width: 28, height: 28, borderRadius: 8, flexShrink: 0, display: 'flex',
+                  alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700 },
+    submitBtn:  { marginTop: 14, width: '100%', background: '#96F878',
+                  color: '#212427', border: 'none', borderRadius: 14, padding: '13px 20px',
+                  fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 16, transition: 'background 0.15s' },
+    explanation:{ marginTop: 18, borderRadius: 14, padding: '14px 16px', fontSize: 14, fontWeight: 600,
+                  border: '1px solid', lineHeight: 1.6 },
+    replayBtn:  { background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 20,
+                  padding: '2px 4px', flexShrink: 0, opacity: 0.55, marginTop: 2,
+                  transition: 'opacity 0.15s' },
+    coinFloat:  { position: 'absolute', top: -34, left: '50%', transform: 'translateX(-50%)',
+                  fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 18, color: theme.correctText,
+                  whiteSpace: 'nowrap', animation: 'coinFloat 1.5s ease forwards',
+                  pointerEvents: 'none', zIndex: 10 },
+  };
+}
