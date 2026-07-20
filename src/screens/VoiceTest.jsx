@@ -6,6 +6,7 @@ import {
   getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak,
 } from '../utils/voice.js';
 import { scoreMatchAny, scoreMatchAll, formatAnswerList } from '../utils/voiceMatch.js';
+import { getTheme } from '../utils/theme.js';
 import VoiceFooter from '../components/VoiceFooter.jsx';
 
 const MATCH_THRESHOLD    = 0.9;
@@ -118,15 +119,16 @@ function voiceLabel(topicId) {
 }
 
 // ── Chrome-only gate ──────────────────────────────────────────────────────────
-function NotSupported({ onBack }) {
+function NotSupported({ onBack, darkMode }) {
+  const theme = getTheme(darkMode);
   return (
-    <div style={{ minHeight: '100vh', background: '#F1EEEA', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <div style={{ background: '#fff', borderRadius: 24, padding: 32, maxWidth: 400, textAlign: 'center', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #DCD5CE' }}>
+    <div style={{ minHeight: '100vh', background: theme.pageBg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ background: theme.cardBg, borderRadius: 24, padding: 32, maxWidth: 400, textAlign: 'center', boxShadow: theme.cardShadow, border: `1px solid ${theme.cardBorder}` }}>
         <div style={{ fontSize: 48, marginBottom: 16 }}>🎤</div>
-        <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 22, fontWeight: 500, marginBottom: 10, color: '#212427' }}>
+        <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 22, fontWeight: 500, marginBottom: 10, color: theme.textPrimary }}>
           Chrome Only
         </div>
-        <div style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.7, marginBottom: 24 }}>
+        <div style={{ fontSize: 14, color: theme.textMuted, lineHeight: 1.7, marginBottom: 24 }}>
           Voice Quiz uses the Web Speech API which only works in{' '}
           <strong>Chrome on desktop</strong>. Please open Word Masters in Chrome to use this feature.
         </div>
@@ -142,7 +144,7 @@ function NotSupported({ onBack }) {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
+export default function VoiceTest({ questions, onComplete, onQuit, quitRef, darkMode, onToggleDarkMode }) {
   const [idx,        setIdx]       = useState(0);
   // phase: 'ready' | 'listening' | 'reviewing' | 'result' | 'mic-blocked'
   const [phase,      setPhase]     = useState('ready');
@@ -157,6 +159,9 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
   const [voiceLang,  setVoiceLangState] = useState(getVoiceLang);
   const [voiceName,  setVoiceNameState] = useState(getVoiceName);
   const [availVoices, setAvailVoices]   = useState([]);
+
+  const theme = getTheme(darkMode);
+  const S     = themedStyles(theme);
 
   const q    = questions[idx];
   const meta = TOPIC_META[q?.topicId] || GEO_TOPIC_META[q?.topicId] || { color: '#D97706', bg: '#FFFBEB', name: 'Voice Quiz', icon: '🎤' };
@@ -416,7 +421,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
     localStorage.setItem('wm_vauto', n ? 'on' : 'off');
   }
 
-  if (!SR) return <NotSupported onBack={() => onQuit([])} />;
+  if (!SR) return <NotSupported onBack={() => onQuit([])} darkMode={darkMode} />;
 
   return (
     <div style={S.page}>
@@ -427,7 +432,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
           <button onClick={handleQuit} style={S.backBtn}>✕ Quit</button>
           <button
             onClick={() => setSettingsOpen(p => !p)}
-            style={{ ...S.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? '#212427' : '#6B7280', background: settingsOpen ? '#F2F2F2' : 'transparent' }}
+            style={{ ...S.backBtn, fontSize: 15, padding: '7px 10px', color: settingsOpen ? theme.textPrimary : theme.textMuted, background: settingsOpen ? theme.pillNeutralBg : 'transparent' }}
             title="Settings"
           >⚙️</button>
           <label style={S.autoLabel}>
@@ -440,16 +445,23 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
             Auto-submit
           </label>
           {settingsOpen && (
-            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: '#fff', borderRadius: 14, border: '1px solid #DCD5CE', padding: '14px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', zIndex: 30, minWidth: 260 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#D97706', background: '#FFFBEB', borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
+            <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: theme.panelBg, borderRadius: 14, border: `1px solid ${theme.panelBorder}`, padding: '14px 16px', boxShadow: theme.panelShadow, zIndex: 30, minWidth: 260 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: theme.warnText, background: theme.warnBg, borderRadius: 8, padding: '6px 10px', marginBottom: 10 }}>
                 ⏸ Game paused — mic and timer are off while this is open
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#212427', marginBottom: 2 }}>🌐 Voice accent</div>
-              <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>Applies to spoken questions and voice recognition, everywhere in the app</div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginBottom: 12 }}>
+                <input type="checkbox" checked={darkMode} onChange={onToggleDarkMode} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>🌙 Dark mode</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Easier on the eyes for long sessions</div>
+                </div>
+              </label>
+              <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, marginBottom: 2 }}>🌐 Voice accent</div>
+              <div style={{ fontSize: 11, color: theme.textFaint, marginBottom: 8 }}>Applies to spoken questions and voice recognition, everywhere in the app</div>
               <select
                 value={voiceLang}
                 onChange={e => changeVoiceLang(e.target.value)}
-                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1px solid ${theme.panelBorder}`, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: theme.textPrimary, background: theme.selectBg }}
               >
                 {VOICE_LANG_OPTIONS.map(o => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -457,13 +469,13 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
               </select>
               {availVoices.length > 0 && (
                 <>
-                  <div style={{ fontSize: 11, color: '#9CA3AF', margin: '8px 0 4px' }}>
+                  <div style={{ fontSize: 11, color: theme.textFaint, margin: '8px 0 4px' }}>
                     Specific voice — pick this if the accent above still sounds like the wrong/muddled voice
                   </div>
                   <select
                     value={voiceName}
                     onChange={e => changeVoiceName(e.target.value)}
-                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: '1px solid #DCD5CE', fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: '#212427', background: '#fff' }}
+                    style={{ width: '100%', padding: '8px 10px', borderRadius: 8, border: `1px solid ${theme.panelBorder}`, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", color: theme.textPrimary, background: theme.selectBg }}
                   >
                     <option value="">Auto (browser default)</option>
                     {availVoices.map(v => (
@@ -476,10 +488,10 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
           )}
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ ...S.pill, background: '#E3FDDB', color: '#197A56' }}>✓ {correctCount}</div>
-          <div style={{ ...S.pill, background: '#FEF2F2', color: '#DC2626' }}>✗ {idx - correctCount}</div>
-          <div style={{ ...S.pill, background: '#FFFBEB', color: '#D97706', fontFamily: "'Fredoka', cursive" }}>🪙 {points}</div>
-          <div style={{ ...S.pill, background: '#F2F2F2', color: '#212427' }}>{idx + 1}/{questions.length}</div>
+          <div style={{ ...S.pill, background: theme.correctBg, color: theme.correctText }}>✓ {correctCount}</div>
+          <div style={{ ...S.pill, background: theme.wrongBg, color: theme.wrongText }}>✗ {idx - correctCount}</div>
+          <div style={{ ...S.pill, background: theme.warnBg, color: theme.warnText, fontFamily: "'Fredoka', cursive" }}>🪙 {points}</div>
+          <div style={{ ...S.pill, background: theme.pillNeutralBg, color: theme.textPrimary }}>{idx + 1}/{questions.length}</div>
           <button
             onClick={() => setBlackScreen(true)}
             style={S.blackScreenToggle}
@@ -491,7 +503,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
       </div>
 
       {/* ── Progress bar ── */}
-      <div style={{ height: 5, background: 'rgba(0,0,0,0.06)' }}>
+      <div style={{ height: 5, background: theme.progressTrack }}>
         <div style={{ height: '100%', width: `${pct}%`, background: `linear-gradient(90deg, ${meta.color}, #E85D26)`, transition: 'width 0.4s ease' }} />
       </div>
 
@@ -505,7 +517,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
               {meta.icon} {meta.name} · 🎤 Voice
             </span>
             {phase === 'listening' && (
-              <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 18, fontWeight: 500, color: timeLeft <= 5 ? '#DC2626' : '#9CA3AF' }}>
+              <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 18, fontWeight: 500, color: timeLeft <= 5 ? theme.wrongText : theme.textFaint }}>
                 {timeLeft}s
               </div>
             )}
@@ -538,7 +550,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
                   </div>
                 </div>
                 <div style={S.txBox}>
-                  <span style={{ color: transcript ? '#212427' : '#9CA3AF', fontStyle: transcript ? 'normal' : 'italic' }}>
+                  <span style={{ color: transcript ? theme.textPrimary : theme.textFaint, fontStyle: transcript ? 'normal' : 'italic' }}>
                     {transcript || 'Listening…'}
                   </span>
                 </div>
@@ -568,8 +580,8 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
                   </button>
                 </div>
                 {transcript.trim() && (
-                  <div style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: '#C4C2B9' }}>
-                    <kbd style={{ background: '#F1EFE8', border: '1px solid #D3D1C7', borderRadius: 5, padding: '2px 8px', fontFamily: 'monospace', fontSize: 11, color: '#7A7870' }}>Enter</kbd>
+                  <div style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: theme.textFainter }}>
+                    <kbd style={{ background: theme.kbdBg, border: `1px solid ${theme.kbdBorder}`, borderRadius: 5, padding: '2px 8px', fontFamily: 'monospace', fontSize: 11, color: theme.kbdText }}>Enter</kbd>
                     {' '}to submit
                   </div>
                 )}
@@ -579,10 +591,10 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
             {phase === 'mic-blocked' && (
               <div style={{ ...S.center, gap: 6 }}>
                 <span style={{ fontSize: 36 }}>🚫</span>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#DC2626', marginTop: 4 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: theme.wrongText, marginTop: 4 }}>
                   Microphone access blocked
                 </div>
-                <div style={{ fontSize: 13, color: '#6B7280', textAlign: 'center' }}>
+                <div style={{ fontSize: 13, color: theme.textMuted, textAlign: 'center' }}>
                   Allow microphone access in your browser settings, then reload.
                 </div>
               </div>
@@ -600,23 +612,23 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
             <div style={{ fontSize: 36, marginBottom: 6 }}>
               {tipData.correct ? '🎉' : '😔'}
             </div>
-            <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 22, fontWeight: 500, marginBottom: 4, color: tipData.correct ? '#197A56' : '#DC2626' }}>
+            <div style={{ fontFamily: "'Fredoka', cursive", fontSize: 22, fontWeight: 500, marginBottom: 4, color: tipData.correct ? theme.correctText : theme.wrongText }}>
               {tipData.correct ? `+${tipData.coins} 🪙  Correct!` : 'Not quite!'}
             </div>
             {!tipData.correct && (
-              <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 8 }}>
+              <div style={{ fontSize: 12, color: theme.textFaint, marginBottom: 8 }}>
                 {Math.round(tipData.score * 100)}% match — need {Math.round(tipData.threshold * 100)}%
               </div>
             )}
-            <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8, color: '#9CA3AF', margin: '10px 0 8px' }}>
+            <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8, color: theme.textFaint, margin: '10px 0 8px' }}>
               {tipData.correct ? 'You got it:' : 'Correct answer:'}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
               {tipData.wordResults.map((w, i) => (
                 <span key={i} style={{
-                  background:   w.matched ? '#E3FDDB' : '#FEF2F2',
-                  color:        w.matched ? '#197A56' : '#DC2626',
-                  border:       `1.5px solid ${w.matched ? '#21BF61' : '#DC2626'}`,
+                  background:   w.matched ? theme.correctBg : theme.wrongBg,
+                  color:        w.matched ? theme.correctText : theme.wrongText,
+                  border:       `1.5px solid ${w.matched ? theme.correctBorder : theme.wrongBorder}`,
                   borderRadius: 8, padding: '5px 12px', fontSize: 15, fontWeight: 700,
                   textTransform: 'capitalize',
                 }}>
@@ -685,27 +697,28 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef }) {
   );
 }
 
-const S = {
-  page:       { minHeight: '100vh', background: '#F1EEEA', fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  header:     { background: '#fff', borderBottom: '1px solid #DCD5CE', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
-  backBtn:    { background: 'transparent', border: '1px solid #DCD5CE', borderRadius: 10, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', color: '#6B7280' },
-  autoLabel:  { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: '#6B7280', cursor: 'pointer', userSelect: 'none' },
+function themedStyles(theme) {
+  return {
+  page:       { minHeight: '100vh', background: theme.pageBg, fontFamily: "'Plus Jakarta Sans', sans-serif" },
+  header:     { background: theme.headerBg, borderBottom: `1px solid ${theme.headerBorder}`, padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+  backBtn:    { background: 'transparent', border: `1px solid ${theme.panelBorder}`, borderRadius: 10, padding: '7px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer', color: theme.textMuted },
+  autoLabel:  { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: theme.textMuted, cursor: 'pointer', userSelect: 'none' },
   pill:       { borderRadius: 999, padding: '5px 11px', fontSize: 13, fontWeight: 700 },
   body:       { padding: '20px 16px 40px', maxWidth: 600, margin: '0 auto' },
-  card:       { background: '#fff', borderRadius: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #DCD5CE', padding: '24px 22px' },
+  card:       { background: theme.cardBg, borderRadius: 24, boxShadow: theme.cardShadow, border: `1px solid ${theme.cardBorder}`, padding: '24px 22px' },
   badge:      { borderRadius: 999, padding: '5px 12px', fontSize: 12, fontWeight: 700, letterSpacing: 0.3 },
-  label:      { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: '#9CA3AF', marginBottom: 8, display: 'block' },
-  meaning:    { fontSize: 20, fontWeight: 700, color: '#212427', lineHeight: 1.6, marginBottom: 8 },
+  label:      { fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: theme.textFaint, marginBottom: 8, display: 'block' },
+  meaning:    { fontSize: 20, fontWeight: 700, color: theme.textPrimary, lineHeight: 1.6, marginBottom: 8 },
   replayBtn:  { background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 13, color: '#D97706', fontWeight: 700, padding: '2px 0' },
   center:     { display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 4, padding: '8px 0' },
-  stateLabel: { fontSize: 14, color: '#6B7280', marginTop: 4 },
-  ghostBtn:   { background: 'transparent', border: '1.5px dashed #DCD5CE', borderRadius: 12, padding: '8px 18px', fontSize: 13, color: '#9CA3AF', cursor: 'pointer', marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" },
-  txBox:      { background: '#F9F8F6', borderRadius: 14, padding: '14px 16px', border: '1px solid #E8E4DF', marginTop: 14, fontSize: 15, fontWeight: 600, minHeight: 48 },
-  txInput:    { width: '100%', background: '#F9F8F6', border: '1px solid #E8E4DF', borderRadius: 14, padding: '12px 16px', fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, color: '#212427', resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box' },
-  reRecordBtn:{ borderRadius: 12, padding: '10px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', background: '#FFF7ED', color: '#D97706', border: '1.5px solid #D97706', fontFamily: "'Plus Jakarta Sans', sans-serif" },
+  stateLabel: { fontSize: 14, color: theme.textMuted, marginTop: 4 },
+  ghostBtn:   { background: 'transparent', border: `1.5px dashed ${theme.panelBorder}`, borderRadius: 12, padding: '8px 18px', fontSize: 13, color: theme.textFaint, cursor: 'pointer', marginTop: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" },
+  txBox:      { background: theme.optionBg, borderRadius: 14, padding: '14px 16px', border: `1px solid ${theme.optionBorder}`, marginTop: 14, fontSize: 15, fontWeight: 600, minHeight: 48 },
+  txInput:    { width: '100%', background: theme.optionBg, border: `1px solid ${theme.optionBorder}`, borderRadius: 14, padding: '12px 16px', fontSize: 15, fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, color: theme.textPrimary, resize: 'none', outline: 'none', lineHeight: 1.6, boxSizing: 'border-box' },
+  reRecordBtn:{ borderRadius: 12, padding: '10px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', background: theme.warnBg, color: theme.warnText, border: `1.5px solid ${theme.warnBorder}`, fontFamily: "'Plus Jakarta Sans', sans-serif" },
   submitBtn:  { flex: 1, borderRadius: 12, padding: '10px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', background: '#D97706', color: '#fff', border: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif" },
   overlay:    { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 100, padding: '0 16px 48px' },
-  tipCard:    { background: '#fff', borderRadius: 24, padding: '24px 28px', textAlign: 'center', maxWidth: 400, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' },
+  tipCard:    { background: theme.cardBg, borderRadius: 24, padding: '24px 28px', textAlign: 'center', maxWidth: 400, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' },
   blackScreenToggle: {
     background: '#212427', color: '#fff', border: 'none', borderRadius: 999,
     width: 30, height: 30, fontSize: 14, cursor: 'pointer', display: 'flex',
@@ -735,4 +748,5 @@ const S = {
     borderRadius: 15, padding: '12px 32px', fontFamily: "'Fredoka', cursive",
     fontWeight: 500, fontSize: 16, cursor: 'pointer',
   },
-};
+  };
+}
