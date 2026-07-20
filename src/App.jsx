@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Login        from './screens/Login.jsx';
 import Home         from './screens/Home.jsx';
 import TopicSelect  from './screens/TopicSelect.jsx';
@@ -13,6 +13,7 @@ import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateSt
 import { buildGeoTest, buildGeoVoiceTest, buildGeoRepractice } from './engine/geoQuiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
 import GeoTopicSelect from './screens/GeoTopicSelect.jsx';
+import { getDarkMode, setDarkMode as persistDarkMode } from './utils/theme.js';
 
 function toLogRows(username, results) {
   const ts = new Date().toISOString();
@@ -42,6 +43,20 @@ export default function App() {
   const [teachTopicId,    setTeachTopicId]    = useState(null);
   const [isPracticeMode,  setIsPracticeMode]  = useState(false);
   const [practiceItems,   setPracticeItems]   = useState([]); // wrong results to repractice
+  const [darkMode,        setDarkModeState]   = useState(getDarkMode); // quiz-flow theme; defaults on
+
+  const toggleDarkMode = useCallback(() => {
+    setDarkModeState(prev => {
+      const next = !prev;
+      persistDarkMode(next);
+      return next;
+    });
+  }, []);
+
+  // Screens with genuine in-progress state (a quiz being answered) expose
+  // their own quit handler here so browser Back can trigger it directly —
+  // it already knows the partial results, App.jsx doesn't.
+  const quitRef = useRef(null);
 
   const handleLogin = useCallback(async (u) => {
     setUser(u);
@@ -224,17 +239,58 @@ export default function App() {
     setScreen('test');
   }, [testConfig, user, isPracticeMode, practiceItems]);
 
+  // Back-press handling: this app has no router/URL, so the browser history
+  // stack never grows past the initial page load and one Back press exits
+  // entirely. We fake a stack instead — push a single "guard" entry whenever
+  // we're on a non-root screen (replacing it, not stacking more, while we
+  // stay non-root) so Back always has something to consume first. Popping it
+  // fires popstate, and we map the screen we were just on to the same "go up
+  // one level" action its own on-screen Back/Quit control already performs.
+  const guardActiveRef = useRef(false);
+  useEffect(() => {
+    const isRoot = screen === 'home' || screen === 'login';
+    if (isRoot) { guardActiveRef.current = false; return; }
+    if (guardActiveRef.current) window.history.replaceState({ screen }, '');
+    else { window.history.pushState({ screen }, ''); guardActiveRef.current = true; }
+  }, [screen]);
+
+  useEffect(() => {
+    function onPopState() {
+      guardActiveRef.current = false; // the guard entry, if any, was just consumed
+      switch (screen) {
+        case 'topic-select':
+        case 'geo-topic-select':
+        case 'teach-ask':
+        case 'results':
+          goHome(); break;
+        case 'revise':
+          setScreen('topic-select'); break;
+        case 'admin':
+          (user?.role === 'admin' ? handleLogout : goHome)(); break;
+        case 'test':
+        case 'voice-test':
+          quitRef.current?.(); break;
+        case 'review':
+          handleReviewContinue(); break;
+        default:
+          break; // 'home' / 'login' — nothing to intercept, let Back leave the app
+      }
+    }
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [screen, user, goHome, handleLogout, handleReviewContinue]);
+
   return (
     <>
       {screen === 'login'        && <Login onLogin={handleLogin} />}
       {screen === 'home'          && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onStartGeo={() => setScreen('geo-topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
       {screen === 'topic-select'  && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
       {screen === 'geo-topic-select' && <GeoTopicSelect username={user.username} onStart={handleStartGeoTest} onVoiceStart={handleStartGeoVoiceTest} onBack={goHome} syncing={syncing} />}
-      {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
-      {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} />}
-      {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} />}
-      {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} onMarkCorrect={handleMarkCorrect} />}
-      {screen === 'results'      && <Results results={testResults} topicId={testConfig?.topicId} onRetry={handleRetry} onHome={goHome} onRepractice={handleRepractice} isPractice={isPracticeMode} />}
+      {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} quitRef={quitRef} />}
+      {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} darkMode={darkMode} />}
+      {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
+      {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} onMarkCorrect={handleMarkCorrect} darkMode={darkMode} />}
+      {screen === 'results'      && <Results results={testResults} topicId={testConfig?.topicId} onRetry={handleRetry} onHome={goHome} onRepractice={handleRepractice} isPractice={isPracticeMode} darkMode={darkMode} />}
       {screen === 'teach-ask'    && <TeachAndAsk topicId={teachTopicId} username={user?.username} onQuit={goHome} />}
       {screen === 'admin'        && <Admin onBack={user?.role === 'admin' ? handleLogout : goHome} />}
     </>
