@@ -1,5 +1,15 @@
 export const USER_CHANGELOG = [
   {
+    date: '21 Jul 2026',
+    entries: [
+      { icon: '🔗', topic: 'Deep Links', text: 'Links like /revise/similes or /quiz/synonyms/voice now open straight into that topic\'s browse list or a fresh quiz once you\'re logged in, instead of always landing on Home.' },
+      { icon: '🔄', topic: 'Voice Quiz Repractice', text: 'Repracticing wrong answers (or hitting "Try Again") after a Voice Quiz now stays a voice quiz — it was silently switching to the MCQ quiz before.' },
+      { icon: '📋', topic: 'Voice Quiz Ordering', text: 'Voice Quiz questions now prioritize what you haven\'t seen yet, then what you got wrong, then what you\'ve mastered — same as the MCQ quiz already did. Previously it was pure random shuffle regardless of your history.' },
+      { icon: '↔️', topic: 'Voice Quiz: Similes & Collective Nouns', text: 'Both topics now also ask the reverse direction in Voice Quiz — "As ___ as the sun?" (answer: bright) and "A pride of ___?" (answer: lions) — not just the forward direction.' },
+      { icon: '🔁', topic: 'Voice Fix', text: 'If the mic or TTS voice stops responding after your screen locks/sleeps a few times, it should now often recover on its own. If not, there\'s a new "Reload voice engine" button in Quiz Settings (⚙️) on both the Voice Quiz and MCQ quiz.' },
+    ],
+  },
+  {
     date: '20 Jul 2026',
     entries: [
       { icon: '🎤', topic: 'Voice Quiz', text: 'Similes, Antonyms & Synonyms now ask for every correct completion in one go (e.g. "As bright as ___" expects diamond, flame, and sun — any order) instead of quizzing each one separately or accepting just one. The mic listening window now also scales with how much you need to say — longer answers get more time.' },
