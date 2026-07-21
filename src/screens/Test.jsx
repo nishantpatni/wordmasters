@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
-import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak } from '../utils/voice.js';
+import { VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang, getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak, resetVoiceEngine } from '../utils/voice.js';
 import { getTheme } from '../utils/theme.js';
 
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -171,6 +171,7 @@ export default function TestScreen({ questions, onComplete, onQuit, quitRef, dar
   const [voiceLang,      setVoiceLangState] = useState(getVoiceLang);
   const [voiceName,      setVoiceNameState] = useState(getVoiceName);
   const [availVoices,    setAvailVoices]    = useState([]);
+  const [voiceReloadNonce, setVoiceReloadNonce] = useState(0);
 
   const theme = getTheme(darkMode);
   const S     = themedStyles(theme);
@@ -478,7 +479,17 @@ export default function TestScreen({ questions, onComplete, onQuit, quitRef, dar
       clearTimeout(voiceDelayT);
       stopVoiceInput();
     };
-  }, [idx]);
+  }, [idx, voiceReloadNonce]);
+
+  // Manual recovery for the known mobile bug where speechSynthesis/mic
+  // recognition silently stop responding after the screen has locked/slept
+  // a few times — nudges the engine, then replays this question from scratch
+  // (resets the countdown too, which is an acceptable trade-off for a fix
+  // someone only reaches for when voice has already stopped working).
+  function reloadVoiceEngine() {
+    resetVoiceEngine();
+    setVoiceReloadNonce(n => n + 1);
+  }
 
   // Pause gameplay while the settings panel is open: freeze the mic and let
   // the countdown-skip in the tick above hold the timer. Resume on close.
@@ -701,13 +712,23 @@ export default function TestScreen({ questions, onComplete, onQuit, quitRef, dar
                   <div style={{ fontSize: 11, color: theme.textFaint }}>Hear the answer after each correct pick</div>
                 </div>
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5, marginBottom: 12 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: SR ? 'pointer' : 'default', opacity: SR ? 1 : 0.5, marginBottom: 10 }}>
                 <input type="checkbox" checked={voiceInput} onChange={toggleVoiceInput} disabled={!SR} style={{ accentColor: '#21BF61', width: 15, height: 15, flexShrink: 0 }} />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>🎤 Voice input{!SR ? ' (Chrome only)' : ''}</div>
                   <div style={{ fontSize: 11, color: theme.textFaint }}>Say a number or the option text to answer</div>
                 </div>
               </label>
+              <button
+                onClick={reloadVoiceEngine}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', background: 'transparent', border: `1px solid ${theme.panelBorder}`, borderRadius: 10, padding: '8px 10px', cursor: 'pointer', marginBottom: 12, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                <span style={{ fontSize: 16 }}>🔄</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>Reload voice engine</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Mic or voice stopped responding after your screen locked? Tap this.</div>
+                </div>
+              </button>
               <div style={{ borderTop: `1px solid ${theme.panelDivider}`, paddingTop: 10 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, marginBottom: 2 }}>🌐 Voice accent</div>
                 <div style={{ fontSize: 11, color: theme.textFaint, marginBottom: 8 }}>Applies to spoken questions/answers and voice recognition, everywhere in the app</div>

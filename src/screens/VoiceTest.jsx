@@ -3,7 +3,7 @@ import { TOPIC_META } from '../data/topicData.js';
 import { GEO_TOPIC_META } from '../data/geoTopicData.js';
 import {
   VOICE_LANG_OPTIONS, getVoiceLang, setVoiceLang,
-  getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak,
+  getVoiceName, setVoiceName, getVoicesForLang, onVoicesChanged, speak, resetVoiceEngine,
 } from '../utils/voice.js';
 import { scoreMatchAny, scoreMatchAll, formatAnswerList } from '../utils/voiceMatch.js';
 import { getTheme } from '../utils/theme.js';
@@ -159,6 +159,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
   const [voiceLang,  setVoiceLangState] = useState(getVoiceLang);
   const [voiceName,  setVoiceNameState] = useState(getVoiceName);
   const [availVoices, setAvailVoices]   = useState([]);
+  const [voiceReloadNonce, setVoiceReloadNonce] = useState(0);
 
   const theme = getTheme(darkMode);
   const S     = themedStyles(theme);
@@ -376,7 +377,15 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
       stopRec();
       window.speechSynthesis?.cancel();
     };
-  }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [idx, voiceReloadNonce]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Manual recovery for the known mobile bug where speechSynthesis/mic
+  // recognition silently stop responding after the screen has locked/slept
+  // a few times — nudges the engine, then replays this question from scratch.
+  function reloadVoiceEngine() {
+    resetVoiceEngine();
+    setVoiceReloadNonce(n => n + 1);
+  }
 
   // Enter key submits in reviewing phase
   useEffect(() => {
@@ -456,6 +465,16 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
                   <div style={{ fontSize: 11, color: theme.textFaint }}>Easier on the eyes for long sessions</div>
                 </div>
               </label>
+              <button
+                onClick={reloadVoiceEngine}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%', textAlign: 'left', background: 'transparent', border: `1px solid ${theme.panelBorder}`, borderRadius: 10, padding: '8px 10px', cursor: 'pointer', marginBottom: 12, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                <span style={{ fontSize: 16 }}>🔄</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>Reload voice engine</div>
+                  <div style={{ fontSize: 11, color: theme.textFaint }}>Mic or voice stopped responding after your screen locked? Tap this.</div>
+                </div>
+              </button>
               <div style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary, marginBottom: 2 }}>🌐 Voice accent</div>
               <div style={{ fontSize: 11, color: theme.textFaint, marginBottom: 8 }}>Applies to spoken questions and voice recognition, everywhere in the app</div>
               <select

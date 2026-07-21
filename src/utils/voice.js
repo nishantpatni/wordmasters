@@ -99,3 +99,25 @@ export function speak(text, { rate = 0.88, onEnd } = {}) {
   if (onEnd) utt.onend = onEnd;
   window.speechSynthesis.speak(utt);
 }
+
+// Chrome/Android's speechSynthesis is known to get stuck after the screen
+// locks/sleeps a few times in a row — queued utterances silently never fire
+// onend again, and the shared voice list can go stale. There's no real
+// "reload" API; the practical fix is cancelling anything pending, nudging
+// the engine with pause/resume, and re-reading the voice list. Exposed for
+// the Voice Quiz settings panel's manual "reload" button.
+export function resetVoiceEngine() {
+  if (!window.speechSynthesis) return;
+  try { window.speechSynthesis.cancel(); } catch {}
+  try { window.speechSynthesis.resume(); } catch {}
+  loadVoices();
+}
+
+// Same root cause as above — auto-recover as soon as the tab/screen comes
+// back from being hidden (screen lock, app switch), so most people never
+// need the manual button at all.
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') resetVoiceEngine();
+  });
+}
