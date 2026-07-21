@@ -105,10 +105,12 @@ function genCapital(item, pool) {
 }
 
 // ── SM-2 prioritisation (mirrors quiz.js prioritiseItems) ─────────────────────
-function prioritiseItems(items, scores) {
+// idOf lets callers prioritise reverse-capital voice questions, whose itemId
+// is a composite of multiple state ids joined by '+' rather than a single id.
+function prioritiseItems(items, scores, idOf = item => item.id) {
   const unseen = [], weak = [], strong = [];
   for (const item of items) {
-    const rec = scores[item.id];
+    const rec = scores[idOf(item)];
     if (!rec || !rec.attempts) unseen.push(item);
     else {
       const ms = memoryScore(rec);
@@ -144,7 +146,7 @@ export function buildGeoTest(topicId, count, scores = {}) {
 // Chandigarh UT) the answer requires ALL of them, in any order (scoreMatch is a
 // bag-of-words check, so order doesn't matter), and only counts as correct once
 // every name has been said.
-export function buildGeoVoiceTest(topicId, count) {
+export function buildGeoVoiceTest(topicId, count, scores = {}) {
   const pool = ALL_GEO_DATA[topicId] || [];
 
   const forwardQs = pool.map(item => ({
@@ -175,7 +177,8 @@ export function buildGeoVoiceTest(topicId, count) {
     };
   });
 
-  return shuffle([...forwardQs, ...reverseQs]).slice(0, count);
+  const idOf = q => q.itemId.split('+')[0];
+  return prioritiseItems([...forwardQs, ...reverseQs], scores, idOf).slice(0, count);
 }
 
 // ── Public: repractice wrong answers ─────────────────────────────────────────
@@ -191,4 +194,18 @@ export function buildGeoRepractice(incorrectResults) {
     if (q) questions.push(q);
   }
   return shuffle(questions);
+}
+
+// Same idea, but shaped for VoiceTest — used when repracticing wrong answers
+// from a Geography Voice Quiz. Reverse ("which state has capital X?")
+// questions use a composite itemId (joined state ids) that doesn't map back
+// to a single pool item, so we just replay the exact prompt/answer that was
+// recorded for the original question rather than regenerating it.
+export function buildGeoVoiceRepractice(incorrectResults) {
+  return shuffle(incorrectResults.map(r => ({
+    itemId:  r.itemId,
+    topicId: r.topicId,
+    prompt:  r.prompt,
+    answer:  r.correctAnswer,
+  })));
 }

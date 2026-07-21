@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
 import Login        from './screens/Login.jsx';
 import Home         from './screens/Home.jsx';
 import TopicSelect  from './screens/TopicSelect.jsx';
@@ -9,11 +9,16 @@ import Admin        from './screens/Admin.jsx';
 import Revise       from './screens/Revise.jsx';
 import VoiceTest    from './screens/VoiceTest.jsx';
 import TeachAndAsk  from './screens/TeachAndAsk.jsx';
-import { buildTest, buildRepractice, buildVoiceTest, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs } from './engine/quiz.js';
-import { buildGeoTest, buildGeoVoiceTest, buildGeoRepractice } from './engine/geoQuiz.js';
+import { buildTest, buildRepractice, buildVoiceTest, buildVoiceRepractice, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs } from './engine/quiz.js';
+import { buildGeoTest, buildGeoVoiceTest, buildGeoRepractice, buildGeoVoiceRepractice } from './engine/geoQuiz.js';
 import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
 import GeoTopicSelect from './screens/GeoTopicSelect.jsx';
 import { getDarkMode, setDarkMode as persistDarkMode } from './utils/theme.js';
+import { TOPIC_META } from './data/topicData.js';
+import { GEO_TOPIC_META } from './data/geoTopicData.js';
+import { pathForScreen, parseRoute } from './utils/routes.js';
+
+const DEFAULT_QUIZ_COUNT = 50; // used when a deep link starts a quiz directly
 
 function toLogRows(username, results) {
   const ts = new Date().toISOString();
@@ -58,6 +63,11 @@ export default function App() {
   // it already knows the partial results, App.jsx doesn't.
   const quitRef = useRef(null);
 
+  // Captures a deep link's intended destination (e.g. opening /revise/similes
+  // directly) from the very first render, before login rewrites the URL.
+  // Consumed once, after login, by the redirect effect further down.
+  const deepLinkRef = useRef(parseRoute(window.location.pathname));
+
   const handleLogin = useCallback(async (u) => {
     setUser(u);
     if (u.role === 'admin') { setScreen('admin'); return; }
@@ -81,20 +91,21 @@ export default function App() {
   }, []);
 
   const handleStartVoiceTest = useCallback((topicId, count) => {
-    const qs = buildVoiceTest(topicId, count);
+    const qs = buildVoiceTest(topicId, count, getScores(user.username));
     setQuestions(qs);
-    setTestConfig({ topicId, count, subject: 'english' });
+    setTestConfig({ topicId, count, subject: 'english', voice: true });
     setIsPracticeMode(false);
     setScreen('voice-test');
-  }, []);
+  }, [user]);
 
   const handleStartGeoVoiceTest = useCallback((topicId, count) => {
-    const qs = buildGeoVoiceTest(topicId, count);
+    const geoUser = `geo_${user.username}`;
+    const qs = buildGeoVoiceTest(topicId, count, getScores(geoUser));
     setQuestions(qs);
-    setTestConfig({ topicId, count, subject: 'geography' });
+    setTestConfig({ topicId, count, subject: 'geography', voice: true });
     setIsPracticeMode(false);
     setScreen('voice-test');
-  }, []);
+  }, [user]);
 
   const handleStartTest = useCallback(async (topicId, count) => {
     setSyncing(true);
@@ -110,7 +121,7 @@ export default function App() {
     setSyncing(false);
     const qs = buildTest(topicId, count, getScores(user.username));
     setQuestions(qs);
-    setTestConfig({ topicId, count, subject: 'english' });
+    setTestConfig({ topicId, count, subject: 'english', voice: false });
     setIsPracticeMode(false);
     setScreen('test');
   }, [user]);
@@ -119,7 +130,7 @@ export default function App() {
     const geoUser = `geo_${user.username}`;
     const qs = buildGeoTest(topicId, count, getScores(geoUser));
     setQuestions(qs);
-    setTestConfig({ topicId, count, subject: 'geography' });
+    setTestConfig({ topicId, count, subject: 'geography', voice: false });
     setIsPracticeMode(false);
     setScreen('test');
   }, [user]);
@@ -201,13 +212,16 @@ export default function App() {
   }, []);
 
   const handleRepractice = useCallback((wrongResults) => {
-    const isGeo = testConfig?.subject === 'geography';
-    const qs = isGeo ? buildGeoRepractice(wrongResults) : buildRepractice(wrongResults);
+    const isGeo   = testConfig?.subject === 'geography';
+    const isVoice = wrongResults[0]?.quizType === 'voice';
+    const qs = isVoice
+      ? (isGeo ? buildGeoVoiceRepractice(wrongResults) : buildVoiceRepractice(wrongResults))
+      : (isGeo ? buildGeoRepractice(wrongResults)      : buildRepractice(wrongResults));
     if (!qs.length) return;
     setPracticeItems(wrongResults);
     setQuestions(qs);
     setIsPracticeMode(true);
-    setScreen('test');
+    setScreen(isVoice ? 'voice-test' : 'test');
   }, [testConfig]);
 
   const handleRevise = useCallback((topicId) => {
@@ -222,22 +236,48 @@ export default function App() {
 
   const handleRetry = useCallback(() => {
     if (isPracticeMode) {
-      const isGeo = testConfig?.subject === 'geography';
-      const qs = isGeo ? buildGeoRepractice(practiceItems) : buildRepractice(practiceItems);
-      if (qs.length) { setQuestions(qs); setScreen('test'); }
+      const isGeo   = testConfig?.subject === 'geography';
+      const isVoice = practiceItems[0]?.quizType === 'voice';
+      const qs = isVoice
+        ? (isGeo ? buildGeoVoiceRepractice(practiceItems) : buildVoiceRepractice(practiceItems))
+        : (isGeo ? buildGeoRepractice(practiceItems)      : buildRepractice(practiceItems));
+      if (qs.length) { setQuestions(qs); setScreen(isVoice ? 'voice-test' : 'test'); }
       return;
     }
     if (!testConfig) return setScreen('topic-select');
-    if (testConfig.subject === 'geography') {
-      const geoUser = `geo_${user.username}`;
-      const qs = buildGeoTest(testConfig.topicId, testConfig.count, getScores(geoUser));
+    const isGeo = testConfig.subject === 'geography';
+    if (testConfig.voice) {
+      const qs = isGeo
+        ? buildGeoVoiceTest(testConfig.topicId, testConfig.count, getScores(`geo_${user.username}`))
+        : buildVoiceTest(testConfig.topicId, testConfig.count, getScores(user.username));
       setQuestions(qs);
+      setScreen('voice-test');
     } else {
-      const qs = buildTest(testConfig.topicId, testConfig.count, getScores(user.username));
+      const qs = isGeo
+        ? buildGeoTest(testConfig.topicId, testConfig.count, getScores(`geo_${user.username}`))
+        : buildTest(testConfig.topicId, testConfig.count, getScores(user.username));
       setQuestions(qs);
+      setScreen('test');
     }
-    setScreen('test');
   }, [testConfig, user, isPracticeMode, practiceItems]);
+
+  // If the app was opened via a deep link (e.g. /revise/similes or
+  // /quiz/synonyms/voice), jump straight there once login completes instead
+  // of landing on Home. useLayoutEffect (not useEffect) so the redirect
+  // happens before paint — no visible flash of Home first.
+  useLayoutEffect(() => {
+    const dl = deepLinkRef.current;
+    if (!user || user.role === 'admin' || !dl) return;
+    deepLinkRef.current = null;
+    const isGeo = dl.subject === 'geography';
+    if (dl.screen === 'revise' && TOPIC_META[dl.topicId])                        return handleRevise(dl.topicId);
+    if (dl.screen === 'test' && isGeo && GEO_TOPIC_META[dl.topicId])             return handleStartGeoTest(dl.topicId, DEFAULT_QUIZ_COUNT);
+    if (dl.screen === 'voice-test' && isGeo && GEO_TOPIC_META[dl.topicId])       return handleStartGeoVoiceTest(dl.topicId, DEFAULT_QUIZ_COUNT);
+    if (dl.screen === 'test' && TOPIC_META[dl.topicId])                         return handleStartTest(dl.topicId, DEFAULT_QUIZ_COUNT);
+    if (dl.screen === 'voice-test' && TOPIC_META[dl.topicId])                    return handleStartVoiceTest(dl.topicId, DEFAULT_QUIZ_COUNT);
+    if (dl.screen === 'topic-select')                                           return setScreen('topic-select');
+    if (dl.screen === 'geo-topic-select')                                       return setScreen('geo-topic-select');
+  }, [user, handleRevise, handleStartGeoTest, handleStartGeoVoiceTest, handleStartTest, handleStartVoiceTest]);
 
   // Back-press handling: this app has no router/URL, so the browser history
   // stack never grows past the initial page load and one Back press exits
@@ -248,11 +288,15 @@ export default function App() {
   // one level" action its own on-screen Back/Quit control already performs.
   const guardActiveRef = useRef(false);
   useEffect(() => {
+    const path = pathForScreen(screen, {
+      topicId: screen === 'revise' ? reviseTopicId : screen === 'teach-ask' ? teachTopicId : testConfig?.topicId,
+      subject: testConfig?.subject,
+    });
     const isRoot = screen === 'home' || screen === 'login';
-    if (isRoot) { guardActiveRef.current = false; return; }
-    if (guardActiveRef.current) window.history.replaceState({ screen }, '');
-    else { window.history.pushState({ screen }, ''); guardActiveRef.current = true; }
-  }, [screen]);
+    if (isRoot) { guardActiveRef.current = false; window.history.replaceState({ screen }, '', path); return; }
+    if (guardActiveRef.current) window.history.replaceState({ screen }, '', path);
+    else { window.history.pushState({ screen }, '', path); guardActiveRef.current = true; }
+  }, [screen, reviseTopicId, teachTopicId, testConfig]);
 
   useEffect(() => {
     function onPopState() {

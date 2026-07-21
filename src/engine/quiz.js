@@ -719,13 +719,15 @@ function enforceMultiselectRatio(topicId, questions) {
 }
 
 // ── Prioritise items: unseen → weak (worst first) → strong (most overdue first) ─
-function prioritiseItems(items, scores) {
+// idOf lets callers prioritise things that aren't raw topic items themselves —
+// e.g. grouped voice questions, which score against a representative itemId.
+function prioritiseItems(items, scores, idOf = item => item.id) {
   const unseen = [];
   const weak   = [];
   const strong = [];
 
   for (const item of items) {
-    const rec = scores[item.id];
+    const rec = scores[idOf(item)];
     if (!rec || !rec.attempts) {
       unseen.push(item);
     } else {
@@ -769,6 +771,22 @@ export function buildRepractice(incorrectResults) {
       const q = gen(item, pool);
       if (q) questions.push(q);
     } catch (_) {}
+  }
+  return shuffle(questions);
+}
+
+// Same idea as buildRepractice, but shaped for VoiceTest — used when
+// repracticing wrong answers from a Voice Quiz, so they stay a voice quiz
+// instead of silently switching to MCQ.
+export function buildVoiceRepractice(incorrectResults) {
+  const questions = [];
+  for (const r of incorrectResults) {
+    const pool = ALL_TOPIC_DATA[r.topicId];
+    if (!pool) continue;
+    const item = pool.find(i => i.id === r.itemId);
+    if (!item) continue;
+    const q = itemToVoiceQ(r.topicId, item);
+    if (q) questions.push({ itemId: item.id, topicId: r.topicId, ...q });
   }
   return shuffle(questions);
 }
@@ -910,28 +928,50 @@ function expandSlashAlternates(phrase) {
 // Similes data has one JSON entry per completion (e.g. "As bright as a
 // diamond" / "...a flame" / "...the sun" are 3 separate items) — group them
 // by stem so the voice quiz asks the stem once and expects every completion.
+// Also generates the reverse direction ("As ___ as the sun?" → bright),
+// grouped by comparator instead, the same way — mirrors the MCQ generator's
+// fill_comparator/fill_adjective subtypes.
 function buildSimileVoiceQs(raw) {
-  const groups = new Map();
+  const byAdjective  = new Map();
+  const byComparator = new Map();
   for (const item of raw) {
     const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
     if (!m) continue;
-    const stem = m[1].trim().toLowerCase();
-    if (!groups.has(stem)) {
-      groups.set(stem, {
+    const adjective  = m[1].trim();
+    const comparator = m[2].replace(/\\/g, '/').trim();
+
+    const adjKey = adjective.toLowerCase();
+    if (!byAdjective.has(adjKey)) {
+      byAdjective.set(adjKey, {
         itemId:      item.id,
-        prompt:      `As ${m[1].trim()} as ___`,
-        ttsPrompt:   `As ${m[1].trim()} as...?`,
+        prompt:      `As ${adjective} as ___`,
+        ttsPrompt:   `As ${adjective} as...?`,
         completions: new Set(),
       });
     }
-    expandSlashAlternates(m[2].replace(/\\/g, '/')).forEach(c => groups.get(stem).completions.add(c));
+    expandSlashAlternates(comparator).forEach(c => byAdjective.get(adjKey).completions.add(c));
+
+    const compKey = comparator.toLowerCase();
+    if (!byComparator.has(compKey)) {
+      byComparator.set(compKey, {
+        itemId:     item.id,
+        prompt:     `As ___ as ${comparator}`,
+        ttsPrompt:  `Complete the simile: as blank as ${comparator}`,
+        adjectives: new Set(),
+      });
+    }
+    byComparator.get(compKey).adjectives.add(adjective);
   }
-  return [...groups.values()].map(g => ({
-    itemId:          g.itemId,
-    prompt:          g.prompt,
-    ttsPrompt:       g.ttsPrompt,
+
+  const forwardQs = [...byAdjective.values()].map(g => ({
+    itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
     requiredAnswers: [...g.completions],
   }));
+  const reverseQs = [...byComparator.values()].map(g => ({
+    itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
+    requiredAnswers: [...g.adjectives],
+  }));
+  return [...forwardQs, ...reverseQs];
 }
 
 // Antonyms data also has one JSON entry per valid antonym for some words
@@ -952,22 +992,60 @@ function buildAntonymVoiceQs(raw) {
   }));
 }
 
-export function buildVoiceTest(topicId, count) {
+// Collective nouns forward ("group of lions?" → pride) and reverse ("a
+// pride of ___?" → lions) directions — grouped so a noun/collective with
+// more than one valid pairing is asked once, accepting any one answer
+// (matches the MCQ forward direction's existing any-one-accepted behavior).
+function buildCollectiveVoiceQs(raw) {
+  const byNoun       = new Map();
+  const byCollective = new Map();
+  for (const item of raw) {
+    const nounKey = item.noun.trim().toLowerCase();
+    if (!byNoun.has(nounKey)) byNoun.set(nounKey, { itemId: item.id, noun: item.noun, collectives: new Set() });
+    byNoun.get(nounKey).collectives.add(item.collective.trim());
+
+    const collKey = item.collective.trim().toLowerCase();
+    if (!byCollective.has(collKey)) byCollective.set(collKey, { itemId: item.id, collective: item.collective, nouns: new Set() });
+    byCollective.get(collKey).nouns.add(item.noun.trim());
+  }
+
+  const forwardQs = [...byNoun.values()].map(g => {
+    const [answer, ...altAnswers] = [...g.collectives];
+    return {
+      itemId: g.itemId, prompt: g.noun,
+      ttsPrompt: `What's the collective noun for a group of ${g.noun}?`,
+      answer, altAnswers,
+    };
+  });
+  const reverseQs = [...byCollective.values()].map(g => {
+    const [answer, ...altAnswers] = [...g.nouns];
+    return {
+      itemId: g.itemId, prompt: `A ${g.collective} of ___`,
+      ttsPrompt: `A ${g.collective} of what?`,
+      answer, altAnswers,
+    };
+  });
+  return [...forwardQs, ...reverseQs];
+}
+
+export function buildVoiceTest(topicId, count, scores = {}) {
   const raw = ALL_TOPIC_DATA[topicId] || [];
   let list;
   if (topicId === 'similes' || topicId === 'vocabopediaSimiles') {
-    list = buildSimileVoiceQs(raw);
+    list = prioritiseItems(buildSimileVoiceQs(raw), scores, q => q.itemId);
   } else if (topicId === 'antonyms') {
-    list = buildAntonymVoiceQs(raw);
+    list = prioritiseItems(buildAntonymVoiceQs(raw), scores, q => q.itemId);
+  } else if (topicId === 'collectiveNouns') {
+    list = prioritiseItems(buildCollectiveVoiceQs(raw), scores, q => q.itemId);
   } else {
-    list = raw
+    list = prioritiseItems(raw, scores)
       .map(item => {
         const q = itemToVoiceQ(topicId, item);
         return q ? { itemId: item.id, ...q } : null;
       })
       .filter(Boolean);
   }
-  return shuffle(list.map(q => ({ topicId, ...q }))).slice(0, count);
+  return list.slice(0, count).map(q => ({ topicId, ...q }));
 }
 
 // ── Teach Session ─────────────────────────────────────────────────────────────
