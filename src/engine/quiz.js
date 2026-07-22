@@ -772,7 +772,15 @@ export function buildRepractice(incorrectResults) {
       if (q) questions.push(q);
     } catch (_) {}
   }
-  return shuffle(questions);
+
+  const byTopic = new Map();
+  for (const q of questions) {
+    if (!byTopic.has(q.topicId)) byTopic.set(q.topicId, []);
+    byTopic.get(q.topicId).push(q);
+  }
+  const enforced = [...byTopic.entries()].flatMap(([topicId, qs]) => enforceMultiselectRatio(topicId, qs));
+
+  return shuffle(enforced);
 }
 
 // Same idea as buildRepractice, but shaped for VoiceTest — used when

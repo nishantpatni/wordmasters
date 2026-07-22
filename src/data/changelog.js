@@ -1,5 +1,12 @@
 export const USER_CHANGELOG = [
   {
+    date: '22 Jul 2026',
+    entries: [
+      { icon: '🔀', topic: 'Repractice Multi-Answer Questions', text: 'Retrying incorrect answers at the end of a quiz ("Try Again") now includes multi-answer questions again (e.g. similes like "as ___ as a lion?" where more than one adjective is correct) — it was silently only ever generating single-answer questions during repractice.' },
+      { icon: '🇺🇸', topic: 'Voice Recognition Language', text: 'Confirmed speech recognition (listening to your spoken answers) defaults to American English everywhere, matching spoken questions — same accent setting in Quiz Settings (⚙️) controls both.' },
+    ],
+  },
+  {
     date: '21 Jul 2026',
     entries: [
       { icon: '🔗', topic: 'Deep Links', text: 'Links like /revise/similes or /quiz/synonyms/voice now open straight into that topic\'s browse list or a fresh quiz once you\'re logged in, instead of always landing on Home.' },
