@@ -786,11 +786,32 @@ export function buildRepractice(incorrectResults) {
 // Same idea as buildRepractice, but shaped for VoiceTest — used when
 // repracticing wrong answers from a Voice Quiz, so they stay a voice quiz
 // instead of silently switching to MCQ.
+// Topics whose full voice quiz groups/directions can't be reconstructed from
+// a single raw item via itemToVoiceQ (e.g. reverse-direction questions, or
+// answer sets spread across multiple raw entries) — rebuild through the same
+// grouped builder buildVoiceTest uses, then look up the exact question that
+// was asked (by itemId + prompt, which the recorded result preserves).
+const GROUPED_VOICE_BUILDERS = {
+  similes:            buildSimileVoiceQs,
+  vocabopediaSimiles: buildSimileVoiceQs,
+  antonyms:           buildAntonymVoiceQs,
+  collectiveNouns:    buildCollectiveVoiceQs,
+};
+
 export function buildVoiceRepractice(incorrectResults) {
+  const groupedCache = new Map();
   const questions = [];
   for (const r of incorrectResults) {
     const pool = ALL_TOPIC_DATA[r.topicId];
     if (!pool) continue;
+
+    const builder = GROUPED_VOICE_BUILDERS[r.topicId];
+    if (builder) {
+      if (!groupedCache.has(r.topicId)) groupedCache.set(r.topicId, builder(pool));
+      const match = groupedCache.get(r.topicId).find(q => q.itemId === r.itemId && q.prompt === r.prompt);
+      if (match) { questions.push({ topicId: r.topicId, ...match }); continue; }
+    }
+
     const item = pool.find(i => i.id === r.itemId);
     if (!item) continue;
     const q = itemToVoiceQ(r.topicId, item);
