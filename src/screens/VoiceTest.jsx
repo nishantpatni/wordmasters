@@ -203,7 +203,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
     const answers = allMode ? cur.requiredAnswers : [cur.answer, ...(cur.altAnswers || [])];
     const { score, wordResults, answer: matchedAnswer } = allMode
       ? scoreMatchAll(cur.requiredAnswers, tx || '')
-      : scoreMatchAny(answers, tx || '');
+      : scoreMatchAny(answers, tx || '', cur.decoys || []);
     const threshold  = allMode ? 1 : MATCH_THRESHOLD;
     const correct    = score >= threshold;
     const coins      = correct ? 10 : 0;

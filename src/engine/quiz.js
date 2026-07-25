@@ -149,7 +149,11 @@ export function addCoins(username, amount) {
 // Returns: { id, topicId, itemId, inputType:'mcq'|'fill', prompt, options, correctIndex, explanation }
 
 function makeQ(topicId, itemId, inputType, prompt, options, correctIndex, explanation, correctIndices) {
-  return { id: `${topicId}_${itemId}_${Date.now()}_${Math.random()}`, topicId, itemId, inputType, prompt, options, correctIndex, correctIndices: correctIndices ?? [correctIndex], explanation };
+  const indices = correctIndices ?? [correctIndex];
+  // Tell the user up front how many options to pick — otherwise "select all
+  // that apply" questions give no way to know when to stop selecting.
+  const finalPrompt = indices.length > 1 ? `${prompt} (${indices.length} answers)` : prompt;
+  return { id: `${topicId}_${itemId}_${Date.now()}_${Math.random()}`, topicId, itemId, inputType, prompt: finalPrompt, options, correctIndex, correctIndices: indices, explanation };
 }
 
 // ── Synonyms ──────────────────────────────────────────────────────────────────
@@ -558,7 +562,7 @@ function genCollectiveReverse(item, pool) {
   const isMulti = correctIndices.length > 1;
   return makeQ('collectiveNouns', item.id, 'mcq',
     isMulti
-      ? `"${item.collective}" is a collective noun for which of the following? (Select ALL that apply)`
+      ? `"${item.collective}" is a collective noun for which of the following?`
       : `"A ${item.collective} of ___" — what goes in the blank?`,
     opts, opts.indexOf(correct), `${item.phrase}`, correctIndices
   );
@@ -726,7 +730,10 @@ function prioritiseItems(items, scores, idOf = item => item.id) {
   const weak   = [];
   const strong = [];
 
-  for (const item of items) {
+  // Shuffle first so items tied on score/date (e.g. multiple never-attempted
+  // or equally-weak items) don't fall back to the underlying data's
+  // alphabetical order — Array.sort() is stable, so this tie-break sticks.
+  for (const item of shuffle(items)) {
     const rec = scores[idOf(item)];
     if (!rec || !rec.attempts) {
       unseen.push(item);
@@ -738,7 +745,7 @@ function prioritiseItems(items, scores, idOf = item => item.id) {
   }
 
   return [
-    ...shuffle(unseen),
+    ...unseen,
     ...weak.sort((a, b) => a.ms - b.ms).map(x => x.item),
     ...strong.sort((a, b) => a.nextReview.localeCompare(b.nextReview)).map(x => x.item),
   ];
@@ -924,16 +931,24 @@ function itemToVoiceQ(topicId, item) {
       // Some nouns (e.g. "Flowers") have more than one valid collective —
       // accept any of them, mirroring the MCQ's forced-multiselect handling.
       const pool = ALL_TOPIC_DATA.collectiveNouns || [];
+      const validCollectives = new Set(
+        pool.filter(i => i.noun.toLowerCase() === item.noun.toLowerCase()).map(i => i.collective.toLowerCase())
+      );
       const altAnswers = [...new Set(
         pool
           .filter(i => i.noun.toLowerCase() === item.noun.toLowerCase() && i.collective.toLowerCase() !== item.collective.toLowerCase())
           .map(i => i.collective)
       )];
+      // Any other real collective noun said alongside the correct one is
+      // "hedging" — see scoreMatchAny's decoys param.
+      const decoys = [...new Set(pool.map(i => i.collective))]
+        .filter(c => !validCollectives.has(c.toLowerCase()));
       return {
         prompt:    item.noun,
         ttsPrompt: `What's the collective noun for a group of ${item.noun}?`,
         answer:    item.collective,
         altAnswers,
+        decoys,
       };
     }
     default:
@@ -1038,20 +1053,29 @@ function buildCollectiveVoiceQs(raw) {
     byCollective.get(collKey).nouns.add(item.noun.trim());
   }
 
+  const allCollectives = [...new Set(raw.map(i => i.collective.trim()))];
+  const allNouns       = [...new Set(raw.map(i => i.noun.trim()))];
+
+  // Any other real collective/noun said alongside the correct one is
+  // "hedging" — see scoreMatchAny's decoys param.
   const forwardQs = [...byNoun.values()].map(g => {
     const [answer, ...altAnswers] = [...g.collectives];
+    const validSet = new Set([...g.collectives].map(c => c.toLowerCase()));
+    const decoys = allCollectives.filter(c => !validSet.has(c.toLowerCase()));
     return {
       itemId: g.itemId, prompt: g.noun,
       ttsPrompt: `What's the collective noun for a group of ${g.noun}?`,
-      answer, altAnswers,
+      answer, altAnswers, decoys,
     };
   });
   const reverseQs = [...byCollective.values()].map(g => {
     const [answer, ...altAnswers] = [...g.nouns];
+    const validSet = new Set([...g.nouns].map(n => n.toLowerCase()));
+    const decoys = allNouns.filter(n => !validSet.has(n.toLowerCase()));
     return {
       itemId: g.itemId, prompt: `A ${g.collective} of ___`,
       ttsPrompt: `A ${g.collective} of what?`,
-      answer, altAnswers,
+      answer, altAnswers, decoys,
     };
   });
   return [...forwardQs, ...reverseQs];

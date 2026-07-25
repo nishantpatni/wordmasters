@@ -1,5 +1,13 @@
 export const USER_CHANGELOG = [
   {
+    date: '25 Jul 2026',
+    entries: [
+      { icon: '🔀', topic: 'Question Ordering Fix', text: 'Practice questions for items with tied scores (e.g. several Collective Nouns you\'ve gotten wrong equally often) were quietly falling back to the underlying data\'s alphabetical order instead of being shuffled. Fixed across MCQ, Voice Quiz, and Teach & Ask.' },
+      { icon: '🔢', topic: '"Select All" Answer Count', text: 'Multi-answer MCQ questions now show how many options to pick, e.g. "Select ALL collective nouns for a group of Flowers: (2 answers)".' },
+      { icon: '🚫', topic: 'Voice Quiz Anti-Guessing', text: 'Rattling off several guesses in one go (e.g. "pride, herd, flock, string...") no longer counts as correct just because one of them matched — Collective Nouns voice questions now mark it wrong if another real collective noun is detected alongside the right answer.' },
+    ],
+  },
+  {
     date: '22 Jul 2026',
     entries: [
       { icon: '🔀', topic: 'Repractice Multi-Answer Questions', text: 'Retrying incorrect answers at the end of a quiz ("Try Again") now includes multi-answer questions again (e.g. similes like "as ___ as a lion?" where more than one adjective is correct) — it was silently only ever generating single-answer questions during repractice.' },

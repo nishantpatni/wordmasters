@@ -263,7 +263,7 @@ export default function TeachAndAsk({ topicId, username, onQuit }) {
     const q = queue[qIdx];
     if (!q || q.type !== 'voice') return;
     const answers = [q.q.answer, ...(q.q.altAnswers || [])];
-    const { score, wordResults, answer: matchedAnswer } = scoreMatchAny(answers, tx);
+    const { score, wordResults, answer: matchedAnswer } = scoreMatchAny(answers, tx, q.q.decoys || []);
     const correct = score >= 0.85;
     setVTip({ matched: wordResults.map(w => w.matched), words: wordResults.map(w => w.word), correct });
     setVState('done');

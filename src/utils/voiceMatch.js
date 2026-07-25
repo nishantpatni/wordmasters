@@ -33,11 +33,33 @@ export function scoreMatch(answer, transcript) {
 // Accepts any one of several valid answers (e.g. multiple synonyms for a word) —
 // scores the transcript against each and returns the best match, so the user
 // only needs to say one of them, not all.
-export function scoreMatchAny(answers, transcript) {
+//
+// `decoys` is an optional list of other same-category words that are wrong
+// for this specific question (e.g. other collective nouns). Without this,
+// someone can game a closed-vocabulary quiz by rattling off several guesses
+// ("pride, herd, flock, string...") until one happens to match. If a decoy
+// is detected in the transcript, the answer is forced wrong even though a
+// correct word was also said.
+export function scoreMatchAny(answers, transcript, decoys = []) {
   let best = null;
   for (const answer of answers) {
     const result = scoreMatch(answer, transcript);
     if (!best || result.score > best.score) best = { ...result, answer };
+  }
+  if (best && best.score > 0 && decoys.length) {
+    const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+    const answerWords = new Set(
+      answers.flatMap(a => norm(a).split(/\s+/).filter(w => w && !ARTICLES.has(w)))
+    );
+    // Exact-word match only — decoys are real dictionary words the user would
+    // say deliberately and clearly, so fuzzy-matching them (like we do for the
+    // target answer) risks flagging ordinary STT noise as a hedge and wrongly
+    // failing an otherwise-correct answer.
+    const hedged = decoys.some(decoy => {
+      const decoyWords = norm(decoy).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+      return decoyWords.length > 0 && decoyWords.every(dw => !answerWords.has(dw) && spkWords.includes(dw));
+    });
+    if (hedged) best = { ...best, score: 0, hedged: true };
   }
   return best;
 }
