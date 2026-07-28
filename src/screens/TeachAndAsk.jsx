@@ -11,16 +11,19 @@ const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
 const TOTAL_ITEMS = 9;
 const AFFIRMATIVES = ['Nice one!', 'You nailed it!', 'Spot on!', 'Boom, correct!', 'Well played!', "That's a win!", 'Fantastic!', 'Perfect!', 'Brilliant!', 'Nailed it!', 'Outstanding!', 'Excellent!'];
-const VOICE_TOPICS = new Set(['idioms', 'oneWordSubs', 'proverbs', 'oxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
+const VOICE_TOPICS = new Set(['idioms', 'vocabopediaIdioms', 'oneWordSubs', 'proverbs', 'vocabopediaProverbs', 'oxymorons', 'vocabopediaOxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
 
 // ── Content helpers ───────────────────────────────────────────────────────────
 
 function getTeachContent(topicId, item) {
   switch (topicId) {
-    case 'idioms':       return { front: item.idiom, back: item.meaning, tts: `${item.idiom}. ${item.meaning}` };
+    case 'idioms':
+    case 'vocabopediaIdioms': return { front: item.idiom, back: item.meaning, tts: `${item.idiom}. ${item.meaning}` };
     case 'oneWordSubs':  return { front: item.word, back: item.phrase, tts: `${item.word}. ${item.phrase}` };
-    case 'proverbs':     return { front: item.proverb, back: item.meaning, tts: `${item.proverb}. Meaning: ${item.meaning}` };
-    case 'oxymorons': {
+    case 'proverbs':
+    case 'vocabopediaProverbs': return { front: item.proverb, back: item.meaning, tts: `${item.proverb}. Meaning: ${item.meaning}` };
+    case 'oxymorons':
+    case 'vocabopediaOxymorons': {
       const meaning = item.meaning.split(' / ')[0];
       return { front: item.phrase, back: meaning, tts: `${item.phrase}. ${meaning}` };
     }
@@ -39,10 +42,13 @@ function getTeachContent(topicId, item) {
 
 function getAnswerStr(topicId, item) {
   switch (topicId) {
-    case 'idioms':           return item.idiom;
+    case 'idioms':
+    case 'vocabopediaIdioms': return item.idiom;
     case 'oneWordSubs':      return item.word;
-    case 'proverbs':         return item.proverb;
-    case 'oxymorons':        return item.phrase;
+    case 'proverbs':
+    case 'vocabopediaProverbs': return item.proverb;
+    case 'oxymorons':
+    case 'vocabopediaOxymorons': return item.phrase;
     case 'similes':
     case 'vocabopediaSimiles': {
       const m = item.simile?.match(/^As\s+(.+?)\s+as\s+(.+)$/i);

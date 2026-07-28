@@ -1,10 +1,5 @@
 [
   {
-    "id": "a-blessing-in-disguise",
-    "idiom": "A Blessing In Disguise",
-    "meaning": "something good hidden in a bad situation"
-  },
-  {
     "id": "a-bolt-from-the-blue",
     "idiom": "A Bolt From The Blue",
     "meaning": "a sudden shock or calamity"
@@ -13,11 +8,6 @@
     "id": "a-chicken-hearted-fellow",
     "idiom": "A Chicken-Hearted Fellow",
     "meaning": "a coward"
-  },
-  {
-    "id": "a-dime-a-dozen",
-    "idiom": "A Dime A Dozen",
-    "meaning": "very common"
   },
   {
     "id": "a-hard-nut-to-crack",
@@ -55,11 +45,6 @@
     "meaning": "basic facts"
   },
   {
-    "id": "add-fuel-to-the-fire",
-    "idiom": "Add Fuel To The Fire",
-    "meaning": "make a bad situation worse"
-  },
-  {
     "id": "all-thumbs",
     "idiom": "All Thumbs",
     "meaning": "very clumsy"
@@ -90,11 +75,6 @@
     "meaning": "at the last moment"
   },
   {
-    "id": "be-all-ears",
-    "idiom": "Be All Ears",
-    "meaning": "listen attentively"
-  },
-  {
     "id": "be-founded-on",
     "idiom": "Be Founded On",
     "meaning": "based on"
@@ -110,21 +90,6 @@
     "meaning": "remember"
   },
   {
-    "id": "bend-over-backwards",
-    "idiom": "Bend Over Backwards",
-    "meaning": "try very hard to help"
-  },
-  {
-    "id": "bite-off-more-than-you-can-chew",
-    "idiom": "Bite Off More Than You Can Chew",
-    "meaning": "take on too much"
-  },
-  {
-    "id": "bite-the-bullet",
-    "idiom": "Bite The Bullet",
-    "meaning": "face something difficult bravely"
-  },
-  {
     "id": "blessing-in-disguise",
     "idiom": "Blessing In Disguise",
     "meaning": "hidden good fortune"
@@ -135,24 +100,9 @@
     "meaning": "royal ancestry"
   },
   {
-    "id": "break-a-leg",
-    "idiom": "Break A Leg",
-    "meaning": "good luck"
-  },
-  {
-    "id": "burn-bridges",
-    "idiom": "Burn Bridges",
-    "meaning": "destroy relationships or opportunities"
-  },
-  {
     "id": "burn-the-candle-at-both-ends",
     "idiom": "Burn The Candle At Both Ends",
     "meaning": "overwork yourself"
-  },
-  {
-    "id": "burn-the-midnight-oil",
-    "idiom": "Burn The Midnight Oil",
-    "meaning": "work or study late into the night"
   },
   {
     "id": "bury-the-hatchet",
@@ -250,11 +200,6 @@
     "meaning": "wait a long time"
   },
   {
-    "id": "cost-an-arm-and-a-leg",
-    "idiom": "Cost An Arm And A Leg",
-    "meaning": "very expensive"
-  },
-  {
     "id": "crocodile-tears",
     "idiom": "Crocodile Tears",
     "meaning": "false sorrow"
@@ -278,11 +223,6 @@
     "id": "cut-a-sorry-figure",
     "idiom": "Cut A Sorry Figure",
     "meaning": "make a poor impression"
-  },
-  {
-    "id": "cut-corners",
-    "idiom": "Cut Corners",
-    "meaning": "do something cheaply or carelessly"
   },
   {
     "id": "cut-the-gordian-knot",
@@ -345,11 +285,6 @@
     "meaning": "able to cope successfully"
   },
   {
-    "id": "face-the-music",
-    "idiom": "Face The Music",
-    "meaning": "accept consequences"
-  },
-  {
     "id": "fair-and-square",
     "idiom": "Fair And Square",
     "meaning": "honest and just"
@@ -405,11 +340,6 @@
     "meaning": "barely earning enough to live"
   },
   {
-    "id": "get-cold-feet",
-    "idiom": "Get Cold Feet",
-    "meaning": "become nervous"
-  },
-  {
     "id": "get-on-ones-nerves",
     "idiom": "Get On One's Nerves",
     "meaning": "annoy"
@@ -423,11 +353,6 @@
     "id": "go-dutch",
     "idiom": "Go Dutch",
     "meaning": "share expenses equally"
-  },
-  {
-    "id": "go-the-extra-mile",
-    "idiom": "Go The Extra Mile",
-    "meaning": "make extra effort"
   },
   {
     "id": "hair-raising",
@@ -480,16 +405,6 @@
     "meaning": "act unfairly"
   },
   {
-    "id": "hit-the-nail-on-the-head",
-    "idiom": "Hit The Nail On The Head",
-    "meaning": "be exactly right"
-  },
-  {
-    "id": "hit-the-road",
-    "idiom": "Hit The Road",
-    "meaning": "leave or begin a journey"
-  },
-  {
     "id": "in-a-state-of-thrall",
     "idiom": "In A State Of Thrall",
     "meaning": "under fascination or control"
@@ -508,21 +423,6 @@
     "id": "in-the-nick-of-time",
     "idiom": "In The Nick Of Time",
     "meaning": "just in time"
-  },
-  {
-    "id": "in-the-same-boat",
-    "idiom": "In The Same Boat",
-    "meaning": "in the same situation"
-  },
-  {
-    "id": "jump-on-the-bandwagon",
-    "idiom": "Jump On The Bandwagon",
-    "meaning": "join a popular trend"
-  },
-  {
-    "id": "keep-an-eye-on",
-    "idiom": "Keep An Eye On",
-    "meaning": "watch carefully"
   },
   {
     "id": "keep-at-arms-length",
@@ -548,16 +448,6 @@
     "id": "leave-no-stone-unturned",
     "idiom": "Leave No Stone Unturned",
     "meaning": "do everything possible"
-  },
-  {
-    "id": "let-sleeping-dogs-lie",
-    "idiom": "Let Sleeping Dogs Lie",
-    "meaning": "avoid reopening trouble"
-  },
-  {
-    "id": "let-the-cat-out-of-the-bag",
-    "idiom": "Let The Cat Out Of The Bag",
-    "meaning": "reveal a secret"
   },
   {
     "id": "look-daggers",
@@ -605,11 +495,6 @@
     "meaning": "facing a difficult choice"
   },
   {
-    "id": "on-thin-ice",
-    "idiom": "On Thin Ice",
-    "meaning": "in a risky situation"
-  },
-  {
     "id": "on-top-of-the-world",
     "idiom": "On Top Of The World",
     "meaning": "extremely happy"
@@ -650,24 +535,9 @@
     "meaning": "completely different"
   },
   {
-    "id": "practice-makes-perfect",
-    "idiom": "Practice Makes Perfect",
-    "meaning": "repetition improves skill"
-  },
-  {
     "id": "pull-a-long-face",
     "idiom": "Pull A Long Face",
     "meaning": "look sad"
-  },
-  {
-    "id": "pull-someones-leg",
-    "idiom": "Pull Someone's Leg",
-    "meaning": "tease someone"
-  },
-  {
-    "id": "read-between-the-lines",
-    "idiom": "Read Between The Lines",
-    "meaning": "understand the hidden meaning"
   },
   {
     "id": "run-down",
@@ -693,11 +563,6 @@
     "id": "take-after",
     "idiom": "Take After",
     "meaning": "resemble"
-  },
-  {
-    "id": "the-ball-is-in-your-court",
-    "idiom": "The Ball Is In Your Court",
-    "meaning": "it is your turn to act"
   },
   {
     "id": "tooth-and-nail",

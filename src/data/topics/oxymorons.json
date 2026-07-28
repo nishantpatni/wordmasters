@@ -1,29 +1,5 @@
 [
   {
-    "id": "abundant-poverty",
-    "phrase": "Abundant Poverty",
-    "meaning": "Having a lot of something, but still being very poor. / A situation where poverty is widespread or found in large amounts. It’s used to describe situations where a society or group possesses resources or potential for wealth but still experiences widespread poverty",
-    "example": "The region was marked by abundant poverty—everywhere you looked, there was an overwhelming lack of basic resources."
-  },
-  {
-    "id": "act-naturally",
-    "phrase": "Act Naturally",
-    "meaning": "To behave in a relaxed and real way, to not over-act.",
-    "example": "Just act naturally during the interview—they want to see the real you."
-  },
-  {
-    "id": "additional-reduction",
-    "phrase": "Additional Reduction",
-    "meaning": "An extra decrease./ extra discount",
-    "example": "The store offered an additional reduction on already discounted items during the weekend sale."
-  },
-  {
-    "id": "almost-done",
-    "phrase": "Almost Done",
-    "meaning": "Very close to being finished.",
-    "example": "He kept saying the report was almost done, but it had been “almost done” for three days straight."
-  },
-  {
     "id": "alone-together",
     "phrase": "Alone Together",
     "meaning": "Being with someone, but feeling alone./ being together but doing their own thing / or being in the same space with someone but experiencing a lack of genuine connection",
@@ -66,24 +42,6 @@
     "example": "Despite the close distance between their homes, they hardly ever met."
   },
   {
-    "id": "comfortable-misery",
-    "phrase": "Comfortable Misery",
-    "meaning": "Feeling bad but getting used to it.",
-    "example": "She stayed in the job out of habit, trapped in a state of comfortable misery."
-  },
-  {
-    "id": "constant-variable",
-    "phrase": "Constant Variable",
-    "meaning": "Something that’s supposed to change but stays the same.",
-    "example": "In this experiment, temperature is the constant variable across all trials."
-  },
-  {
-    "id": "controlled-chaos",
-    "phrase": "Controlled Chaos",
-    "meaning": "A wild situation that’s still somewhat managed.",
-    "example": "Backstage before the show was a scene of controlled chaos—everyone rushing, yet knowing exactly what to do."
-  },
-  {
     "id": "crash-landing",
     "phrase": "Crash Landing",
     "meaning": "A landing that’s rough or sudden.",
@@ -96,100 +54,16 @@
     "example": "Sometimes telling the truth can feel like a cruel kindness—it hurts now but helps later."
   },
   {
-    "id": "curved-line",
-    "phrase": "Curved Line",
-    "meaning": "A line that isn’t straight.",
-    "example": "The artist drew a perfect curved line to soften the geometric composition."
-  },
-  {
-    "id": "darkness-visible",
-    "phrase": "Darkness Visible",
-    "meaning": "Being able to see even when it’s dark.",
-    "example": "In the poem, he described the cave as a place of darkness visible—so black it felt almost tangible."
-  },
-  {
     "id": "deafening-silence",
     "phrase": "Deafening Silence",
     "meaning": "So quiet it feels loud.",
     "example": "When the news was announced, there was a deafening silence in the room."
   },
   {
-    "id": "deceptively-honest",
-    "phrase": "Deceptively Honest",
-    "meaning": "Someone who seems tricky but is truthful./ dishonest in a way that appears honest",
-    "example": "His words felt deceptively honest—just enough truth to make the lie believable."
-  },
-  {
-    "id": "definite-possibility",
-    "phrase": "Definite Possibility",
-    "meaning": "Something that might happen for sure./",
-    "example": "There’s a definite possibility of rain this afternoon, so bring an umbrella."
-  },
-  {
-    "id": "devout-atheist",
-    "phrase": "Devout Atheist",
-    "meaning": "A person who strongly doesn’t believe in religion.",
-    "example": "He was a devout atheist—passionately committed to his disbelief in any religion."
-  },
-  {
-    "id": "dull-roar",
-    "phrase": "Dull Roar",
-    "meaning": "A soft but steady noise.",
-    "example": "A dull roar came from the stadium as the crowd began to stir before the match."
-  },
-  {
-    "id": "elevated-subway",
-    "phrase": "Elevated Subway",
-    "meaning": "A train called \"subway\" that runs above ground.",
-    "example": "Ironically, part of New York’s subway system runs on an elevated track above ground."
-  },
-  {
-    "id": "essentially-useless",
-    "phrase": "Essentially Useless",
-    "meaning": "Not really helpful at all.",
-    "example": "The old manual was essentially useless after the software update."
-  },
-  {
-    "id": "even-odds",
-    "phrase": "Even Odds",
-    "meaning": "A fair chance of something happening.",
-    "example": "It’s a tight race, with even odds for both candidates to win."
-  },
-  {
-    "id": "exact-estimate",
-    "phrase": "Exact Estimate",
-    "meaning": "A very close guess.",
-    "example": "The contractor gave us an exact estimate of the renovation cost."
-  },
-  {
-    "id": "extinct-life",
-    "phrase": "Extinct Life",
-    "meaning": "Creatures that used to be alive but aren’t anymore.",
-    "example": "Fossils are all that remain of extinct life."
-  },
-  {
-    "id": "fairly-dark",
-    "phrase": "Fairly Dark",
-    "meaning": "A little bit dark.",
-    "example": "The room was fairly dark, but I could still make out shapes."
-  },
-  {
     "id": "far-closer",
     "phrase": "Far Closer",
     "meaning": "Much nearer than something else.",
     "example": "He stood far closer to the door than she had expected."
-  },
-  {
-    "id": "feeling-numb",
-    "phrase": "Feeling Numb",
-    "meaning": "Having no feeling at all.",
-    "example": "After the breakup, she was feeling numb—no joy or sadness."
-  },
-  {
-    "id": "festive-tranquility",
-    "phrase": "Festive Tranquility",
-    "meaning": "Calm but with a happy celebration around.",
-    "example": "The temple glowed with festive tranquility during the night prayer."
   },
   {
     "id": "fine-mess",
@@ -234,22 +108,10 @@
     "example": "The company is growing smaller as it downsizes operations."
   },
   {
-    "id": "guest-host",
-    "phrase": "Guest Host",
-    "meaning": "A person who visits but also leads or presents.",
-    "example": "Tonight’s guest host is a celebrity chef."
-  },
-  {
     "id": "half-dead-empty",
     "phrase": "Half Dead/empty",
     "meaning": "Something only partly working or full.",
     "example": "The plant looked half dead from lack of water."
-  },
-  {
-    "id": "historical-present",
-    "phrase": "Historical Present",
-    "meaning": "Talking about the past using the present tense.",
-    "example": "The professor spoke in the historical present: “Caesar enters Rome...”"
   },
   {
     "id": "honest-thief",
@@ -258,34 +120,10 @@
     "example": "He was an honest thief—he admitted everything he stole."
   },
   {
-    "id": "humane-slaughter",
-    "phrase": "Humane Slaughter",
-    "meaning": "Killing animals in a less cruel way.",
-    "example": "They claimed it was humane slaughter, but it still felt cruel."
-  },
-  {
     "id": "icy-hot",
     "phrase": "Icy Hot",
     "meaning": "Feels cold and hot at the same time.",
     "example": "The icy hot balm soothed her aching muscles."
-  },
-  {
-    "id": "idiot-savant",
-    "phrase": "Idiot Savant",
-    "meaning": "Someone with disabilities who has an amazing skill.",
-    "example": "The boy was an idiot savant—socially awkward but a math genius."
-  },
-  {
-    "id": "ill-poor-health",
-    "phrase": "Ill/poor Health",
-    "meaning": "Being very unwell.",
-    "example": "He’s in poor health and needs constant care."
-  },
-  {
-    "id": "impossible-solution",
-    "phrase": "Impossible Solution",
-    "meaning": "An answer that can’t work. / a solution to a problem that cannot be achieved or cannot exist - a way to solve a problem that is unachievable",
-    "example": "Finding an impossible solution became his obsession."
   },
   {
     "id": "inside-out",
@@ -294,52 +132,16 @@
     "example": "You’re wearing your T-shirt inside out."
   },
   {
-    "id": "intense-apathy",
-    "phrase": "Intense Apathy",
-    "meaning": "Caring so little, it becomes noticeable.",
-    "example": "She showed intense apathy toward the drama at work."
-  },
-  {
-    "id": "joyful-sadness",
-    "phrase": "Joyful Sadness",
-    "meaning": "Feeling happy and sad at once.",
-    "example": "Watching her graduate brought joyful sadness."
-  },
-  {
     "id": "jumbo-shrimp",
     "phrase": "Jumbo Shrimp",
     "meaning": "A large small sea animal.",
     "example": "We ordered jumbo shrimp for dinner."
   },
   {
-    "id": "larger-half",
-    "phrase": "Larger Half",
-    "meaning": "One half that’s bigger than the other.",
-    "example": "I’ll take the larger half of the cookie."
-  },
-  {
     "id": "liquid-gas-marble",
     "phrase": "Liquid Gas/marble",
     "meaning": "A gas or stone that flows like liquid.",
     "example": "Liquid gas is used in many fuel systems."
-  },
-  {
-    "id": "live-recording",
-    "phrase": "Live Recording",
-    "meaning": "A recorded performance done in real time.",
-    "example": "This album is a live recording from their Paris concert."
-  },
-  {
-    "id": "living-dead-sacrifices",
-    "phrase": "Living Dead/sacrifices",
-    "meaning": "Alive, but acting like they’re not.",
-    "example": "The movie is about the living dead rising from their graves."
-  },
-  {
-    "id": "loosely-packed-sealed",
-    "phrase": "Loosely Packed/sealed",
-    "meaning": "Not tightly put together.",
-    "example": "The box was loosely sealed, and everything spilled out."
   },
   {
     "id": "loud-whisper",
@@ -354,34 +156,10 @@
     "example": "The loyal opposition in parliament questioned the government’s plans."
   },
   {
-    "id": "magic-realism",
-    "phrase": "Magic Realism",
-    "meaning": "Real things mixed with magical ones in stories.",
-    "example": "The novel blends everyday life with magic realism."
-  },
-  {
-    "id": "mandatory-option",
-    "phrase": "Mandatory Option",
-    "meaning": "A choice you must take.",
-    "example": "Wearing the badge is a mandatory option during official events."
-  },
-  {
     "id": "melancholy-merriment",
     "phrase": "Melancholy Merriment",
     "meaning": "Feeling sad in the middle of joy.",
     "example": "The reunion was full of melancholy merriment—laughter tinged with sadness."
-  },
-  {
-    "id": "militant-pacifist",
-    "phrase": "Militant Pacifist",
-    "meaning": "Someone who fights for peace.",
-    "example": "He was a militant pacifist, fiercely protesting war through peaceful means."
-  },
-  {
-    "id": "mobile-home",
-    "phrase": "Mobile Home",
-    "meaning": "A house that can move.",
-    "example": "They lived in a mobile home on the edge of town."
   },
   {
     "id": "modern-recent-history",
@@ -390,46 +168,10 @@
     "example": "The class focuses on modern history, starting from World War I."
   },
   {
-    "id": "mute-sound",
-    "phrase": "Mute Sound",
-    "meaning": "Sound that’s turned off.",
-    "example": "The TV played with mute sound—subtle vibrations and no audio."
-  },
-  {
-    "id": "natural-actor-makeup",
-    "phrase": "Natural Actor/makeup",
-    "meaning": "Something that looks real but is planned.",
-    "example": "Her natural makeup made her look effortlessly stunning."
-  },
-  {
-    "id": "negative-growth",
-    "phrase": "Negative Growth",
-    "meaning": "When something grows smaller instead of bigger.",
-    "example": "The company reported negative growth last quarter."
-  },
-  {
-    "id": "never-again",
-    "phrase": "Never Again",
-    "meaning": "Something that will not happen in the future.",
-    "example": "Never again will I trust him with my secrets."
-  },
-  {
     "id": "new-used-classic",
     "phrase": "New Used/classic",
     "meaning": "An old item being sold as new.",
     "example": "I bought a new used car from the dealership."
-  },
-  {
-    "id": "old-news",
-    "phrase": "Old News",
-    "meaning": "News that’s no longer new.",
-    "example": "That scandal is old news now."
-  },
-  {
-    "id": "one-man-band",
-    "phrase": "One-Man Band",
-    "meaning": "One person doing many jobs.",
-    "example": "He’s a one-man band—coding, designing, and marketing the whole product."
   },
   {
     "id": "only-choice",
@@ -450,12 +192,6 @@
     "example": "The magician was openly deceptive about how the trick worked."
   },
   {
-    "id": "organized-mess",
-    "phrase": "Organized Mess",
-    "meaning": "A messy place that still makes sense.",
-    "example": "His desk was an organized mess—chaotic yet somehow functional."
-  },
-  {
     "id": "original-copy",
     "phrase": "Original Copy",
     "meaning": "A first copy that started everything.",
@@ -468,22 +204,10 @@
     "example": "The peaceful conquest of the region was achieved through diplomacy."
   },
   {
-    "id": "plastic-glasses",
-    "phrase": "Plastic Glasses",
-    "meaning": "Not real glass, but see-through plastic.",
-    "example": "She wore plastic glasses that looked exactly like real designer frames."
-  },
-  {
     "id": "pretty-ugly",
     "phrase": "Pretty Ugly",
     "meaning": "Really ugly, despite the word \"pretty.\"",
     "example": "That dress is pretty ugly—I wouldn’t be caught dead in it."
-  },
-  {
-    "id": "random-order-pattern",
-    "phrase": "Random Order/pattern",
-    "meaning": "A pattern that doesn’t follow rules.",
-    "example": "The artist painted the tiles in a random pattern that somehow looked intentional."
   },
   {
     "id": "real-fantasy",
@@ -498,34 +222,10 @@
     "example": "As a resident alien, she had the right to live and work in the country."
   },
   {
-    "id": "round-corner",
-    "phrase": "Round Corner",
-    "meaning": "A corner that isn’t sharp.",
-    "example": "The table had round corners for child safety."
-  },
-  {
     "id": "same-difference",
     "phrase": "Same Difference",
     "meaning": "Different things with the same result.",
     "example": "“You took the bus, I took the train.” “Same difference—we both arrived late.”"
-  },
-  {
-    "id": "scalding-coolness",
-    "phrase": "Scalding Coolness",
-    "meaning": "A mix of very hot and slightly cold.",
-    "example": "Her scalding coolness in that argument left everyone speechless."
-  },
-  {
-    "id": "seriously-funny",
-    "phrase": "Seriously Funny",
-    "meaning": "Very funny.",
-    "example": "That comedian is seriously funny—I laughed for an hour."
-  },
-  {
-    "id": "shrewd-dumbness",
-    "phrase": "Shrewd Dumbness",
-    "meaning": "Acting silly but being clever.",
-    "example": "His shrewd dumbness made people underestimate him—exactly as he planned."
   },
   {
     "id": "silent-scream",
@@ -544,12 +244,6 @@
     "phrase": "Soft Rock",
     "meaning": "Music that’s rock, but calm.",
     "example": "They played some soft rock music at the dinner party."
-  },
-  {
-    "id": "static-flow",
-    "phrase": "Static Flow",
-    "meaning": "Movement that doesn’t change.",
-    "example": "The sculpture captured the idea of static flow—frozen movement."
   },
   {
     "id": "theoretical-experience",

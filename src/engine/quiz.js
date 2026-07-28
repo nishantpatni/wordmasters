@@ -330,14 +330,14 @@ function genAntonym(item, pool) {
 // New schema: { id, idiom, meaning } — no example field
 let idiomSubIdx = 0;
 
-function genIdiom(item, pool) {
+function genIdiom(item, pool, topicId = 'idioms') {
   const others = pool.filter(i => i.id !== item.id);
 
   if (idiomSubIdx++ % 2 === 0) {
     const correct = item.meaning;
     const wrong = pickDistinct(others.map(i => i.meaning), correct, 3);
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('idioms', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `What does the idiom "${item.idiom}" mean?`,
       opts, opts.indexOf(correct), `"${item.idiom}" — ${item.meaning}`
     );
@@ -345,7 +345,7 @@ function genIdiom(item, pool) {
   const correct = item.idiom;
   const wrong = pickDistinct(others.map(i => i.idiom), correct, 3);
   const opts = shuffle([correct, ...wrong]);
-  return makeQ('idioms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `Which idiom means: "${item.meaning}"?`,
     opts, opts.indexOf(correct), `Answer: ${item.idiom}`
   );
@@ -442,7 +442,7 @@ function shortMeaning(text) {
 
 let oxySubIdx = 0;
 
-function genOxymoron(item, pool) {
+function genOxymoron(item, pool, topicId = 'oxymorons') {
   const others = pool.filter(i => i.id !== item.id);
   const meaning = shortMeaning(item.meaning);
   const subtype = oxySubIdx++ % 3;
@@ -452,7 +452,7 @@ function genOxymoron(item, pool) {
     const correct = meaning;
     const wrong = pickDistinct(others.map(i => shortMeaning(i.meaning)), correct, 3);
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('oxymorons', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `What does the oxymoron "${item.phrase}" mean?`,
       opts, opts.indexOf(correct), `Example: ${item.example}`
     );
@@ -463,7 +463,7 @@ function genOxymoron(item, pool) {
     const correct = item.phrase;
     const wrong = pickDistinct(others.map(i => i.phrase), correct, 3);
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('oxymorons', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `Which of these is an oxymoron that means: "${meaning}"?`,
       opts, opts.indexOf(correct), `Example: ${item.example}`
     );
@@ -476,7 +476,7 @@ function genOxymoron(item, pool) {
     const correct = meaning;
     const wrong = pickDistinct(others.map(i => shortMeaning(i.meaning)), correct, 3);
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('oxymorons', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `What does the oxymoron "${item.phrase}" mean?`,
       opts, opts.indexOf(correct), `Example: ${item.example}`
     );
@@ -487,7 +487,7 @@ function genOxymoron(item, pool) {
   const wrongPool = others.flatMap(i => i.phrase.trim().split(/\s+/));
   const wrong = pickDistinct(wrongPool, correct, 3);
   const opts = shuffle([correct, ...wrong]);
-  return makeQ('oxymorons', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `Complete the oxymoron: "${blanked}"`,
     opts, opts.indexOf(correct),
     `Full phrase: "${item.phrase}" — ${meaning}`
@@ -605,7 +605,7 @@ function genHomophone(item, pool) {
 const PROVERB_SUBTYPES = ['proverb_to_meaning', 'meaning_to_proverb', 'usage_mcq'];
 let proverbSubIdx = 0;
 
-function genProverb(item, pool) {
+function genProverb(item, pool, topicId = 'proverbs') {
   const subtype = PROVERB_SUBTYPES[proverbSubIdx++ % 3];
   const others = pool.filter(i => i.id !== item.id);
 
@@ -613,7 +613,7 @@ function genProverb(item, pool) {
     const correct = item.meaning;
     const wrong = pickDistinct(others.map(i => i.meaning), correct, 3);
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('proverbs', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `What does this proverb mean?\n"${item.proverb}"`,
       opts, opts.indexOf(correct), `Example: ${item.example}`
     );
@@ -628,7 +628,7 @@ function genProverb(item, pool) {
       wrong = pickDistinct(others.map(i => i.proverb), correct, 3);
     }
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('proverbs', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `Which proverb best expresses:\n"${item.meaning}"?`,
       opts, opts.indexOf(correct), `Answer: ${item.proverb}`
     );
@@ -640,7 +640,7 @@ function genProverb(item, pool) {
   const blankEx = item.example.includes(item.proverb)
     ? item.example.replace(item.proverb, '___')
     : item.example + ' Which proverb fits this?';
-  return makeQ('proverbs', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     blankEx,
     opts, opts.indexOf(correct), `Answer: ${item.proverb}`
   );
@@ -651,13 +651,16 @@ const GENERATORS = {
   synonyms:        genSynonym,
   antonyms:        genAntonym,
   idioms:          genIdiom,
+  vocabopediaIdioms: (item, pool) => genIdiom(item, pool, 'vocabopediaIdioms'),
   oneWordSubs:     genOneWord,
   similes:         genSimile,
   vocabopediaSimiles: (item, pool) => genSimile(item, pool, 'vocabopediaSimiles'),
   oxymorons:       genOxymoron,
+  vocabopediaOxymorons: (item, pool) => genOxymoron(item, pool, 'vocabopediaOxymorons'),
   collectiveNouns: genCollective,
   homophones:      genHomophone,
   proverbs:        genProverb,
+  vocabopediaProverbs: (item, pool) => genProverb(item, pool, 'vocabopediaProverbs'),
 };
 
 // ── Multiselect Enforcement ───────────────────────────────────────────────────
@@ -897,12 +900,15 @@ export function buildTest(topicId, count, scores = {}) {
 function itemToVoiceQ(topicId, item) {
   switch (topicId) {
     case 'idioms':
+    case 'vocabopediaIdioms':
       return { prompt: item.meaning, answer: item.idiom };
     case 'oneWordSubs':
       return { prompt: item.phrase, answer: item.word };
     case 'proverbs':
+    case 'vocabopediaProverbs':
       return { prompt: item.meaning, answer: item.proverb };
     case 'oxymorons':
+    case 'vocabopediaOxymorons':
       return { prompt: item.meaning.split(' / ')[0], answer: item.phrase };
     case 'similes':
     case 'vocabopediaSimiles': {
@@ -910,23 +916,43 @@ function itemToVoiceQ(topicId, item) {
       // buildSimileVoiceQs() below to group same-stem items instead.
       const m = item.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
       if (!m) return null;
+      const answer = expandSlashAlternates(m[2].replace(/\\/g, '/'))[0];
+      // Any other comparator in the dataset said alongside the answer is
+      // hedging — see scoreMatchAny's decoys param.
+      const pool = ALL_TOPIC_DATA[topicId] || [];
+      const decoys = [...new Set(pool.flatMap(i => {
+        const mm = i.simile.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
+        return mm ? expandSlashAlternates(mm[2].replace(/\\/g, '/')) : [];
+      }))].filter(c => c.toLowerCase() !== answer.toLowerCase());
       return {
         prompt:    `As ${m[1].trim()} as ___`,
         ttsPrompt: `As ${m[1].trim()} as...?`,
-        answer:    expandSlashAlternates(m[2].replace(/\\/g, '/'))[0],
+        answer,
+        decoys,
       };
     }
-    case 'antonyms':
+    case 'antonyms': {
       // Single-item form (used by Teach & Ask) — the full voice quiz uses
       // buildAntonymVoiceQs() below to group same-word items instead.
-      return { prompt: item.word, ttsPrompt: `What's the antonym of ${item.word}?`, answer: item.antonym };
-    case 'synonyms':
-      // All synonyms must be spoken (in any order).
+      const pool = ALL_TOPIC_DATA.antonyms || [];
+      const decoys = [...new Set(pool.map(i => i.antonym))].filter(a => a.toLowerCase() !== item.antonym.toLowerCase());
+      return { prompt: item.word, ttsPrompt: `What's the antonym of ${item.word}?`, answer: item.antonym, decoys };
+    }
+    case 'synonyms': {
+      // All synonyms must be spoken (in any order). Any other word's synonym
+      // said alongside this word's required synonyms is hedging — see
+      // scoreMatchAll's decoys param.
+      const pool = ALL_TOPIC_DATA.synonyms || [];
+      const validSet = new Set(item.synonyms.map(s => s.toLowerCase()));
+      const decoys = [...new Set(pool.flatMap(i => i.synonyms))]
+        .filter(s => !validSet.has(s.toLowerCase()));
       return {
         prompt:          item.word,
         ttsPrompt:       item.synonyms.length > 1 ? `Say all the synonyms for ${item.word}` : `Say a synonym for ${item.word}`,
         requiredAnswers: item.synonyms,
+        decoys,
       };
+    }
     case 'collectiveNouns': {
       // Some nouns (e.g. "Flowers") have more than one valid collective —
       // accept any of them, mirroring the MCQ's forced-multiselect handling.
@@ -1007,14 +1033,27 @@ function buildSimileVoiceQs(raw) {
     byComparator.get(compKey).adjectives.add(adjective);
   }
 
-  const forwardQs = [...byAdjective.values()].map(g => ({
-    itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
-    requiredAnswers: [...g.completions],
-  }));
-  const reverseQs = [...byComparator.values()].map(g => ({
-    itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
-    requiredAnswers: [...g.adjectives],
-  }));
+  // Any other real comparator/adjective in the dataset said alongside the
+  // required completions is hedging — see scoreMatchAll's decoys param.
+  const allComparators = [...new Set([...byAdjective.values()].flatMap(g => [...g.completions]))];
+  const allAdjectives  = [...new Set([...byComparator.values()].flatMap(g => [...g.adjectives]))];
+
+  const forwardQs = [...byAdjective.values()].map(g => {
+    const validSet = new Set([...g.completions].map(c => c.toLowerCase()));
+    return {
+      itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
+      requiredAnswers: [...g.completions],
+      decoys: allComparators.filter(c => !validSet.has(c.toLowerCase())),
+    };
+  });
+  const reverseQs = [...byComparator.values()].map(g => {
+    const validSet = new Set([...g.adjectives].map(a => a.toLowerCase()));
+    return {
+      itemId: g.itemId, prompt: g.prompt, ttsPrompt: g.ttsPrompt,
+      requiredAnswers: [...g.adjectives],
+      decoys: allAdjectives.filter(a => !validSet.has(a.toLowerCase())),
+    };
+  });
   return [...forwardQs, ...reverseQs];
 }
 
@@ -1028,12 +1067,19 @@ function buildAntonymVoiceQs(raw) {
     if (!groups.has(key)) groups.set(key, { itemId: item.id, word: item.word, antonyms: new Set() });
     groups.get(key).antonyms.add(item.antonym.trim());
   }
-  return [...groups.values()].map(g => ({
-    itemId:          g.itemId,
-    prompt:          g.word,
-    ttsPrompt:       g.antonyms.size > 1 ? `What are the antonyms of ${g.word}?` : `What's the antonym of ${g.word}?`,
-    requiredAnswers: [...g.antonyms],
-  }));
+  // Any other word's antonym said alongside this word's required antonyms is
+  // hedging — see scoreMatchAll's decoys param.
+  const allAntonyms = [...new Set(raw.map(i => i.antonym.trim()))];
+  return [...groups.values()].map(g => {
+    const validSet = new Set([...g.antonyms].map(a => a.toLowerCase()));
+    return {
+      itemId:          g.itemId,
+      prompt:          g.word,
+      ttsPrompt:       g.antonyms.size > 1 ? `What are the antonyms of ${g.word}?` : `What's the antonym of ${g.word}?`,
+      requiredAnswers: [...g.antonyms],
+      decoys:          allAntonyms.filter(a => !validSet.has(a.toLowerCase())),
+    };
+  });
 }
 
 // Collective nouns forward ("group of lions?" → pride) and reverse ("a

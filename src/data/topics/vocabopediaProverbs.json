@@ -1,0 +1,242 @@
+[
+  {
+    "id": "bad-workman-blames-quarrels",
+    "proverb": "A bad workman blames/quarrels with his tools",
+    "meaning": "People often blame tools or circumstances for their own mistakes.",
+    "example": "She said, \"A bad workman blames/quarrels with his tools,\" to show that people often blame tools or circumstances for their own mistakes."
+  },
+  {
+    "id": "fool-and-his-money",
+    "proverb": "A fool and his money are soon parted",
+    "meaning": "Foolish people spend money carelessly.",
+    "example": "She said, \"A fool and his money are soon parted,\" to show that foolish people spend money carelessly."
+  },
+  {
+    "id": "little-knowledge-is",
+    "proverb": "A little knowledge is a dangerous thing",
+    "meaning": "Knowing only a little can lead to mistakes.",
+    "example": "She said, \"A little knowledge is a dangerous thing,\" to show that knowing only a little can lead to mistakes."
+  },
+  {
+    "id": "actions-speak-louder-than",
+    "proverb": "Actions speak louder than words",
+    "meaning": "What people do matters more than what they say.",
+    "example": "She said, \"Actions speak louder than words,\" to show that what people do matters more than what they say."
+  },
+  {
+    "id": "stitch-in-time-saves",
+    "proverb": "A stitch in time saves nine",
+    "meaning": "Fix problems early before they become bigger.",
+    "example": "She said, \"A stitch in time saves nine,\" to show that fix problems early before they become bigger."
+  },
+  {
+    "id": "all-work-and-no",
+    "proverb": "All work and no play makes Jack a dull boy",
+    "meaning": "Life needs balance between work and recreation.",
+    "example": "She said, \"All work and no play makes Jack a dull boy,\" to show that life needs balance between work and recreation."
+  },
+  {
+    "id": "barking-dogs-seldom-bite",
+    "proverb": "Barking dogs seldom bite",
+    "meaning": "Those who threaten often do little harm.",
+    "example": "She said, \"Barking dogs seldom bite,\" to show that those who threaten often do little harm."
+  },
+  {
+    "id": "beauty-is-in-the",
+    "proverb": "Beauty is in the eye of the beholder",
+    "meaning": "Different people find different things beautiful.",
+    "example": "She said, \"Beauty is in the eye of the beholder,\" to show that different people find different things beautiful."
+  },
+  {
+    "id": "better-the-devil-you",
+    "proverb": "Better the devil you know than the devil you don't",
+    "meaning": "The familiar may be safer than the unknown.",
+    "example": "She said, \"Better the devil you know than the devil you don't,\" to show that the familiar may be safer than the unknown."
+  },
+  {
+    "id": "don-t-cross-the",
+    "proverb": "Don't cross the bridge until you come to it",
+    "meaning": "Do not worry about future problems too early.",
+    "example": "She said, \"Don't cross the bridge until you come to it,\" to show that do not worry about future problems too early."
+  },
+  {
+    "id": "don-t-put-the",
+    "proverb": "Don't put the cart before the horse",
+    "meaning": "Do things in the proper order.",
+    "example": "She said, \"Don't put the cart before the horse,\" to show that do things in the proper order."
+  },
+  {
+    "id": "do-not-put-all",
+    "proverb": "Do not put all your eggs in one basket",
+    "meaning": "Avoid risking everything in one place.",
+    "example": "She said, \"Do not put all your eggs in one basket,\" to show that avoid risking everything in one place."
+  },
+  {
+    "id": "don-t-throw-the",
+    "proverb": "Don't throw the baby out with the bathwater",
+    "meaning": "Do not discard something valuable with the unwanted.",
+    "example": "She said, \"Don't throw the baby out with the bathwater,\" to show that do not discard something valuable with the unwanted."
+  },
+  {
+    "id": "every-cloud-has-a",
+    "proverb": "Every cloud has a silver lining",
+    "meaning": "There is hope in every difficult situation.",
+    "example": "She said, \"Every cloud has a silver lining,\" to show that there is hope in every difficult situation."
+  },
+  {
+    "id": "familiarity-breeds-contempt",
+    "proverb": "Familiarity breeds contempt",
+    "meaning": "Overfamiliarity can reduce respect.",
+    "example": "She said, \"Familiarity breeds contempt,\" to show that overfamiliarity can reduce respect."
+  },
+  {
+    "id": "first-come-first-served",
+    "proverb": "First come, first served",
+    "meaning": "Early arrivals get the first opportunity.",
+    "example": "She said, \"First come, first served,\" to show that early arrivals get the first opportunity."
+  },
+  {
+    "id": "give-someone-an-inch",
+    "proverb": "Give someone an inch and they'll take a mile",
+    "meaning": "Some people take advantage of generosity.",
+    "example": "She said, \"Give someone an inch and they'll take a mile,\" to show that some people take advantage of generosity."
+  },
+  {
+    "id": "good-things-come-to",
+    "proverb": "Good things come to those who wait",
+    "meaning": "Patience is rewarded.",
+    "example": "She said, \"Good things come to those who wait,\" to show that patience is rewarded."
+  },
+  {
+    "id": "haste-makes-waste",
+    "proverb": "Haste makes waste",
+    "meaning": "Rushing often causes mistakes.",
+    "example": "She said, \"Haste makes waste,\" to show that rushing often causes mistakes."
+  },
+  {
+    "id": "if-you-lie-down",
+    "proverb": "If you lie down with dogs, you get up with fleas",
+    "meaning": "Bad company leads to trouble.",
+    "example": "She said, \"If you lie down with dogs, you get up with fleas,\" to show that bad company leads to trouble."
+  },
+  {
+    "id": "it-takes-two-to",
+    "proverb": "It takes two to tango",
+    "meaning": "Some situations involve equal responsibility.",
+    "example": "She said, \"It takes two to tango,\" to show that some situations involve equal responsibility."
+  },
+  {
+    "id": "jack-of-all-trades",
+    "proverb": "A jack of all trades, master of none",
+    "meaning": "Someone who knows many things but specializes in none.",
+    "example": "She said, \"A jack of all trades, master of none,\" to show that someone who knows many things but specializes in none."
+  },
+  {
+    "id": "knowledge-is-power",
+    "proverb": "Knowledge is power",
+    "meaning": "Learning gives strength and opportunity.",
+    "example": "She said, \"Knowledge is power,\" to show that learning gives strength and opportunity."
+  },
+  {
+    "id": "look-before-you-leap",
+    "proverb": "Look before you leap",
+    "meaning": "Think before acting.",
+    "example": "She said, \"Look before you leap,\" to show that think before acting."
+  },
+  {
+    "id": "make-hay-while-the",
+    "proverb": "Make hay while the sun shines",
+    "meaning": "Use opportunities while they exist.",
+    "example": "She said, \"Make hay while the sun shines,\" to show that use opportunities while they exist."
+  },
+  {
+    "id": "necessity-is-the-mother",
+    "proverb": "Necessity is the mother of invention",
+    "meaning": "Need inspires creativity.",
+    "example": "She said, \"Necessity is the mother of invention,\" to show that need inspires creativity."
+  },
+  {
+    "id": "no-news-is",
+    "proverb": "No news is good news",
+    "meaning": "Lack of bad news usually means things are fine.",
+    "example": "She said, \"No news is good news,\" to show that lack of bad news usually means things are fine."
+  },
+  {
+    "id": "once-bitten-twice-shy",
+    "proverb": "Once bitten, twice shy",
+    "meaning": "A bad experience makes people cautious.",
+    "example": "She said, \"Once bitten, twice shy,\" to show that a bad experience makes people cautious."
+  },
+  {
+    "id": "practice-what-you-preach",
+    "proverb": "Practice what you preach",
+    "meaning": "Do what you advise others to do.",
+    "example": "She said, \"Practice what you preach,\" to show that do what you advise others to do."
+  },
+  {
+    "id": "rome-was-not-built",
+    "proverb": "Rome was not built in a day",
+    "meaning": "Great achievements take time.",
+    "example": "She said, \"Rome was not built in a day,\" to show that great achievements take time."
+  },
+  {
+    "id": "strike-the-iron-while",
+    "proverb": "Strike the iron while it is hot",
+    "meaning": "Act when the opportunity arises.",
+    "example": "She said, \"Strike the iron while it is hot,\" to show that act when the opportunity arises."
+  },
+  {
+    "id": "pen-is-mightier-than",
+    "proverb": "The pen is mightier than the sword",
+    "meaning": "Words are more powerful than violence.",
+    "example": "She said, \"The pen is mightier than the sword,\" to show that words are more powerful than violence."
+  },
+  {
+    "id": "proof-of-the-pudding",
+    "proverb": "The proof of the pudding is in the eating",
+    "meaning": "Results prove value.",
+    "example": "She said, \"The proof of the pudding is in the eating,\" to show that results prove value."
+  },
+  {
+    "id": "time-is-money",
+    "proverb": "Time is money",
+    "meaning": "Time is valuable.",
+    "example": "She said, \"Time is money,\" to show that time is valuable."
+  },
+  {
+    "id": "two-wrongs-don-t",
+    "proverb": "Two wrongs don't make a right",
+    "meaning": "Wrong actions cannot justify other wrongs.",
+    "example": "She said, \"Two wrongs don't make a right,\" to show that wrong actions cannot justify other wrongs."
+  },
+  {
+    "id": "when-the-going-gets",
+    "proverb": "When the going gets tough, the tough get going",
+    "meaning": "Strong people persist through difficulty.",
+    "example": "She said, \"When the going gets tough, the tough get going,\" to show that strong people persist through difficulty."
+  },
+  {
+    "id": "where-there-s-a",
+    "proverb": "Where there's a will, there's a way",
+    "meaning": "Determination finds solutions.",
+    "example": "She said, \"Where there's a will, there's a way,\" to show that determination finds solutions."
+  },
+  {
+    "id": "you-can-lead-a",
+    "proverb": "You can lead a horse to water, but you can't make it drink",
+    "meaning": "You cannot force others to accept help.",
+    "example": "She said, \"You can lead a horse to water, but you can't make it drink,\" to show that you cannot force others to accept help."
+  },
+  {
+    "id": "you-can-t-make",
+    "proverb": "You can't make an omelette without breaking eggs",
+    "meaning": "Achievement often requires sacrifice.",
+    "example": "She said, \"You can't make an omelette without breaking eggs,\" to show that achievement often requires sacrifice."
+  },
+  {
+    "id": "you-reap-what-you",
+    "proverb": "You reap what you sow",
+    "meaning": "Results reflect actions.",
+    "example": "She said, \"You reap what you sow,\" to show that results reflect actions."
+  }
+]

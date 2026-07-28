@@ -9,10 +9,13 @@ function getDisplay(topicId, item) {
     case 'synonyms':        return { left: item.word,    right: item.synonyms.join(', ') };
     case 'antonyms':        return { left: item.word,    right: item.antonym };
     case 'oneWordSubs':     return { left: item.word,    right: item.phrase };
-    case 'proverbs':        return { left: item.proverb, right: item.meaning, tall: true };
+    case 'proverbs':
+    case 'vocabopediaProverbs': return { left: item.proverb, right: item.meaning, tall: true };
     case 'collectiveNouns': return { left: item.noun,    right: item.collective };
-    case 'idioms':          return { left: item.idiom,   right: item.meaning, tall: true };
-    case 'oxymorons':       return { left: item.phrase,  right: item.meaning };
+    case 'idioms':
+    case 'vocabopediaIdioms': return { left: item.idiom,   right: item.meaning, tall: true };
+    case 'oxymorons':
+    case 'vocabopediaOxymorons': return { left: item.phrase,  right: item.meaning };
     case 'similes':
     case 'vocabopediaSimiles': {
       const m = item.simile.match(/^[Aa]s\s+(.+?)\s+[Aa]s\s+(.+)$/i);

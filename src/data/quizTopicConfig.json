@@ -57,5 +57,23 @@
     "subtypeWeights": { "proverb_to_meaning": 0.34, "meaning_to_proverb": 0.33, "usage_mcq": 0.33 },
     "multiselect": false,
     "minMultiselectRatio": 0
+  },
+  "vocabopediaProverbs": {
+    "subtypes": ["proverb_to_meaning", "meaning_to_proverb", "usage_mcq"],
+    "subtypeWeights": { "proverb_to_meaning": 0.34, "meaning_to_proverb": 0.33, "usage_mcq": 0.33 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "vocabopediaIdioms": {
+    "subtypes": ["idiom_to_meaning", "meaning_to_idiom"],
+    "subtypeWeights": { "idiom_to_meaning": 0.5, "meaning_to_idiom": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "vocabopediaOxymorons": {
+    "subtypes": ["phrase_to_meaning", "meaning_to_phrase", "fill_pair"],
+    "subtypeWeights": { "phrase_to_meaning": 0.34, "meaning_to_phrase": 0.33, "fill_pair": 0.33 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
   }
 }

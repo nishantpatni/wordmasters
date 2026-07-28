@@ -1,0 +1,202 @@
+[
+  {
+    "id": "hit-the-nail-on-the-head",
+    "idiom": "Hit The Nail On The Head",
+    "meaning": "be exactly right"
+  },
+  {
+    "id": "cost-an-arm-and-a-leg",
+    "idiom": "Cost An Arm And A Leg",
+    "meaning": "very expensive"
+  },
+  {
+    "id": "read-between-the-lines",
+    "idiom": "Read Between The Lines",
+    "meaning": "understand the hidden meaning"
+  },
+  {
+    "id": "burn-the-midnight-oil",
+    "idiom": "Burn The Midnight Oil",
+    "meaning": "work or study late into the night"
+  },
+  {
+    "id": "jump-on-the-bandwagon",
+    "idiom": "Jump On The Bandwagon",
+    "meaning": "join a popular trend"
+  },
+  {
+    "id": "add-fuel-to-the-fire",
+    "idiom": "Add Fuel To The Fire",
+    "meaning": "make a bad situation worse"
+  },
+  {
+    "id": "bite-off-more-than-you-can-chew",
+    "idiom": "Bite Off More Than You Can Chew",
+    "meaning": "take on too much"
+  },
+  {
+    "id": "crying-over-spilled-milk",
+    "idiom": "Crying Over Spilled Milk",
+    "meaning": "worrying about what can't be changed"
+  },
+  {
+    "id": "dont-judge-a-book-by-its-cover",
+    "idiom": "Don't Judge A Book By Its Cover",
+    "meaning": "don't judge by looks"
+  },
+  {
+    "id": "the-early-bird-catches-the-worm",
+    "idiom": "The Early Bird Catches The Worm",
+    "meaning": "success comes to those who start early"
+  },
+  {
+    "id": "actions-speak-louder-than-words",
+    "idiom": "Actions Speak Louder Than Words",
+    "meaning": "what you do matters more than what you say"
+  },
+  {
+    "id": "a-blessing-in-disguise",
+    "idiom": "A Blessing In Disguise",
+    "meaning": "something good hidden in a bad situation"
+  },
+  {
+    "id": "let-sleeping-dogs-lie",
+    "idiom": "Let Sleeping Dogs Lie",
+    "meaning": "avoid reopening trouble"
+  },
+  {
+    "id": "hit-the-road",
+    "idiom": "Hit The Road",
+    "meaning": "leave or begin a journey"
+  },
+  {
+    "id": "practice-makes-perfect",
+    "idiom": "Practice Makes Perfect",
+    "meaning": "repetition improves skill"
+  },
+  {
+    "id": "go-the-extra-mile",
+    "idiom": "Go The Extra Mile",
+    "meaning": "make extra effort"
+  },
+  {
+    "id": "be-all-ears",
+    "idiom": "Be All Ears",
+    "meaning": "listen attentively"
+  },
+  {
+    "id": "out-of-the-blue",
+    "idiom": "Out Of The Blue",
+    "meaning": "suddenly or unexpectedly"
+  },
+  {
+    "id": "the-ball-is-in-your-court",
+    "idiom": "The Ball Is In Your Court",
+    "meaning": "it is your turn to act"
+  },
+  {
+    "id": "on-thin-ice",
+    "idiom": "On Thin Ice",
+    "meaning": "in a risky situation"
+  },
+  {
+    "id": "face-the-music",
+    "idiom": "Face The Music",
+    "meaning": "accept consequences"
+  },
+  {
+    "id": "burn-bridges",
+    "idiom": "Burn Bridges",
+    "meaning": "destroy relationships or opportunities"
+  },
+  {
+    "id": "cut-corners",
+    "idiom": "Cut Corners",
+    "meaning": "do something cheaply or carelessly"
+  },
+  {
+    "id": "pull-someones-leg",
+    "idiom": "Pull Someone's Leg",
+    "meaning": "tease someone"
+  },
+  {
+    "id": "see-eye-to-eye",
+    "idiom": "See Eye To Eye",
+    "meaning": "agree completely"
+  },
+  {
+    "id": "bend-over-backwards",
+    "idiom": "Bend Over Backwards",
+    "meaning": "try very hard to help"
+  },
+  {
+    "id": "in-the-same-boat",
+    "idiom": "In The Same Boat",
+    "meaning": "in the same situation"
+  },
+  {
+    "id": "its-not-rocket-science",
+    "idiom": "It's Not Rocket Science",
+    "meaning": "it's not difficult"
+  },
+  {
+    "id": "keep-an-eye-on",
+    "idiom": "Keep An Eye On",
+    "meaning": "watch carefully"
+  },
+  {
+    "id": "a-dime-a-dozen",
+    "idiom": "A Dime A Dozen",
+    "meaning": "very common"
+  },
+  {
+    "id": "hit-the-sack",
+    "idiom": "Hit The Sack",
+    "meaning": "go to sleep"
+  },
+  {
+    "id": "get-cold-feet",
+    "idiom": "Get Cold Feet",
+    "meaning": "become nervous"
+  },
+  {
+    "id": "bite-the-bullet",
+    "idiom": "Bite The Bullet",
+    "meaning": "face something difficult bravely"
+  },
+  {
+    "id": "let-the-cat-out-of-the-bag",
+    "idiom": "Let The Cat Out Of The Bag",
+    "meaning": "reveal a secret"
+  },
+  {
+    "id": "like-two-peas-in-a-pod",
+    "idiom": "Like Two Peas In A Pod",
+    "meaning": "very similar or close"
+  },
+  {
+    "id": "every-cloud-has-a-silver-lining",
+    "idiom": "Every Cloud Has A Silver Lining",
+    "meaning": "good comes from bad situations"
+  },
+  {
+    "id": "as-cool-as-a-cucumber",
+    "idiom": "As Cool As A Cucumber",
+    "meaning": "very calm"
+  },
+  {
+    "id": "break-a-leg",
+    "idiom": "Break A Leg",
+    "meaning": "good luck"
+  },
+  {
+    "id": "birds-of-a-feather-flock-together",
+    "idiom": "Birds Of A Feather Flock Together",
+    "meaning": "people with similar interests stay together"
+  },
+  {
+    "id": "better-late-than-never",
+    "idiom": "Better Late Than Never",
+    "meaning": "it's good to do something even if late"
+  }
+]
