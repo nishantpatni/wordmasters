@@ -1,5 +1,12 @@
 export const USER_CHANGELOG = [
   {
+    date: '28 Jul 2026',
+    entries: [
+      { icon: '📘', topic: 'New Topics: Vocabopedia Oxymorons, Idioms & Proverbs', text: 'Split off three new topics containing the Vocabopedia lists — 51 oxymorons, 40 idioms, and 40 proverbs (MCQ, Voice Quiz, Revise, Teach & Ask). The original Oxymorons, Idioms, and Proverbs topics keep the rest.' },
+      { icon: '🚫', topic: 'Voice Quiz Anti-Guessing, Round 2', text: 'The anti-guessing fix from Jul 25 only covered Collective Nouns. Similes, Antonyms, and Synonyms voice questions ask you to say every correct answer at once, and that mode had no guessing protection at all — rattling off extra words alongside the right one still passed. Now fixed the same way, and the result screen shows exactly what was heard (and which extra word got you flagged) so it\'s no longer a black box.' },
+    ],
+  },
+  {
     date: '25 Jul 2026',
     entries: [
       { icon: '🔀', topic: 'Question Ordering Fix', text: 'Practice questions for items with tied scores (e.g. several Collective Nouns you\'ve gotten wrong equally often) were quietly falling back to the underlying data\'s alphabetical order instead of being shuffled. Fixed across MCQ, Voice Quiz, and Teach & Ask.' },

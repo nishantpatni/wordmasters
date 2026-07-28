@@ -40,6 +40,20 @@ export function scoreMatch(answer, transcript) {
 // ("pride, herd, flock, string...") until one happens to match. If a decoy
 // is detected in the transcript, the answer is forced wrong even though a
 // correct word was also said.
+// Shared by scoreMatchAny/scoreMatchAll: exact-word match only — decoys are
+// real dictionary words the user would say deliberately and clearly, so
+// fuzzy-matching them (like we do for the target answer) risks flagging
+// ordinary STT noise as a hedge and wrongly failing an otherwise-correct answer.
+function findHedge(decoys, spkWords, exemptWords) {
+  for (const decoy of decoys) {
+    const decoyWords = norm(decoy).split(/\s+/).filter(w => w && !ARTICLES.has(w));
+    if (decoyWords.length > 0 && decoyWords.every(dw => !exemptWords.has(dw) && spkWords.includes(dw))) {
+      return decoy;
+    }
+  }
+  return null;
+}
+
 export function scoreMatchAny(answers, transcript, decoys = []) {
   let best = null;
   for (const answer of answers) {
@@ -51,15 +65,8 @@ export function scoreMatchAny(answers, transcript, decoys = []) {
     const answerWords = new Set(
       answers.flatMap(a => norm(a).split(/\s+/).filter(w => w && !ARTICLES.has(w)))
     );
-    // Exact-word match only — decoys are real dictionary words the user would
-    // say deliberately and clearly, so fuzzy-matching them (like we do for the
-    // target answer) risks flagging ordinary STT noise as a hedge and wrongly
-    // failing an otherwise-correct answer.
-    const hedged = decoys.some(decoy => {
-      const decoyWords = norm(decoy).split(/\s+/).filter(w => w && !ARTICLES.has(w));
-      return decoyWords.length > 0 && decoyWords.every(dw => !answerWords.has(dw) && spkWords.includes(dw));
-    });
-    if (hedged) best = { ...best, score: 0, hedged: true };
+    const hedgeWord = findHedge(decoys, spkWords, answerWords);
+    if (hedgeWord) best = { ...best, score: 0, hedged: true, hedgeWord };
   }
   return best;
 }
@@ -68,7 +75,12 @@ export function scoreMatchAny(answers, transcript, decoys = []) {
 // as ___", or every antonym/synonym of a word) — order doesn't matter, but
 // each spoken word can only satisfy one required answer, so saying the same
 // word twice doesn't count for two different required answers.
-export function scoreMatchAll(requiredAnswers, transcript) {
+// `decoys` is an optional list of other same-category answers that are wrong
+// for this specific question (e.g. adjectives valid for a different simile
+// stem, or antonyms of a different word) — see scoreMatchAny's decoys param
+// for why this exists. Without it, saying every required word AND a pile of
+// unrelated guesses still passes, since claim() only checks presence.
+export function scoreMatchAll(requiredAnswers, transcript, decoys = []) {
   const spkWords = norm(transcript).split(/\s+/).filter(w => w && !ARTICLES.has(w));
   const used = new Array(spkWords.length).fill(false);
 
@@ -88,10 +100,19 @@ export function scoreMatchAll(requiredAnswers, transcript) {
     const matched = reqWords.length > 0 && reqWords.every(claim);
     return { word: reqAnswer, matched };
   });
-  const score = requiredAnswers.length
+  let score = requiredAnswers.length
     ? wordResults.filter(w => w.matched).length / requiredAnswers.length
     : 0;
-  return { score, wordResults };
+
+  let hedged = false, hedgeWord = null;
+  if (score > 0 && decoys.length) {
+    const requiredWords = new Set(
+      requiredAnswers.flatMap(a => norm(a).split(/\s+/).filter(w => w && !ARTICLES.has(w)))
+    );
+    hedgeWord = findHedge(decoys, spkWords, requiredWords);
+    if (hedgeWord) { hedged = true; score = 0; }
+  }
+  return { score, wordResults, hedged, hedgeWord };
 }
 
 export function formatAnswerList(answers, joiner = 'or') {

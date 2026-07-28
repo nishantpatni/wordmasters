@@ -201,8 +201,8 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
     const cur    = questions[idxRef.current];
     const allMode = !!cur.requiredAnswers;
     const answers = allMode ? cur.requiredAnswers : [cur.answer, ...(cur.altAnswers || [])];
-    const { score, wordResults, answer: matchedAnswer } = allMode
-      ? scoreMatchAll(cur.requiredAnswers, tx || '')
+    const { score, wordResults, answer: matchedAnswer, hedged, hedgeWord } = allMode
+      ? scoreMatchAll(cur.requiredAnswers, tx || '', cur.decoys || [])
       : scoreMatchAny(answers, tx || '', cur.decoys || []);
     const threshold  = allMode ? 1 : MATCH_THRESHOLD;
     const correct    = score >= threshold;
@@ -223,7 +223,10 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
       // Say what was actually heard before the correct answer — lets a
       // screen-off user tell a mishear apart from a genuine wrong answer.
       setTimeout(() => {
-        ttsSay(heard ? `You said: ${heard}.` : `I didn't hear anything.`, () => {
+        const heardMsg = hedged
+          ? `You said: ${heard}. That includes "${hedgeWord}", a real answer for a different question — rattling off guesses doesn't count.`
+          : heard ? `You said: ${heard}.` : `I didn't hear anything.`;
+        ttsSay(heardMsg, () => {
           ttsSay(`The answer is ${answerText}.`);
         });
       }, 450);
@@ -239,7 +242,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
     const updated = [...resultsRef.current, newRes];
     resultsRef.current = updated; // update immediately so quit captures this result
 
-    setTipData({ correct, wordResults, coins, score, threshold });
+    setTipData({ correct, wordResults, coins, score, threshold, heard, hedged, hedgeWord });
     setPhase('result');
 
     tipTRef.current = setTimeout(() => {
@@ -637,6 +640,14 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
             {!tipData.correct && (
               <div style={{ fontSize: 12, color: theme.textFaint, marginBottom: 8 }}>
                 {Math.round(tipData.score * 100)}% match — need {Math.round(tipData.threshold * 100)}%
+              </div>
+            )}
+            <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>
+              <span style={{ fontWeight: 700 }}>Heard:</span> {tipData.heard || '(nothing)'}
+            </div>
+            {tipData.hedged && (
+              <div style={{ fontSize: 12, fontWeight: 700, color: theme.wrongText, background: theme.wrongBg, border: `1.5px solid ${theme.wrongBorder}`, borderRadius: 10, padding: '7px 10px', margin: '6px 0 4px' }}>
+                ⚠️ Also detected "{tipData.hedgeWord}" — a real answer for a different question, so rattling off guesses doesn't count here.
               </div>
             )}
             <div style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.8, color: theme.textFaint, margin: '10px 0 8px' }}>
