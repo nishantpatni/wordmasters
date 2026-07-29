@@ -354,7 +354,7 @@ function genIdiom(item, pool, topicId = 'idioms') {
 // ── One Word Substitutions ────────────────────────────────────────────────────
 let owsSubIdx = 0;
 
-function genOneWord(item, pool) {
+function genOneWord(item, pool, topicId = 'oneWordSubs') {
   const useWordQ = owsSubIdx++ % 2 === 0;
   const others = pool.filter(i => i.id !== item.id);
 
@@ -368,7 +368,7 @@ function genOneWord(item, pool) {
       wrong = pickDistinct(others.map(i => i.word), correct, 3);
     }
     const opts = shuffle([correct, ...wrong]);
-    return makeQ('oneWordSubs', item.id, 'mcq',
+    return makeQ(topicId, item.id, 'mcq',
       `Which single word means: "${item.phrase}"?`,
       opts, opts.indexOf(correct), `Answer: ${item.word}`
     );
@@ -376,7 +376,7 @@ function genOneWord(item, pool) {
   const correct = item.phrase;
   const wrong = pickDistinct(others.map(i => i.phrase), correct, 3);
   const opts = shuffle([correct, ...wrong]);
-  return makeQ('oneWordSubs', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `"${item.word}" refers to:`,
     opts, opts.indexOf(correct), `Definition: ${item.phrase}`
   );
@@ -653,6 +653,7 @@ const GENERATORS = {
   idioms:          genIdiom,
   vocabopediaIdioms: (item, pool) => genIdiom(item, pool, 'vocabopediaIdioms'),
   oneWordSubs:     genOneWord,
+  vocabopediaOneWordSubs: (item, pool) => genOneWord(item, pool, 'vocabopediaOneWordSubs'),
   similes:         genSimile,
   vocabopediaSimiles: (item, pool) => genSimile(item, pool, 'vocabopediaSimiles'),
   oxymorons:       genOxymoron,
@@ -903,6 +904,7 @@ function itemToVoiceQ(topicId, item) {
     case 'vocabopediaIdioms':
       return { prompt: item.meaning, answer: item.idiom };
     case 'oneWordSubs':
+    case 'vocabopediaOneWordSubs':
       return { prompt: item.phrase, answer: item.word };
     case 'proverbs':
     case 'vocabopediaProverbs':

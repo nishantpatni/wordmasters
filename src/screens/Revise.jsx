@@ -8,7 +8,8 @@ function getDisplay(topicId, item) {
   switch (topicId) {
     case 'synonyms':        return { left: item.word,    right: item.synonyms.join(', ') };
     case 'antonyms':        return { left: item.word,    right: item.antonym };
-    case 'oneWordSubs':     return { left: item.word,    right: item.phrase };
+    case 'oneWordSubs':
+    case 'vocabopediaOneWordSubs': return { left: item.word,    right: item.phrase };
     case 'proverbs':
     case 'vocabopediaProverbs': return { left: item.proverb, right: item.meaning, tall: true };
     case 'collectiveNouns': return { left: item.noun,    right: item.collective };

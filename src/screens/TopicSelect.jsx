@@ -35,7 +35,7 @@ export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, o
             count={ALL_TOPIC_DATA[tid]?.length ?? 0}
             onStart={onStart}
             onRevise={onRevise}
-            onVoiceStart={['idioms','vocabopediaIdioms','oneWordSubs','proverbs','vocabopediaProverbs','oxymorons','vocabopediaOxymorons','similes','vocabopediaSimiles','antonyms','synonyms','collectiveNouns'].includes(tid) ? onVoiceStart : undefined}
+            onVoiceStart={['idioms','vocabopediaIdioms','oneWordSubs','vocabopediaOneWordSubs','proverbs','vocabopediaProverbs','oxymorons','vocabopediaOxymorons','similes','vocabopediaSimiles','antonyms','synonyms','collectiveNouns'].includes(tid) ? onVoiceStart : undefined}
             onTeachStart={onTeachStart}
           />
         ))}

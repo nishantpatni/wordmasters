@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '29 Jul 2026',
+    entries: [
+      { icon: '📘', topic: 'New Topic: Vocabopedia One Word Substitutions', text: 'Split off a new topic containing the 60 one-word substitutions from the Grade 4 Vocabopedia list (MCQ, Voice Quiz, Revise, Teach & Ask). The original One Word Substitutions topic keeps the rest.' },
+    ],
+  },
+  {
     date: '28 Jul 2026',
     entries: [
       { icon: '📘', topic: 'New Topics: Vocabopedia Oxymorons, Idioms & Proverbs', text: 'Split off three new topics containing the Vocabopedia lists — 51 oxymorons, 40 idioms, and 40 proverbs (MCQ, Voice Quiz, Revise, Teach & Ask). The original Oxymorons, Idioms, and Proverbs topics keep the rest.' },
@@ -115,6 +121,15 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '29 Jul 2026',
+    entries: [
+      'src/data/topics/vocabopediaOneWordSubs.json — new topic (60 entries) sourced from data/pdfs/Grade 4 One Word Substitution.pdf; 56 items reuse existing ids/content moved out of one_word_substitutions.json (score history carries over), 4 new (Philologist, Dictator, Patriot, Dockyard) added',
+      'one_word_substitutions.json — 57 entries removed (56 words now exclusive to vocabopediaOneWordSubs, incl. a duplicate "Bilingual" entry that existed twice)',
+      'quiz.js — genOneWord() takes topicId param; vocabopediaOneWordSubs generator/voice-quiz mapping added, mirroring the vocabopediaSimiles/Idioms/Oxymorons/Proverbs split pattern',
+      'quizTopicConfig.json, topicData.js, Revise.jsx, TeachAndAsk.jsx, TopicSelect.jsx — wired up vocabopediaOneWordSubs alongside oneWordSubs',
+    ],
+  },
   {
     date: '11 Jul 2026',
     entries: [

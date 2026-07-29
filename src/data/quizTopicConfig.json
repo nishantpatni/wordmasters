@@ -41,6 +41,12 @@
     "multiselect": false,
     "minMultiselectRatio": 0
   },
+  "vocabopediaOneWordSubs": {
+    "subtypes": ["phrase_to_word", "word_to_phrase"],
+    "subtypeWeights": { "phrase_to_word": 0.5, "word_to_phrase": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
   "oxymorons": {
     "subtypes": ["phrase_to_meaning", "meaning_to_phrase", "fill_pair"],
     "subtypeWeights": { "phrase_to_meaning": 0.34, "meaning_to_phrase": 0.33, "fill_pair": 0.33 },

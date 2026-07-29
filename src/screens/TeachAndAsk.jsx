@@ -11,7 +11,7 @@ const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
 const TOTAL_ITEMS = 9;
 const AFFIRMATIVES = ['Nice one!', 'You nailed it!', 'Spot on!', 'Boom, correct!', 'Well played!', "That's a win!", 'Fantastic!', 'Perfect!', 'Brilliant!', 'Nailed it!', 'Outstanding!', 'Excellent!'];
-const VOICE_TOPICS = new Set(['idioms', 'vocabopediaIdioms', 'oneWordSubs', 'proverbs', 'vocabopediaProverbs', 'oxymorons', 'vocabopediaOxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
+const VOICE_TOPICS = new Set(['idioms', 'vocabopediaIdioms', 'oneWordSubs', 'vocabopediaOneWordSubs', 'proverbs', 'vocabopediaProverbs', 'oxymorons', 'vocabopediaOxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
 
 // ── Content helpers ───────────────────────────────────────────────────────────
 
@@ -19,7 +19,8 @@ function getTeachContent(topicId, item) {
   switch (topicId) {
     case 'idioms':
     case 'vocabopediaIdioms': return { front: item.idiom, back: item.meaning, tts: `${item.idiom}. ${item.meaning}` };
-    case 'oneWordSubs':  return { front: item.word, back: item.phrase, tts: `${item.word}. ${item.phrase}` };
+    case 'oneWordSubs':
+    case 'vocabopediaOneWordSubs': return { front: item.word, back: item.phrase, tts: `${item.word}. ${item.phrase}` };
     case 'proverbs':
     case 'vocabopediaProverbs': return { front: item.proverb, back: item.meaning, tts: `${item.proverb}. Meaning: ${item.meaning}` };
     case 'oxymorons':
@@ -44,7 +45,8 @@ function getAnswerStr(topicId, item) {
   switch (topicId) {
     case 'idioms':
     case 'vocabopediaIdioms': return item.idiom;
-    case 'oneWordSubs':      return item.word;
+    case 'oneWordSubs':
+    case 'vocabopediaOneWordSubs': return item.word;
     case 'proverbs':
     case 'vocabopediaProverbs': return item.proverb;
     case 'oxymorons':

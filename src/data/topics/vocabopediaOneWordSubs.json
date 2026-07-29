@@ -1,0 +1,302 @@
+[
+  {
+    "id": "astronaut",
+    "phrase": "A person who travels to space",
+    "word": "Astronaut"
+  },
+  {
+    "id": "astronomer",
+    "phrase": "A person who studies stars and planets",
+    "word": "Astronomer"
+  },
+  {
+    "id": "archaeologist",
+    "phrase": "A person who studies the past through remains",
+    "word": "Archaeologist"
+  },
+  {
+    "id": "botanist",
+    "phrase": "A person who studies plants",
+    "word": "Botanist"
+  },
+  {
+    "id": "zoologist",
+    "phrase": "A person who studies animals",
+    "word": "Zoologist"
+  },
+  {
+    "id": "meteorologist",
+    "phrase": "A person who studies the weather",
+    "word": "Meteorologist"
+  },
+  {
+    "id": "seismologist",
+    "phrase": "A person who studies earthquakes",
+    "word": "Seismologist"
+  },
+  {
+    "id": "philologist",
+    "phrase": "A person who studies languages",
+    "word": "Philologist"
+  },
+  {
+    "id": "geologist",
+    "phrase": "A person who studies rocks",
+    "word": "Geologist"
+  },
+  {
+    "id": "psychologist",
+    "phrase": "A person who studies the human mind",
+    "word": "Psychologist"
+  },
+  {
+    "id": "entomologist",
+    "phrase": "A person who studies insects",
+    "word": "Entomologist"
+  },
+  {
+    "id": "monarch",
+    "phrase": "A person who rules a kingdom",
+    "word": "Monarch"
+  },
+  {
+    "id": "dictator",
+    "phrase": "A person who rules alone with full power",
+    "word": "Dictator"
+  },
+  {
+    "id": "patriot",
+    "phrase": "A person who loves his country",
+    "word": "Patriot"
+  },
+  {
+    "id": "bibliophile",
+    "phrase": "A person who loves books",
+    "word": "Bibliophile"
+  },
+  {
+    "id": "philanthropist",
+    "phrase": "A person who loves mankind",
+    "word": "Philanthropist"
+  },
+  {
+    "id": "zoophile",
+    "phrase": "A person who loves animals",
+    "word": "Zoophile"
+  },
+  {
+    "id": "bilingual",
+    "phrase": "Fluent in two languages",
+    "word": "Bilingual"
+  },
+  {
+    "id": "glutton",
+    "phrase": "A person fond of excessive eating",
+    "word": "Glutton"
+  },
+  {
+    "id": "ambidextrous",
+    "phrase": "One who can use both hands equally well",
+    "word": "Ambidextrous"
+  },
+  {
+    "id": "thief",
+    "phrase": "A person who steals",
+    "word": "Thief"
+  },
+  {
+    "id": "hunter",
+    "phrase": "A person who kills animals for food",
+    "word": "Hunter"
+  },
+  {
+    "id": "traveller",
+    "phrase": "A person who travels from place to place",
+    "word": "Traveller"
+  },
+  {
+    "id": "novice",
+    "phrase": "One who is new to some trade or profession",
+    "word": "Novice"
+  },
+  {
+    "id": "brewery",
+    "phrase": "Factory for manufacturing beer",
+    "word": "Brewery"
+  },
+  {
+    "id": "tannery",
+    "phrase": "Place where leather is tanned",
+    "word": "Tannery"
+  },
+  {
+    "id": "dockyard",
+    "phrase": "A place where ships are built",
+    "word": "Dockyard"
+  },
+  {
+    "id": "orchard",
+    "phrase": "Place where fruit trees are grown",
+    "word": "Orchard"
+  },
+  {
+    "id": "monastery",
+    "phrase": "A place where monks live",
+    "word": "Monastery"
+  },
+  {
+    "id": "convent",
+    "phrase": "Residence for nuns",
+    "word": "Convent"
+  },
+  {
+    "id": "zoo",
+    "phrase": "A place where wild animals are kept",
+    "word": "Zoo"
+  },
+  {
+    "id": "apiary",
+    "phrase": "A place where bees are kept",
+    "word": "Apiary"
+  },
+  {
+    "id": "aviary",
+    "phrase": "A place where birds are kept",
+    "word": "Aviary"
+  },
+  {
+    "id": "mint",
+    "phrase": "Place where money is coined",
+    "word": "Mint"
+  },
+  {
+    "id": "aquarium",
+    "phrase": "A place where fishes are kept",
+    "word": "Aquarium"
+  },
+  {
+    "id": "dictionary",
+    "phrase": "Book of words and meanings",
+    "word": "Dictionary"
+  },
+  {
+    "id": "atlas",
+    "phrase": "A book of maps",
+    "word": "Atlas"
+  },
+  {
+    "id": "diary",
+    "phrase": "Book recording daily events",
+    "word": "Diary"
+  },
+  {
+    "id": "encyclopedia",
+    "phrase": "A book containing information on all branches of knowledge",
+    "word": "Encyclopedia"
+  },
+  {
+    "id": "directory",
+    "phrase": "Book of names and addresses",
+    "word": "Directory"
+  },
+  {
+    "id": "biographer",
+    "phrase": "A person who writes someone's life story",
+    "word": "Biographer"
+  },
+  {
+    "id": "autobiography",
+    "phrase": "Life story of a man written by himself",
+    "word": "Autobiography"
+  },
+  {
+    "id": "optimist",
+    "phrase": "One who looks on the bright side",
+    "word": "Optimist"
+  },
+  {
+    "id": "pessimist",
+    "phrase": "One who looks on the dark side",
+    "word": "Pessimist"
+  },
+  {
+    "id": "spectator",
+    "phrase": "A person who looks on quietly",
+    "word": "Spectator"
+  },
+  {
+    "id": "eavesdropper",
+    "phrase": "One who listens to others' conversations",
+    "word": "Eavesdropper"
+  },
+  {
+    "id": "plagiarist",
+    "phrase": "A writer who copies from others",
+    "word": "Plagiarist"
+  },
+  {
+    "id": "accomplice",
+    "phrase": "A partner in a crime",
+    "word": "Accomplice"
+  },
+  {
+    "id": "herbivore",
+    "phrase": "A person or animal that eats only plants",
+    "word": "Herbivore"
+  },
+  {
+    "id": "carnivore",
+    "phrase": "A person or animal that eats meat",
+    "word": "Carnivore"
+  },
+  {
+    "id": "omnivore",
+    "phrase": "A person or animal that eats both plants and meat",
+    "word": "Omnivore"
+  },
+  {
+    "id": "versatile",
+    "phrase": "Able to adapt readily",
+    "word": "Versatile"
+  },
+  {
+    "id": "comedy",
+    "phrase": "A humorous play with a happy ending",
+    "word": "Comedy"
+  },
+  {
+    "id": "tragedy",
+    "phrase": "A play with a sad and tragic end",
+    "word": "Tragedy"
+  },
+  {
+    "id": "memorandum",
+    "phrase": "A note to help memory",
+    "word": "Memorandum"
+  },
+  {
+    "id": "anthology",
+    "phrase": "A small book of songs or poems",
+    "word": "Anthology"
+  },
+  {
+    "id": "voyage",
+    "phrase": "A long journey by sea",
+    "word": "Voyage"
+  },
+  {
+    "id": "menu",
+    "phrase": "List of food items to be served",
+    "word": "Menu"
+  },
+  {
+    "id": "mosaic",
+    "phrase": "Picture made from small coloured pieces",
+    "word": "Mosaic"
+  },
+  {
+    "id": "cartoonist",
+    "phrase": "A person who draws funny pictures",
+    "word": "Cartoonist"
+  }
+]

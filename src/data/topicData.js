@@ -1,6 +1,7 @@
 import SYNONYMS_DATA       from './topics/synonyms.json';
 import ANTONYMS_DATA       from './topics/antonyms.json';
 import ONE_WORD_DATA       from './topics/one_word_substitutions.json';
+import VOCABOPEDIA_ONE_WORD_DATA from './topics/vocabopediaOneWordSubs.json';
 import PROVERBS_DATA       from './topics/proverbs.json';
 import VOCABOPEDIA_PROVERBS_DATA from './topics/vocabopediaProverbs.json';
 import IDIOMS_DATA         from './topics/idioms.json';
@@ -15,6 +16,7 @@ import HOMOPHONES_DATA     from './topics/homophones.json';
 import TRICKY_SYNONYMS     from './tricky/synonyms.json';
 import TRICKY_ANTONYMS     from './tricky/antonyms.json';
 import TRICKY_ONE_WORD     from './tricky/one_word_substitutions.json';
+import TRICKY_VOCABOPEDIA_ONE_WORD from './tricky/vocabopediaOneWordSubs.json';
 import TRICKY_PROVERBS     from './tricky/proverbs.json';
 import TRICKY_VOCABOPEDIA_PROVERBS from './tricky/vocabopediaProverbs.json';
 import TRICKY_IDIOMS       from './tricky/idioms.json';
@@ -30,6 +32,7 @@ export const TOPIC_META = {
   synonyms:       { id: 'synonyms',       name: 'Synonyms',                          icon: '🔤', color: '#7C3AED', bg: '#F5F3FF' },
   antonyms:       { id: 'antonyms',       name: 'Antonyms',                          icon: '↔️',  color: '#DC2626', bg: '#FEF2F2' },
   oneWordSubs:    { id: 'oneWordSubs',    name: 'One Word Substitutions',             icon: '📝', color: '#059669', bg: '#ECFDF5' },
+  vocabopediaOneWordSubs: { id: 'vocabopediaOneWordSubs', name: 'Vocabopedia One Word Substitutions', icon: '📘', color: '#0D9488', bg: '#F0FDFA' },
   proverbs:       { id: 'proverbs',       name: 'Proverbs',                          icon: '📜', color: '#B45309', bg: '#FFFBEB' },
   vocabopediaProverbs: { id: 'vocabopediaProverbs', name: 'Vocabopedia Proverbs',     icon: '📘', color: '#0D9488', bg: '#F0FDFA' },
   idioms:         { id: 'idioms',         name: 'Idioms & Phrases',                  icon: '💬', color: '#D97706', bg: '#FFFBEB' },
@@ -43,7 +46,7 @@ export const TOPIC_META = {
 };
 
 export const TOPIC_ORDER = [
-  'synonyms', 'antonyms', 'oneWordSubs', 'proverbs', 'vocabopediaProverbs',
+  'synonyms', 'antonyms', 'oneWordSubs', 'vocabopediaOneWordSubs', 'proverbs', 'vocabopediaProverbs',
   'idioms', 'vocabopediaIdioms', 'similes', 'vocabopediaSimiles',
   'oxymorons', 'vocabopediaOxymorons', 'collectiveNouns', 'homophones',
 ];
@@ -52,6 +55,7 @@ export const ALL_TOPIC_DATA = {
   synonyms:        SYNONYMS_DATA,
   antonyms:        ANTONYMS_DATA,
   oneWordSubs:     ONE_WORD_DATA,
+  vocabopediaOneWordSubs: VOCABOPEDIA_ONE_WORD_DATA,
   proverbs:        PROVERBS_DATA,
   vocabopediaProverbs: VOCABOPEDIA_PROVERBS_DATA,
   idioms:          IDIOMS_DATA,
@@ -70,6 +74,7 @@ export const TRICKY_TOPIC_DATA = {
   synonyms:        TRICKY_SYNONYMS,
   antonyms:        TRICKY_ANTONYMS,
   oneWordSubs:     TRICKY_ONE_WORD,
+  vocabopediaOneWordSubs: TRICKY_VOCABOPEDIA_ONE_WORD,
   proverbs:        TRICKY_PROVERBS,
   vocabopediaProverbs: TRICKY_VOCABOPEDIA_PROVERBS,
   idioms:          TRICKY_IDIOMS,
