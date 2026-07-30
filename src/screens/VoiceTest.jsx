@@ -111,7 +111,7 @@ const TOPIC_VOICE_LABELS = {
   vocabopediaSimiles: { question: 'Complete the simile', instruction: 'Say every missing word' },
   antonyms:        { question: 'What is the antonym of…', instruction: 'Speak every antonym' },
   synonyms:        { question: 'Say the synonyms for…',   instruction: 'Speak every synonym' },
-  collectiveNouns: { question: 'Name the collective noun…', instruction: 'Speak the collective noun' },
+  collectiveNouns: { question: 'Name the collective noun…', instruction: 'Speak every correct answer' },
   statesCapitals:  { question: 'Indian Geography',       instruction: 'Speak your answer' },
 };
 function voiceLabel(topicId) {

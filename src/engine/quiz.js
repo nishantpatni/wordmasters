@@ -1104,26 +1104,28 @@ function buildCollectiveVoiceQs(raw) {
   const allCollectives = [...new Set(raw.map(i => i.collective.trim()))];
   const allNouns       = [...new Set(raw.map(i => i.noun.trim()))];
 
-  // Any other real collective/noun said alongside the correct one is
-  // "hedging" — see scoreMatchAny's decoys param.
+  // When a noun/collective has more than one valid pairing, every one of them
+  // must be spoken — mirrors the MCQ's forced-multiselect requirement (select
+  // ALL correct options, not just one). Any other real collective/noun said
+  // alongside the required ones is "hedging" — see scoreMatchAny's decoys param.
   const forwardQs = [...byNoun.values()].map(g => {
-    const [answer, ...altAnswers] = [...g.collectives];
     const validSet = new Set([...g.collectives].map(c => c.toLowerCase()));
     const decoys = allCollectives.filter(c => !validSet.has(c.toLowerCase()));
     return {
       itemId: g.itemId, prompt: g.noun,
-      ttsPrompt: `What's the collective noun for a group of ${g.noun}?`,
-      answer, altAnswers, decoys,
+      ttsPrompt: g.collectives.size > 1
+        ? `What are the collective nouns for a group of ${g.noun}?`
+        : `What's the collective noun for a group of ${g.noun}?`,
+      requiredAnswers: [...g.collectives], decoys,
     };
   });
   const reverseQs = [...byCollective.values()].map(g => {
-    const [answer, ...altAnswers] = [...g.nouns];
     const validSet = new Set([...g.nouns].map(n => n.toLowerCase()));
     const decoys = allNouns.filter(n => !validSet.has(n.toLowerCase()));
     return {
       itemId: g.itemId, prompt: `A ${g.collective} of ___`,
       ttsPrompt: `A ${g.collective} of what?`,
-      answer, altAnswers, decoys,
+      requiredAnswers: [...g.nouns], decoys,
     };
   });
   return [...forwardQs, ...reverseQs];

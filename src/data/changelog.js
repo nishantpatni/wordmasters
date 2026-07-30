@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '30 Jul 2026',
+    entries: [
+      { icon: '🐾', topic: 'Collective Nouns Voice Quiz', text: 'For nouns with more than one valid collective (e.g. Flowers → Bouquet or Bunch) and collectives with more than one valid noun, the voice quiz was only ever asking for one answer instead of every valid one — inconsistent with the MCQ version, which already requires picking all of them. Now the voice quiz requires every correct answer to be spoken, matching the MCQ.' },
+    ],
+  },
+  {
     date: '29 Jul 2026',
     entries: [
       { icon: '📘', topic: 'New Topic: Vocabopedia One Word Substitutions', text: 'Split off a new topic containing the 60 one-word substitutions from the Grade 4 Vocabopedia list (MCQ, Voice Quiz, Revise, Teach & Ask). The original One Word Substitutions topic keeps the rest.' },
@@ -121,6 +127,13 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '30 Jul 2026',
+    entries: [
+      'quiz.js buildCollectiveVoiceQs() — forward/reverse groups now emit requiredAnswers (was answer/altAnswers, i.e. any-one-accepted via scoreMatchAny) so multi-valid nouns/collectives use scoreMatchAll like Similes/Antonyms/Synonyms already do; decoys (hedging detection) kept as-is. 8 nouns in collective_nouns.json currently have >1 valid collective (flowers, students, houses, stars, cards, …).',
+      'VoiceTest.jsx TOPIC_VOICE_LABELS.collectiveNouns.instruction — "Speak the collective noun" → "Speak every correct answer" to match the new all-required behavior.',
+    ],
+  },
   {
     date: '29 Jul 2026',
     entries: [
