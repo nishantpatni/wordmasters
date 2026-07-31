@@ -1,5 +1,12 @@
 export const USER_CHANGELOG = [
   {
+    date: '31 Jul 2026',
+    entries: [
+      { icon: '🎤', topic: 'Voice Quiz: Multi-Answer Mic Cutoff', text: 'Questions needing several spoken answers in a row (e.g. a simile with more than one valid completion) were getting cut off after the first answer — the mic stopped listening at the first pause in speech, submitting early. It now keeps listening through pauses for these questions, with a new "✓ Said them all — submit" button so you\'re not stuck waiting out the full timer once you\'re done.' },
+      { icon: '👂', topic: 'Homophones, Homonyms & Homographs: More Coverage', text: 'Added 25 new questions so every word in every homophone set (e.g. "hare" and "heir", not just "hair") gets tested, not just one member of the group — and each homograph (bark, bat, bank, light, match, spring, wave, plain, key) now tests 2 of its 4 meanings instead of just 1. 44 → 69 questions.' },
+    ],
+  },
+  {
     date: '30 Jul 2026',
     entries: [
       { icon: '🐾', topic: 'Collective Nouns Voice Quiz', text: 'For nouns with more than one valid collective (e.g. Flowers → Bouquet or Bunch) and collectives with more than one valid noun, the voice quiz was only ever asking for one answer instead of every valid one — inconsistent with the MCQ version, which already requires picking all of them. Now the voice quiz requires every correct answer to be spoken, matching the MCQ.' },
@@ -127,6 +134,14 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '31 Jul 2026',
+    entries: [
+      'VoiceTest.jsx startListening() — r.continuous now true whenever q.requiredAnswers.length > 1; SpeechRecognition (non-continuous) finalizes and fires onend at the first detected pause, which was auto-submitting multi-answer questions after only the first spoken answer. r.onresult concatenation also now joins result segments with a space (was string-concatenated with none, risking merged words once continuous mode produces multiple finalized segments).',
+      'VoiceTest.jsx — manual "✓ Said them all — submit" button added during the listening phase for requiredAnswers.length > 1 questions (calls recogRef.current.stop()), since continuous mode no longer auto-ends at the first pause and would otherwise wait out the full listenSecsFor() timer.',
+      'homophones.json — 44 → 69 entries. Added 16 fill_blank items so every word in every homophone label group (grouped by normalized/sorted word-set, not literal label string — same set was previously written in 3 different word orders across its 3 sibling items) is tested as the answer at least once (to, rite, hare, heir, pear, pare, sale, tail, flower, whole, piece, night, male, meat, stare, steal were previously untested — only ever appeared as MCQ decoys). Added 9 meaning_identify items testing a 2nd sense per homograph (bark, bat, bank, light, match, spring, wave, plain, key) — each still has 2 of its 4 listed senses untested (available for a future round).',
+    ],
+  },
   {
     date: '30 Jul 2026',
     entries: [

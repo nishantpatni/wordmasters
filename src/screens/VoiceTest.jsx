@@ -264,15 +264,22 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
     setTimeLeft(listenSecsFor(q));
     playListenCue();
 
+    // Non-continuous recognition ends the moment the browser detects a pause
+    // in speech — fine for a single-word answer, but a question that needs
+    // several answers said one after another (e.g. "the sun, a diamond, a
+    // flame...") gets cut off after the first one, submitting early with only
+    // one answer captured. Keep listening through pauses for those questions;
+    // the countdown timer (below) still forces a stop once time runs out.
+    const needsAll = Array.isArray(q.requiredAnswers) && q.requiredAnswers.length > 1;
     const r = new SR();
-    r.continuous      = false;
+    r.continuous      = needsAll;
     r.interimResults  = true;
     r.lang            = getVoiceLang();
     recogRef.current  = r;
 
     r.onresult = e => {
       let t = '';
-      for (const res of e.results) t += res[0].transcript;
+      for (const res of e.results) t += (t ? ' ' : '') + res[0].transcript;
       const cleaned = t.trim();
       setTranscript(cleaned);
       txRef.current = cleaned;
@@ -576,6 +583,13 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
                     {transcript || 'Listening…'}
                   </span>
                 </div>
+                {Array.isArray(q.requiredAnswers) && q.requiredAnswers.length > 1 && (
+                  <div style={S.center}>
+                    <button onClick={() => recogRef.current?.stop()} style={S.ghostBtn}>
+                      ✓ Said them all — submit
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
