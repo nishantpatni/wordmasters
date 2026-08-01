@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { getScores, saveScores, memoryScore, getAttemptLogs } from '../engine/quiz.js';
-import { loadScoresFromSheets, loadLogsFromSheets } from '../services/sheetsService.js';
+import { loadScores as loadRemoteScores, loadLogs as loadRemoteLogs } from '../services/dataService.js';
 import { USER_CHANGELOG, TECH_CHANGELOG } from '../data/changelog.js';
 
 const USERS = ['NP_test', 'PB_test', 'ATV'];
@@ -31,14 +31,14 @@ export default function Admin({ onBack }) {
   const [selectedSessionTs, setSelectedSessionTs] = useState(null); // null = session index, else detail
   const [sessionFilter,     setSessionFilter]     = useState('wrong'); // 'wrong' | 'all'
 
-  // Load scores from Sheets whenever user switches
+  // Load scores from Supabase whenever user switches
   useEffect(() => {
     let cancelled = false;
     setScores(getScores(activeUser)); // show localStorage first
     setLogs(null); // clear logs for new user
     setSelectedSessionTs(null);
     setScoresLoading(true);
-    loadScoresFromSheets(activeUser).then(remote => {
+    loadRemoteScores(activeUser, 'english').then(remote => {
       if (cancelled) return;
       setScoresLoading(false);
       if (!remote) return;
@@ -59,13 +59,13 @@ export default function Admin({ onBack }) {
     // Show local logs immediately
     const local = getAttemptLogs(activeUser);
     setLogs(local);
-    // Then try to merge from Sheets
+    // Then try to merge from Supabase
     let cancelled = false;
     setLogsLoading(true);
-    loadLogsFromSheets(activeUser).then(result => {
+    loadRemoteLogs(activeUser, 'english').then(result => {
       if (cancelled) return;
       setLogsLoading(false);
-      if (!Array.isArray(result)) return; // GAS not available or no logs action — local is enough
+      if (!Array.isArray(result)) return; // Supabase not configured or offline — local is enough
       const seen = new Set(local.map(r => `${r.ts}_${r.itemId}`));
       const extra = result.filter(r => !seen.has(`${r.ts}_${r.itemId}`));
       if (extra.length) setLogs(prev => [...(prev || []), ...extra]);
@@ -200,7 +200,7 @@ export default function Admin({ onBack }) {
         {view === 'scores' && (
           <>
             {scoresLoading && (
-              <div style={styles.syncBanner}>⟳ Syncing scores from Google Sheets…</div>
+              <div style={styles.syncBanner}>⟳ Syncing scores from Supabase…</div>
             )}
 
             {/* Topic summary cards */}
@@ -303,7 +303,7 @@ export default function Admin({ onBack }) {
             </div>
 
             {logsLoading && (
-              <div style={styles.syncBanner}>⟳ Loading quiz sessions from Google Sheets…</div>
+              <div style={styles.syncBanner}>⟳ Loading quiz sessions from Supabase…</div>
             )}
 
             {!logsLoading && logs !== null && visibleSessions.length === 0 && (
@@ -436,11 +436,11 @@ export default function Admin({ onBack }) {
             </div>
 
             {logsLoading && (
-              <div style={styles.syncBanner}>⟳ Loading attempt logs from Google Sheets…</div>
+              <div style={styles.syncBanner}>⟳ Loading attempt logs from Supabase…</div>
             )}
 
             {!logsLoading && logs === null && (
-              <div style={styles.empty}>Could not load logs. Ensure GAS supports <code>action=logs</code>.</div>
+              <div style={styles.empty}>Could not load logs from Supabase.</div>
             )}
 
             {!logsLoading && logs !== null && visibleLogs.length === 0 && (

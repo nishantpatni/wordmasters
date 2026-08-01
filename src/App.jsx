@@ -9,9 +9,12 @@ import Admin        from './screens/Admin.jsx';
 import Revise       from './screens/Revise.jsx';
 import VoiceTest    from './screens/VoiceTest.jsx';
 import TeachAndAsk  from './screens/TeachAndAsk.jsx';
-import { buildTest, buildRepractice, buildVoiceTest, buildVoiceRepractice, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs } from './engine/quiz.js';
+import { buildTest, buildRepractice, buildVoiceTest, buildVoiceRepractice, batchUpdateScores, updateStreak, getScores, saveScores, addCoins, saveAttemptLogs, getMeta } from './engine/quiz.js';
 import { buildGeoTest, buildGeoVoiceTest, buildGeoRepractice, buildGeoVoiceRepractice } from './engine/geoQuiz.js';
-import { loadScoresFromSheets, saveScoresToSheets, logQuizAttempts } from './services/sheetsService.js';
+import {
+  loadScores as loadRemoteScores, saveScores as saveRemoteScores,
+  logAttempts as logRemoteAttempts, saveMeta as saveRemoteMeta,
+} from './services/dataService.js';
 import GeoTopicSelect from './screens/GeoTopicSelect.jsx';
 import { getDarkMode, setDarkMode as persistDarkMode } from './utils/theme.js';
 import { TOPIC_META } from './data/topicData.js';
@@ -68,22 +71,32 @@ export default function App() {
   // Consumed once, after login, by the redirect effect further down.
   const deepLinkRef = useRef(parseRoute(window.location.pathname));
 
+  // Pulls remote scores for one subject and merges them into the local copy —
+  // remote wins per-item unless the local record has more reps (i.e. this
+  // device has practiced that item more recently/often than what's synced).
+  // `subject` maps to the local storage key convention quiz.js already uses
+  // (geo_<username> for geography, plain username for english).
+  const syncSubject = useCallback(async (username, subject) => {
+    const localKey = subject === 'geography' ? `geo_${username}` : username;
+    const remote = await loadRemoteScores(username, subject);
+    if (remote) {
+      const local = getScores(localKey);
+      const merged = { ...remote };
+      for (const [id, loc] of Object.entries(local)) {
+        if (!merged[id] || (loc.reps ?? 0) > (merged[id].reps ?? 0)) merged[id] = loc;
+      }
+      saveScores(localKey, merged);
+    }
+  }, []);
+
   const handleLogin = useCallback(async (u) => {
     setUser(u);
     if (u.role === 'admin') { setScreen('admin'); return; }
     setScreen('home');
     setSyncing(true);
-    const remote = await loadScoresFromSheets(u.username);
-    if (remote) {
-      const local = getScores(u.username);
-      const merged = { ...remote };
-      for (const [id, loc] of Object.entries(local)) {
-        if (!merged[id] || (loc.reps ?? 0) > (merged[id].reps ?? 0)) merged[id] = loc;
-      }
-      saveScores(u.username, merged);
-    }
+    await Promise.all([syncSubject(u.username, 'english'), syncSubject(u.username, 'geography')]);
     setSyncing(false);
-  }, []);
+  }, [syncSubject]);
 
   const handleLogout = useCallback(() => {
     setUser(null);
@@ -109,31 +122,26 @@ export default function App() {
 
   const handleStartTest = useCallback(async (topicId, count) => {
     setSyncing(true);
-    const remote = await loadScoresFromSheets(user.username);
-    if (remote) {
-      const local = getScores(user.username);
-      const merged = { ...remote };
-      for (const [id, loc] of Object.entries(local)) {
-        if (!merged[id] || (loc.reps ?? 0) > (merged[id].reps ?? 0)) merged[id] = loc;
-      }
-      saveScores(user.username, merged);
-    }
+    await syncSubject(user.username, 'english');
     setSyncing(false);
     const qs = buildTest(topicId, count, getScores(user.username));
     setQuestions(qs);
     setTestConfig({ topicId, count, subject: 'english', voice: false });
     setIsPracticeMode(false);
     setScreen('test');
-  }, [user]);
+  }, [user, syncSubject]);
 
-  const handleStartGeoTest = useCallback((topicId, count) => {
+  const handleStartGeoTest = useCallback(async (topicId, count) => {
     const geoUser = `geo_${user.username}`;
+    setSyncing(true);
+    await syncSubject(user.username, 'geography');
+    setSyncing(false);
     const qs = buildGeoTest(topicId, count, getScores(geoUser));
     setQuestions(qs);
     setTestConfig({ topicId, count, subject: 'geography', voice: false });
     setIsPracticeMode(false);
     setScreen('test');
-  }, [user]);
+  }, [user, syncSubject]);
 
   const goHome = useCallback(() => {
     setIsPracticeMode(false);
@@ -142,34 +150,35 @@ export default function App() {
     setScreen('home');
   }, []);
 
-  // Persists results to scores/coins/streak/sheets. Called either immediately
+  // Persists results to scores/coins/streak/Supabase. Called either immediately
   // (perfect score, no review shown) or after the user has had a chance to
   // fix voice-quiz mis-hears on the Review screen via "I spoke correctly".
+  // Both subjects sync now (geography used to be local-only).
   const persistComplete = useCallback((results) => {
     const isGeo = testConfig?.subject === 'geography';
+    const subject = isGeo ? 'geography' : 'english';
     const scoreUser = isGeo ? `geo_${user.username}` : user.username;
     batchUpdateScores(scoreUser, results);
     updateStreak(user.username);
     addCoins(user.username, results.filter(r => r.correct).length * 10);
-    if (!isGeo) {
-      saveScoresToSheets(user.username, getScores(user.username));
-      const logRows = toLogRows(user.username, results);
-      saveAttemptLogs(user.username, logRows);
-      logQuizAttempts(logRows);
-    }
+    saveRemoteScores(user.username, subject, getScores(scoreUser));
+    const logRows = toLogRows(user.username, results);
+    saveAttemptLogs(user.username, logRows);
+    logRemoteAttempts(user.username, subject, logRows);
+    saveRemoteMeta(user.username, getMeta(user.username));
   }, [user, testConfig]);
 
   const persistPartial = useCallback((results) => {
     const isGeo = testConfig?.subject === 'geography';
+    const subject = isGeo ? 'geography' : 'english';
     const scoreUser = isGeo ? `geo_${user.username}` : user.username;
     batchUpdateScores(scoreUser, results);
     addCoins(user.username, results.filter(r => r.correct).length * 10);
-    if (!isGeo) {
-      saveScoresToSheets(user.username, getScores(user.username));
-      const logRows = toLogRows(user.username, results);
-      saveAttemptLogs(user.username, logRows);
-      logQuizAttempts(logRows);
-    }
+    saveRemoteScores(user.username, subject, getScores(scoreUser));
+    const logRows = toLogRows(user.username, results);
+    saveAttemptLogs(user.username, logRows);
+    logRemoteAttempts(user.username, subject, logRows);
+    saveRemoteMeta(user.username, getMeta(user.username));
   }, [user, testConfig]);
 
   const handleTestComplete = useCallback((results) => {

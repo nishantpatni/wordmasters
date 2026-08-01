@@ -2,6 +2,7 @@ export const USER_CHANGELOG = [
   {
     date: '01 Aug 2026',
     entries: [
+      { icon: '☁️', topic: 'Moved to Supabase', text: 'Practice data (scores, quiz history, streaks/coins) now syncs to a proper database instead of Google Sheets — same offline-first behavior as before, nothing lost in the move. Indian Geography scores now sync to the cloud too, which they never did before.' },
       { icon: '👂', topic: 'Homophones: 17 More Sets', text: 'Added rain/reign/rein, deer/dear, ate/eight, for/four/fore, by/buy/bye, one/won, sun/son, blue/blew, made/maid, week/weak, wood/would, board/bored, our/hour, so/sew/sow, new/knew, which/witch, and wear/where — 38 new questions, every word tested. 69 → 107 questions.' },
     ],
   },
@@ -144,6 +145,12 @@ export const TECH_CHANGELOG = [
     date: '01 Aug 2026',
     entries: [
       'homophones.json — 69 → 107 entries. Added 17 more common Grade-4-level homophone sets flagged as missing (rain/reign/rein, deer/dear, ate/eight, for/four/fore, by/buy/bye, one/won, sun/son, blue/blew, made/maid, week/weak, wood/would, board/bored, our/hour, so/sew/sow, new/knew, which/witch, wear/where) — no source PDF exists for this topic (unlike other topics, homophones.json was hand-authored, not extracted from a PDF), so this list is curated directly rather than checked against a reference document.',
+      'Migrated practice-data storage from Google Sheets/Apps Script to Supabase (Postgres). New schema (supabase/migrations/): scores (username, subject, item_id) composite PK, attempt_logs, user_meta — subject (\'english\'|\'geography\') replaces the old geo_<username> sheet-tab-naming hack server-side (client-side localStorage convention unchanged). RLS enabled on all three tables, permissive SELECT/INSERT/UPDATE for anon, deliberately no DELETE policy (defense-in-depth against a stray unfiltered .delete() — verified anon delete attempts affect 0 rows).',
+      'src/services/dataService.js replaces sheetsService.js — loadScores/saveScores (per-item upsert, never delete-then-replace — fixes a latent multi-device data-loss bug the old GAS writeScores() had) / logAttempts / loadLogs / loadMeta / saveMeta, all subject-aware.',
+      'App.jsx — merge-on-load logic (remote scores merged with local, local wins when its reps is higher) factored into one syncSubject(username, subject) helper, now also called for Geography (previously English-only — handleStartGeoTest/handleStartGeoVoiceTest never synced remotely at all). persistComplete/persistPartial sync both subjects now, plus newly-wired attempt_logs and user_meta sync (previously fully broken — the client posted action=log but gas/Code.gs never implemented it server-side).',
+      'One-time scripts/migrate-sheets-to-supabase.mjs backfilled existing English scores from the live GAS endpoint: NP_test 170, PB_test 522, ATV 739 rows — verified via row-count match in Supabase. Had to normalize dates during backfill: Sheets had silently coerced the app\'s clean "YYYY-MM-DD" strings into Date cells, so Apps Script read them back as full Date.toString() output (e.g. "Thu Jun 18 2026 00:00:00 GMT+0530 (India Standard Time)") — parsed the calendar date directly out of that string rather than round-tripping through new Date(...).toISOString(), which would have silently shifted the date backward a day for the +0530 offset.',
+      'Verified end-to-end against the live Supabase project with the real anon key (not just service role): read path (ATV\'s 739 backfilled items render correctly on Home after login sync, 0 console errors), write path (upsert only touches the item(s) in the payload, sibling items survive), and that the anon role genuinely cannot delete rows.',
+      'gas/Code.gs and src/config.js (GAS_URL) left in the repo, just unreferenced — not deleted.',
     ],
   },
   {
