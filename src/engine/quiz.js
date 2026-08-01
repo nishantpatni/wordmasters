@@ -159,7 +159,7 @@ function makeQ(topicId, itemId, inputType, prompt, options, correctIndex, explan
 // ── Synonyms ──────────────────────────────────────────────────────────────────
 let synSubIdx = 0;
 
-function genSynonymForward(item, pool) {
+function genSynonymForward(item, pool, topicId = 'synonyms') {
   const correct = pick(item.synonyms);
   const confusions = getConfusions(correct);
   let wrong;
@@ -176,7 +176,7 @@ function genSynonymForward(item, pool) {
     return acc;
   }, []);
   const isMulti = correctIndices.length > 1;
-  return makeQ('synonyms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     isMulti
       ? `Select ALL synonyms of "${item.word}":`
       : `Which of the following is a synonym of "${item.word}"?`,
@@ -186,28 +186,28 @@ function genSynonymForward(item, pool) {
   );
 }
 
-function genSynonymReverse(item, pool) {
+function genSynonymReverse(item, pool, topicId = 'synonyms') {
   const synonym = pick(item.synonyms);
   const wrong = pickDistinct(
     pool.filter(i => i.id !== item.id).map(i => i.word),
     item.word, 3
   );
   const opts = shuffle([item.word, ...wrong]);
-  return makeQ('synonyms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `"${synonym}" is a synonym of which word?`,
     opts, opts.indexOf(item.word),
     `"${item.word}" means ${item.synonyms.join(', ')}.`
   );
 }
 
-function genSynonym(item, pool) {
+function genSynonym(item, pool, topicId = 'synonyms') {
   return synSubIdx++ % 2 === 0
-    ? genSynonymForward(item, pool)
-    : genSynonymReverse(item, pool);
+    ? genSynonymForward(item, pool, topicId)
+    : genSynonymReverse(item, pool, topicId);
 }
 
 // Forces at least 2 synonyms into options — used by multiselect enforcement
-function genSynonymForced(item, pool) {
+function genSynonymForced(item, pool, topicId = 'synonyms') {
   if (item.synonyms.length < 2) return null;
   const synonymSet = new Set(item.synonyms.map(s => s.toLowerCase()));
   const [syn1, syn2] = shuffle([...item.synonyms]);
@@ -219,7 +219,7 @@ function genSynonymForced(item, pool) {
     if (synonymSet.has(opt.toLowerCase())) acc.push(i);
     return acc;
   }, []);
-  return makeQ('synonyms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     `Select ALL synonyms of "${item.word}":`,
     opts, opts.indexOf(syn1),
     `"${item.word}" means ${item.synonyms.join(', ')}.`,
@@ -230,7 +230,7 @@ function genSynonymForced(item, pool) {
 // ── Antonyms ──────────────────────────────────────────────────────────────────
 let antSubIdx = 0;
 
-function genAntonymForward(item, pool) {
+function genAntonymForward(item, pool, topicId = 'antonyms') {
   const correct = item.antonym;
 
   // Valid antonyms = direct entries + their confusion-set synonyms
@@ -270,7 +270,7 @@ function genAntonymForward(item, pool) {
     return acc;
   }, []);
   const isMulti = correctIndices.length > 1;
-  return makeQ('antonyms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     isMulti ? `Select ALL antonyms of "${item.word}":` : `What is the antonym of "${item.word}"?`,
     opts, opts.indexOf(correct),
     `The antonym of "${item.word}" is "${item.antonym}".`,
@@ -278,7 +278,7 @@ function genAntonymForward(item, pool) {
   );
 }
 
-function genAntonymReverse(item, pool) {
+function genAntonymReverse(item, pool, topicId = 'antonyms') {
   // Valid answers: all words whose antonym matches item.antonym, plus their synonyms
   const validWords = new Set(
     pool.filter(i => i.antonym.toLowerCase() === item.antonym.toLowerCase())
@@ -312,7 +312,7 @@ function genAntonymReverse(item, pool) {
     return acc;
   }, []);
   const isMulti = correctIndices.length > 1;
-  return makeQ('antonyms', item.id, 'mcq',
+  return makeQ(topicId, item.id, 'mcq',
     isMulti ? `Select ALL antonyms of "${item.antonym}":` : `What is the antonym of "${item.antonym}"?`,
     opts, opts.indexOf(item.word),
     `The antonym of "${item.antonym}" is "${item.word}".`,
@@ -320,10 +320,10 @@ function genAntonymReverse(item, pool) {
   );
 }
 
-function genAntonym(item, pool) {
+function genAntonym(item, pool, topicId = 'antonyms') {
   return antSubIdx++ % 2 === 0
-    ? genAntonymForward(item, pool)
-    : genAntonymReverse(item, pool);
+    ? genAntonymForward(item, pool, topicId)
+    : genAntonymReverse(item, pool, topicId);
 }
 
 // ── Idioms ────────────────────────────────────────────────────────────────────
@@ -649,7 +649,9 @@ function genProverb(item, pool, topicId = 'proverbs') {
 // ── Generator Dispatch ────────────────────────────────────────────────────────
 const GENERATORS = {
   synonyms:        genSynonym,
+  vocabopediaSynonyms: (item, pool) => genSynonym(item, pool, 'vocabopediaSynonyms'),
   antonyms:        genAntonym,
+  vocabopediaAntonyms: (item, pool) => genAntonym(item, pool, 'vocabopediaAntonyms'),
   idioms:          genIdiom,
   vocabopediaIdioms: (item, pool) => genIdiom(item, pool, 'vocabopediaIdioms'),
   oneWordSubs:     genOneWord,
@@ -673,8 +675,8 @@ function genForcedMulti(topicId, item, pool) {
     const q = genCollectiveReverse(item, pool);
     return (q.correctIndices?.length ?? 0) > 1 ? q : null;
   }
-  if (topicId === 'synonyms') {
-    return genSynonymForced(item, pool);
+  if (topicId === 'synonyms' || topicId === 'vocabopediaSynonyms') {
+    return genSynonymForced(item, pool, topicId);
   }
   if (topicId === 'similes' || topicId === 'vocabopediaSimiles') {
     // fill_adjective direction can be multiselect when multiple adjectives share a comparator
@@ -806,6 +808,7 @@ const GROUPED_VOICE_BUILDERS = {
   similes:            buildSimileVoiceQs,
   vocabopediaSimiles: buildSimileVoiceQs,
   antonyms:           buildAntonymVoiceQs,
+  vocabopediaAntonyms: buildAntonymVoiceQs,
   collectiveNouns:    buildCollectiveVoiceQs,
 };
 
@@ -858,11 +861,49 @@ function addTrickyQuestions(topicId, trickyItems, scores, questions, limit) {
   }
 }
 
+// Topics whose generator alternates between subtypes (e.g. word->meaning vs
+// meaning->word) via one of these module-level counters — resetting a
+// counter to the current pass number before each pass makes subtype
+// selection a deterministic function of (item position, pass): pass 0 gives
+// the usual alternating variety across items, and pass 1 gives every item
+// the OPPOSITE subtype from pass 0 (not just "whatever the counter's parity
+// happens to land on next", which silently repeats pass 0 exactly whenever
+// the pool size is a multiple of the subtype count). This lets a requested
+// question count exceed the pool size — up to pool size x number of
+// subtypes — instead of always capping at pool size.
+const SUBTYPE_COUNTER_RESETTERS = {
+  synonyms:               n => { synSubIdx = n; },
+  vocabopediaSynonyms:    n => { synSubIdx = n; },
+  antonyms:                n => { antSubIdx = n; },
+  vocabopediaAntonyms:     n => { antSubIdx = n; },
+  idioms:                  n => { idiomSubIdx = n; },
+  vocabopediaIdioms:       n => { idiomSubIdx = n; },
+  oneWordSubs:             n => { owsSubIdx = n; },
+  vocabopediaOneWordSubs:  n => { owsSubIdx = n; },
+  similes:                 n => { simileSubIdx = n; },
+  vocabopediaSimiles:      n => { simileSubIdx = n; },
+  oxymorons:               n => { oxySubIdx = n; },
+  vocabopediaOxymorons:    n => { oxySubIdx = n; },
+  proverbs:                n => { proverbSubIdx = n; },
+  vocabopediaProverbs:     n => { proverbSubIdx = n; },
+  collectiveNouns:         n => { collectiveSubIdx = n; },
+};
+
 function addRegularQuestions(topicId, regularItems, scores, questions, limit) {
-  for (const item of prioritiseItems(regularItems, scores)) {
-    if (questions.length >= limit) break;
-    const q = GENERATORS[topicId](item, regularItems);
-    if (q) questions.push(q);
+  const prioritised = prioritiseItems(regularItems, scores);
+  if (!prioritised.length) return;
+  const resetter = SUBTYPE_COUNTER_RESETTERS[topicId];
+  // Topics without subtype variation (e.g. homophones — each item has one
+  // fixed qType, no "other direction" exists) can't produce a genuinely
+  // different question on a repeat pass, so stay single-pass for those.
+  const maxPasses = resetter ? 4 : 1;
+  for (let pass = 0; pass < maxPasses && questions.length < limit; pass++) {
+    if (resetter) resetter(pass);
+    for (const item of prioritised) {
+      if (questions.length >= limit) break;
+      const q = GENERATORS[topicId](item, regularItems);
+      if (q) questions.push(q);
+    }
   }
 }
 
@@ -933,18 +974,20 @@ function itemToVoiceQ(topicId, item) {
         decoys,
       };
     }
-    case 'antonyms': {
+    case 'antonyms':
+    case 'vocabopediaAntonyms': {
       // Single-item form (used by Teach & Ask) — the full voice quiz uses
       // buildAntonymVoiceQs() below to group same-word items instead.
-      const pool = ALL_TOPIC_DATA.antonyms || [];
+      const pool = ALL_TOPIC_DATA[topicId] || [];
       const decoys = [...new Set(pool.map(i => i.antonym))].filter(a => a.toLowerCase() !== item.antonym.toLowerCase());
       return { prompt: item.word, ttsPrompt: `What's the antonym of ${item.word}?`, answer: item.antonym, decoys };
     }
-    case 'synonyms': {
+    case 'synonyms':
+    case 'vocabopediaSynonyms': {
       // All synonyms must be spoken (in any order). Any other word's synonym
       // said alongside this word's required synonyms is hedging — see
       // scoreMatchAll's decoys param.
-      const pool = ALL_TOPIC_DATA.synonyms || [];
+      const pool = ALL_TOPIC_DATA[topicId] || [];
       const validSet = new Set(item.synonyms.map(s => s.toLowerCase()));
       const decoys = [...new Set(pool.flatMap(i => i.synonyms))]
         .filter(s => !validSet.has(s.toLowerCase()));
@@ -1136,7 +1179,7 @@ export function buildVoiceTest(topicId, count, scores = {}) {
   let list;
   if (topicId === 'similes' || topicId === 'vocabopediaSimiles') {
     list = prioritiseItems(buildSimileVoiceQs(raw), scores, q => q.itemId);
-  } else if (topicId === 'antonyms') {
+  } else if (topicId === 'antonyms' || topicId === 'vocabopediaAntonyms') {
     list = prioritiseItems(buildAntonymVoiceQs(raw), scores, q => q.itemId);
   } else if (topicId === 'collectiveNouns') {
     list = prioritiseItems(buildCollectiveVoiceQs(raw), scores, q => q.itemId);

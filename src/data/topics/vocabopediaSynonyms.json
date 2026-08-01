@@ -1,0 +1,332 @@
+[
+  {
+    "id": "enormous",
+    "word": "Enormous",
+    "synonyms": [
+      "Colossal",
+      "Gigantic",
+      "Immense",
+      "Monumental",
+      "Massive"
+    ]
+  },
+  {
+    "id": "minuscule",
+    "word": "Minuscule",
+    "synonyms": [
+      "Tiny",
+      "Microscopic",
+      "Petite",
+      "Diminutive",
+      "Infinitesimal"
+    ]
+  },
+  {
+    "id": "swift",
+    "word": "Swift",
+    "synonyms": [
+      "Rapid",
+      "Expeditious",
+      "Fleet",
+      "Brisk",
+      "Accelerated"
+    ]
+  },
+  {
+    "id": "jubilant",
+    "word": "Jubilant",
+    "synonyms": [
+      "Ecstatic",
+      "Delighted",
+      "Elated",
+      "Gleeful",
+      "Overjoyed"
+    ]
+  },
+  {
+    "id": "melancholy",
+    "word": "Melancholy",
+    "synonyms": [
+      "Sorrowful",
+      "Despondent",
+      "Gloomy",
+      "Forlorn",
+      "Dejected"
+    ]
+  },
+  {
+    "id": "astute",
+    "word": "Astute",
+    "synonyms": [
+      "Shrewd",
+      "Perceptive",
+      "Intelligent",
+      "Sagacious",
+      "Sharp-Witted"
+    ]
+  },
+  {
+    "id": "irate",
+    "word": "Irate",
+    "synonyms": [
+      "Furious",
+      "Incensed",
+      "Enraged",
+      "Wrathful",
+      "Livid"
+    ]
+  },
+  {
+    "id": "initiate",
+    "word": "Initiate",
+    "synonyms": [
+      "Commence",
+      "Inaugurate",
+      "Launch",
+      "Originate",
+      "Embark"
+    ]
+  },
+  {
+    "id": "conclude",
+    "word": "Conclude",
+    "synonyms": [
+      "Terminate",
+      "Finalize",
+      "Wrap Up",
+      "Complete",
+      "Close"
+    ]
+  },
+  {
+    "id": "robust",
+    "word": "Robust",
+    "synonyms": [
+      "Sturdy",
+      "Mighty",
+      "Resilient",
+      "Potent",
+      "Formidable"
+    ]
+  },
+  {
+    "id": "frail",
+    "word": "Frail",
+    "synonyms": [
+      "Delicate",
+      "Feeble",
+      "Fragile",
+      "Powerless",
+      "Infirm"
+    ]
+  },
+  {
+    "id": "elegant",
+    "word": "Elegant",
+    "synonyms": [
+      "Graceful",
+      "Exquisite",
+      "Refined",
+      "Charming",
+      "Attractive"
+    ]
+  },
+  {
+    "id": "benevolent",
+    "word": "Benevolent",
+    "synonyms": [
+      "Compassionate",
+      "Charitable",
+      "Gracious",
+      "Considerate",
+      "Gentle"
+    ]
+  },
+  {
+    "id": "vindictive",
+    "word": "Vindictive",
+    "synonyms": [
+      "Malicious",
+      "Spiteful",
+      "Cruel",
+      "Harsh",
+      "Unkind"
+    ]
+  },
+  {
+    "id": "serene",
+    "word": "Serene",
+    "synonyms": [
+      "Peaceful",
+      "Tranquil",
+      "Composed",
+      "Hushed",
+      "Placid"
+    ]
+  },
+  {
+    "id": "boisterous",
+    "word": "Boisterous",
+    "synonyms": [
+      "Raucous",
+      "Clamorous",
+      "Vociferous",
+      "Thunderous",
+      "Uproarious"
+    ]
+  },
+  {
+    "id": "luminous",
+    "word": "Luminous",
+    "synonyms": [
+      "Radiant",
+      "Gleaming",
+      "Brilliant",
+      "Dazzling",
+      "Vivid"
+    ]
+  },
+  {
+    "id": "tenebrous",
+    "word": "Tenebrous",
+    "synonyms": [
+      "Shadowy",
+      "Dim",
+      "Murky",
+      "Obscure",
+      "Gloomy"
+    ]
+  },
+  {
+    "id": "scorching",
+    "word": "Scorching",
+    "synonyms": [
+      "Blazing",
+      "Sweltering",
+      "Fiery",
+      "Searing",
+      "Torrid"
+    ]
+  },
+  {
+    "id": "frigid",
+    "word": "Frigid",
+    "synonyms": [
+      "Icy",
+      "Freezing",
+      "Glacial",
+      "Chilling",
+      "Frosty"
+    ]
+  },
+  {
+    "id": "immaculate",
+    "word": "Immaculate",
+    "synonyms": [
+      "Spotless",
+      "Pristine",
+      "Hygienic",
+      "Unsoiled",
+      "Flawless"
+    ]
+  },
+  {
+    "id": "sullied",
+    "word": "Sullied",
+    "synonyms": [
+      "Filthy",
+      "Grimy",
+      "Contaminated",
+      "Soiled",
+      "Defiled"
+    ]
+  },
+  {
+    "id": "amusing",
+    "word": "Amusing",
+    "synonyms": [
+      "Comical",
+      "Entertaining",
+      "Witty",
+      "Humorous",
+      "Laughable"
+    ]
+  },
+  {
+    "id": "petrified",
+    "word": "Petrified",
+    "synonyms": [
+      "Terrified",
+      "Panicked",
+      "Apprehensive",
+      "Fearful",
+      "Anxious"
+    ]
+  },
+  {
+    "id": "intrepid",
+    "word": "Intrepid",
+    "synonyms": [
+      "Valiant",
+      "Heroic",
+      "Dauntless",
+      "Courageous",
+      "Bold"
+    ]
+  },
+  {
+    "id": "effortless",
+    "word": "Effortless",
+    "synonyms": [
+      "Simple",
+      "Uncomplicated",
+      "Straightforward",
+      "Manageable",
+      "Elementary"
+    ]
+  },
+  {
+    "id": "arduous",
+    "word": "Arduous",
+    "synonyms": [
+      "Challenging",
+      "Strenuous",
+      "Demanding",
+      "Rigorous",
+      "Tough"
+    ]
+  },
+  {
+    "id": "affluent",
+    "word": "Affluent",
+    "synonyms": [
+      "Wealthy",
+      "Prosperous",
+      "Opulent",
+      "Flourishing",
+      "Well-Off"
+    ]
+  },
+  {
+    "id": "destitute",
+    "word": "Destitute",
+    "synonyms": [
+      "Impoverished",
+      "Needy",
+      "Underprivileged",
+      "Deprived",
+      "Penniless"
+    ]
+  },
+  {
+    "id": "weary",
+    "word": "Weary",
+    "synonyms": [
+      "Fatigued",
+      "Drained",
+      "Exhausted",
+      "Worn-Out",
+      "Drowsy"
+    ]
+  }
+]

@@ -6,8 +6,10 @@ import { getTheme } from '../utils/theme.js';
 // ── How to display each topic's items ─────────────────────────────────────────
 function getDisplay(topicId, item) {
   switch (topicId) {
-    case 'synonyms':        return { left: item.word,    right: item.synonyms.join(', ') };
-    case 'antonyms':        return { left: item.word,    right: item.antonym };
+    case 'synonyms':
+    case 'vocabopediaSynonyms': return { left: item.word,    right: item.synonyms.join(', ') };
+    case 'antonyms':
+    case 'vocabopediaAntonyms': return { left: item.word,    right: item.antonym };
     case 'oneWordSubs':
     case 'vocabopediaOneWordSubs': return { left: item.word,    right: item.phrase };
     case 'proverbs':

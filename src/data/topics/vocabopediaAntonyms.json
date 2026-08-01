@@ -1,0 +1,377 @@
+[
+  {
+    "id": "enormous-minuscule",
+    "word": "Enormous",
+    "antonym": "Minuscule"
+  },
+  {
+    "id": "enormous-tiny",
+    "word": "Enormous",
+    "antonym": "Tiny"
+  },
+  {
+    "id": "enormous-slight",
+    "word": "Enormous",
+    "antonym": "Slight"
+  },
+  {
+    "id": "enormous-diminutive",
+    "word": "Enormous",
+    "antonym": "Diminutive"
+  },
+  {
+    "id": "enormous-microscopic",
+    "word": "Enormous",
+    "antonym": "Microscopic"
+  },
+  {
+    "id": "swift-sluggish",
+    "word": "Swift",
+    "antonym": "Sluggish"
+  },
+  {
+    "id": "swift-lethargic",
+    "word": "Swift",
+    "antonym": "Lethargic"
+  },
+  {
+    "id": "swift-slow",
+    "word": "Swift",
+    "antonym": "Slow"
+  },
+  {
+    "id": "swift-gradual",
+    "word": "Swift",
+    "antonym": "Gradual"
+  },
+  {
+    "id": "swift-tardy",
+    "word": "Swift",
+    "antonym": "Tardy"
+  },
+  {
+    "id": "jubilant-melancholic",
+    "word": "Jubilant",
+    "antonym": "Melancholic"
+  },
+  {
+    "id": "jubilant-despondent",
+    "word": "Jubilant",
+    "antonym": "Despondent"
+  },
+  {
+    "id": "jubilant-sorrowful",
+    "word": "Jubilant",
+    "antonym": "Sorrowful"
+  },
+  {
+    "id": "jubilant-gloomy",
+    "word": "Jubilant",
+    "antonym": "Gloomy"
+  },
+  {
+    "id": "jubilant-miserable",
+    "word": "Jubilant",
+    "antonym": "Miserable"
+  },
+  {
+    "id": "robust-frail",
+    "word": "Robust",
+    "antonym": "Frail"
+  },
+  {
+    "id": "robust-feeble",
+    "word": "Robust",
+    "antonym": "Feeble"
+  },
+  {
+    "id": "robust-delicate",
+    "word": "Robust",
+    "antonym": "Delicate"
+  },
+  {
+    "id": "robust-weak",
+    "word": "Robust",
+    "antonym": "Weak"
+  },
+  {
+    "id": "robust-powerless",
+    "word": "Robust",
+    "antonym": "Powerless"
+  },
+  {
+    "id": "elegant-ugly",
+    "word": "Elegant",
+    "antonym": "Ugly"
+  },
+  {
+    "id": "elegant-grotesque",
+    "word": "Elegant",
+    "antonym": "Grotesque"
+  },
+  {
+    "id": "elegant-unappealing",
+    "word": "Elegant",
+    "antonym": "Unappealing"
+  },
+  {
+    "id": "elegant-homely",
+    "word": "Elegant",
+    "antonym": "Homely"
+  },
+  {
+    "id": "elegant-plain",
+    "word": "Elegant",
+    "antonym": "Plain"
+  },
+  {
+    "id": "benevolent-vindictive",
+    "word": "Benevolent",
+    "antonym": "Vindictive"
+  },
+  {
+    "id": "benevolent-cruel",
+    "word": "Benevolent",
+    "antonym": "Cruel"
+  },
+  {
+    "id": "benevolent-malicious",
+    "word": "Benevolent",
+    "antonym": "Malicious"
+  },
+  {
+    "id": "benevolent-harsh",
+    "word": "Benevolent",
+    "antonym": "Harsh"
+  },
+  {
+    "id": "benevolent-unkind",
+    "word": "Benevolent",
+    "antonym": "Unkind"
+  },
+  {
+    "id": "serene-boisterous",
+    "word": "Serene",
+    "antonym": "Boisterous"
+  },
+  {
+    "id": "serene-raucous",
+    "word": "Serene",
+    "antonym": "Raucous"
+  },
+  {
+    "id": "serene-clamorous",
+    "word": "Serene",
+    "antonym": "Clamorous"
+  },
+  {
+    "id": "serene-noisy",
+    "word": "Serene",
+    "antonym": "Noisy"
+  },
+  {
+    "id": "serene-turbulent",
+    "word": "Serene",
+    "antonym": "Turbulent"
+  },
+  {
+    "id": "luminous-tenebrous",
+    "word": "Luminous",
+    "antonym": "Tenebrous"
+  },
+  {
+    "id": "luminous-dim",
+    "word": "Luminous",
+    "antonym": "Dim"
+  },
+  {
+    "id": "luminous-dull",
+    "word": "Luminous",
+    "antonym": "Dull"
+  },
+  {
+    "id": "luminous-murky",
+    "word": "Luminous",
+    "antonym": "Murky"
+  },
+  {
+    "id": "luminous-shadowy",
+    "word": "Luminous",
+    "antonym": "Shadowy"
+  },
+  {
+    "id": "scorching-frigid",
+    "word": "Scorching",
+    "antonym": "Frigid"
+  },
+  {
+    "id": "scorching-icy",
+    "word": "Scorching",
+    "antonym": "Icy"
+  },
+  {
+    "id": "scorching-freezing",
+    "word": "Scorching",
+    "antonym": "Freezing"
+  },
+  {
+    "id": "scorching-chilling",
+    "word": "Scorching",
+    "antonym": "Chilling"
+  },
+  {
+    "id": "scorching-glacial",
+    "word": "Scorching",
+    "antonym": "Glacial"
+  },
+  {
+    "id": "immaculate-sullied",
+    "word": "Immaculate",
+    "antonym": "Sullied"
+  },
+  {
+    "id": "immaculate-filthy",
+    "word": "Immaculate",
+    "antonym": "Filthy"
+  },
+  {
+    "id": "immaculate-grimy",
+    "word": "Immaculate",
+    "antonym": "Grimy"
+  },
+  {
+    "id": "immaculate-contaminated",
+    "word": "Immaculate",
+    "antonym": "Contaminated"
+  },
+  {
+    "id": "immaculate-defiled",
+    "word": "Immaculate",
+    "antonym": "Defiled"
+  },
+  {
+    "id": "amusing-serious",
+    "word": "Amusing",
+    "antonym": "Serious"
+  },
+  {
+    "id": "amusing-dull",
+    "word": "Amusing",
+    "antonym": "Dull"
+  },
+  {
+    "id": "amusing-solemn",
+    "word": "Amusing",
+    "antonym": "Solemn"
+  },
+  {
+    "id": "amusing-boring",
+    "word": "Amusing",
+    "antonym": "Boring"
+  },
+  {
+    "id": "amusing-grave",
+    "word": "Amusing",
+    "antonym": "Grave"
+  },
+  {
+    "id": "intrepid-cowardly",
+    "word": "Intrepid",
+    "antonym": "Cowardly"
+  },
+  {
+    "id": "intrepid-timid",
+    "word": "Intrepid",
+    "antonym": "Timid"
+  },
+  {
+    "id": "intrepid-fearful",
+    "word": "Intrepid",
+    "antonym": "Fearful"
+  },
+  {
+    "id": "intrepid-apprehensive",
+    "word": "Intrepid",
+    "antonym": "Apprehensive"
+  },
+  {
+    "id": "intrepid-fainthearted",
+    "word": "Intrepid",
+    "antonym": "Fainthearted"
+  },
+  {
+    "id": "effortless-arduous",
+    "word": "Effortless",
+    "antonym": "Arduous"
+  },
+  {
+    "id": "effortless-challenging",
+    "word": "Effortless",
+    "antonym": "Challenging"
+  },
+  {
+    "id": "effortless-difficult",
+    "word": "Effortless",
+    "antonym": "Difficult"
+  },
+  {
+    "id": "effortless-strenuous",
+    "word": "Effortless",
+    "antonym": "Strenuous"
+  },
+  {
+    "id": "effortless-demanding",
+    "word": "Effortless",
+    "antonym": "Demanding"
+  },
+  {
+    "id": "affluent-destitute",
+    "word": "Affluent",
+    "antonym": "Destitute"
+  },
+  {
+    "id": "affluent-impoverished",
+    "word": "Affluent",
+    "antonym": "Impoverished"
+  },
+  {
+    "id": "affluent-needy",
+    "word": "Affluent",
+    "antonym": "Needy"
+  },
+  {
+    "id": "affluent-poor",
+    "word": "Affluent",
+    "antonym": "Poor"
+  },
+  {
+    "id": "affluent-underprivileged",
+    "word": "Affluent",
+    "antonym": "Underprivileged"
+  },
+  {
+    "id": "weary-energetic",
+    "word": "Weary",
+    "antonym": "Energetic"
+  },
+  {
+    "id": "weary-vigorous",
+    "word": "Weary",
+    "antonym": "Vigorous"
+  },
+  {
+    "id": "weary-lively",
+    "word": "Weary",
+    "antonym": "Lively"
+  },
+  {
+    "id": "weary-fresh",
+    "word": "Weary",
+    "antonym": "Fresh"
+  },
+  {
+    "id": "weary-active",
+    "word": "Weary",
+    "antonym": "Active"
+  }
+]

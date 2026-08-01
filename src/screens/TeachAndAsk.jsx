@@ -11,7 +11,7 @@ const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SET_SIZE = 3;
 const TOTAL_ITEMS = 9;
 const AFFIRMATIVES = ['Nice one!', 'You nailed it!', 'Spot on!', 'Boom, correct!', 'Well played!', "That's a win!", 'Fantastic!', 'Perfect!', 'Brilliant!', 'Nailed it!', 'Outstanding!', 'Excellent!'];
-const VOICE_TOPICS = new Set(['idioms', 'vocabopediaIdioms', 'oneWordSubs', 'vocabopediaOneWordSubs', 'proverbs', 'vocabopediaProverbs', 'oxymorons', 'vocabopediaOxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'synonyms', 'collectiveNouns']);
+const VOICE_TOPICS = new Set(['idioms', 'vocabopediaIdioms', 'oneWordSubs', 'vocabopediaOneWordSubs', 'proverbs', 'vocabopediaProverbs', 'oxymorons', 'vocabopediaOxymorons', 'similes', 'vocabopediaSimiles', 'antonyms', 'vocabopediaAntonyms', 'synonyms', 'vocabopediaSynonyms', 'collectiveNouns']);
 
 // ── Content helpers ───────────────────────────────────────────────────────────
 
@@ -30,11 +30,13 @@ function getTeachContent(topicId, item) {
     }
     case 'similes':
     case 'vocabopediaSimiles': return { front: item.simile, back: null, tts: item.simile };
-    case 'synonyms': {
+    case 'synonyms':
+    case 'vocabopediaSynonyms': {
       const syns = Array.isArray(item.synonyms) ? item.synonyms.join(', ') : (item.synonym || '');
       return { front: item.word, back: `Synonyms: ${syns}`, tts: `${item.word}. Synonyms: ${syns}` };
     }
-    case 'antonyms':     return { front: item.word, back: `Antonym: ${item.antonym}`, tts: `${item.word}. Antonym: ${item.antonym}` };
+    case 'antonyms':
+    case 'vocabopediaAntonyms': return { front: item.word, back: `Antonym: ${item.antonym}`, tts: `${item.word}. Antonym: ${item.antonym}` };
     case 'collectiveNouns': return { front: item.phrase, back: `${item.collective} — collective noun for ${item.noun}`, tts: item.phrase };
     case 'homophones':   return { front: item.sentence?.replace('____', `[${item.answer}]`) || item.sentence, back: `Answer: ${item.answer} (${item.label || ''})`, tts: item.sentence?.replace('____', item.answer) || '' };
     default:             return { front: item.id, back: '', tts: item.id };
@@ -56,8 +58,10 @@ function getAnswerStr(topicId, item) {
       const m = item.simile?.match(/^As\s+(.+?)\s+as\s+(.+)$/i);
       return m ? m[2].replace(/[/\\]/g, ' ').trim() : item.simile;
     }
-    case 'synonyms':         return Array.isArray(item.synonyms) ? item.synonyms[0] : (item.synonym || '');
-    case 'antonyms':         return item.antonym;
+    case 'synonyms':
+    case 'vocabopediaSynonyms': return Array.isArray(item.synonyms) ? item.synonyms[0] : (item.synonym || '');
+    case 'antonyms':
+    case 'vocabopediaAntonyms': return item.antonym;
     case 'collectiveNouns':  return item.collective;
     case 'homophones':       return item.answer;
     default:                 return '';

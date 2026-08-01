@@ -5,7 +5,19 @@
     "multiselect": true,
     "minMultiselectRatio": 0.2
   },
+  "vocabopediaSynonyms": {
+    "subtypes": ["word_to_synonym", "synonym_to_word"],
+    "subtypeWeights": { "word_to_synonym": 0.5, "synonym_to_word": 0.5 },
+    "multiselect": true,
+    "minMultiselectRatio": 0.2
+  },
   "antonyms": {
+    "subtypes": ["word_to_antonym", "antonym_to_word"],
+    "subtypeWeights": { "word_to_antonym": 0.5, "antonym_to_word": 0.5 },
+    "multiselect": false,
+    "minMultiselectRatio": 0
+  },
+  "vocabopediaAntonyms": {
     "subtypes": ["word_to_antonym", "antonym_to_word"],
     "subtypeWeights": { "word_to_antonym": 0.5, "antonym_to_word": 0.5 },
     "multiselect": false,

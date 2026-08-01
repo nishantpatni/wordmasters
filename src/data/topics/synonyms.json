@@ -61,17 +61,6 @@
     ]
   },
   {
-    "id": "affluent",
-    "word": "Affluent",
-    "synonyms": [
-      "Wealthy",
-      "Prosperous",
-      "Opulent",
-      "Flourishing",
-      "Well-Off"
-    ]
-  },
-  {
     "id": "ally",
     "word": "Ally",
     "synonyms": [
@@ -118,17 +107,6 @@
     ]
   },
   {
-    "id": "astute",
-    "word": "Astute",
-    "synonyms": [
-      "Shrewd",
-      "Perceptive",
-      "Intelligent",
-      "Sagacious",
-      "Sharp-Witted"
-    ]
-  },
-  {
     "id": "attentive",
     "word": "Attentive",
     "synonyms": [
@@ -154,17 +132,6 @@
     ]
   },
   {
-    "id": "benevolent",
-    "word": "Benevolent",
-    "synonyms": [
-      "Compassionate",
-      "Charitable",
-      "Gracious",
-      "Considerate",
-      "Gentle"
-    ]
-  },
-  {
     "id": "betray",
     "word": "Betray",
     "synonyms": [
@@ -180,17 +147,6 @@
       "Censure",
       "Reprove",
       "Upbraid"
-    ]
-  },
-  {
-    "id": "boisterous",
-    "word": "Boisterous",
-    "synonyms": [
-      "Raucous",
-      "Clamorous",
-      "Vociferous",
-      "Thunderous",
-      "Uproarious"
     ]
   },
   {
@@ -314,17 +270,6 @@
     ]
   },
   {
-    "id": "conclude",
-    "word": "Conclude",
-    "synonyms": [
-      "Terminate",
-      "Finalize",
-      "Wrap Up",
-      "Complete",
-      "Close"
-    ]
-  },
-  {
     "id": "confiscate",
     "word": "Confiscate",
     "synonyms": [
@@ -387,17 +332,6 @@
       "Fate",
       "Fortune",
       "Doom"
-    ]
-  },
-  {
-    "id": "destitute",
-    "word": "Destitute",
-    "synonyms": [
-      "Impoverished",
-      "Needy",
-      "Underprivileged",
-      "Deprived",
-      "Penniless"
     ]
   },
   {
@@ -484,17 +418,6 @@
     ]
   },
   {
-    "id": "elegant",
-    "word": "Elegant",
-    "synonyms": [
-      "Graceful",
-      "Exquisite",
-      "Refined",
-      "Charming",
-      "Attractive"
-    ]
-  },
-  {
     "id": "elude",
     "word": "Elude",
     "synonyms": [
@@ -517,17 +440,6 @@
     "word": "Eminent",
     "synonyms": [
       "Famous"
-    ]
-  },
-  {
-    "id": "enormous",
-    "word": "Enormous",
-    "synonyms": [
-      "Colossal",
-      "Gigantic",
-      "Immense",
-      "Monumental",
-      "Massive"
     ]
   },
   {
@@ -580,17 +492,6 @@
       "Brutal",
       "Dangerous",
       "Violent"
-    ]
-  },
-  {
-    "id": "frail",
-    "word": "Frail",
-    "synonyms": [
-      "Delicate",
-      "Feeble",
-      "Fragile",
-      "Powerless",
-      "Infirm"
     ]
   },
   {
@@ -707,34 +608,12 @@
     ]
   },
   {
-    "id": "immaculate",
-    "word": "Immaculate",
-    "synonyms": [
-      "Spotless",
-      "Pristine",
-      "Hygienic",
-      "Unsoiled",
-      "Flawless"
-    ]
-  },
-  {
     "id": "infinite",
     "word": "Infinite",
     "synonyms": [
       "Endless",
       "Boundless",
       "Everlasting"
-    ]
-  },
-  {
-    "id": "initiate",
-    "word": "Initiate",
-    "synonyms": [
-      "Commence",
-      "Inaugurate",
-      "Launch",
-      "Originate",
-      "Embark"
     ]
   },
   {
@@ -747,17 +626,6 @@
     ]
   },
   {
-    "id": "intrepid",
-    "word": "Intrepid",
-    "synonyms": [
-      "Valiant",
-      "Heroic",
-      "Dauntless",
-      "Courageous",
-      "Bold"
-    ]
-  },
-  {
     "id": "invoke",
     "word": "Invoke",
     "synonyms": [
@@ -766,43 +634,10 @@
     ]
   },
   {
-    "id": "irate",
-    "word": "Irate",
-    "synonyms": [
-      "Furious",
-      "Incensed",
-      "Enraged",
-      "Wrathful",
-      "Livid"
-    ]
-  },
-  {
-    "id": "jubilant",
-    "word": "Jubilant",
-    "synonyms": [
-      "Ecstatic",
-      "Delighted",
-      "Elated",
-      "Gleeful",
-      "Overjoyed"
-    ]
-  },
-  {
     "id": "knowledge",
     "word": "Knowledge",
     "synonyms": [
       "Power"
-    ]
-  },
-  {
-    "id": "luminous",
-    "word": "Luminous",
-    "synonyms": [
-      "Radiant",
-      "Gleaming",
-      "Brilliant",
-      "Dazzling",
-      "Vivid"
     ]
   },
   {
@@ -821,28 +656,6 @@
       "Malevolence",
       "Spite",
       "Hatred"
-    ]
-  },
-  {
-    "id": "melancholy",
-    "word": "Melancholy",
-    "synonyms": [
-      "Sorrowful",
-      "Despondent",
-      "Gloomy",
-      "Forlorn",
-      "Dejected"
-    ]
-  },
-  {
-    "id": "minuscule",
-    "word": "Minuscule",
-    "synonyms": [
-      "Tiny",
-      "Microscopic",
-      "Petite",
-      "Diminutive",
-      "Infinitesimal"
     ]
   },
   {
@@ -943,45 +756,12 @@
     ]
   },
   {
-    "id": "robust",
-    "word": "Robust",
-    "synonyms": [
-      "Sturdy",
-      "Mighty",
-      "Resilient",
-      "Potent",
-      "Formidable"
-    ]
-  },
-  {
-    "id": "scorching",
-    "word": "Scorching",
-    "synonyms": [
-      "Blazing",
-      "Sweltering",
-      "Fiery",
-      "Searing",
-      "Torrid"
-    ]
-  },
-  {
     "id": "scorn",
     "word": "Scorn",
     "synonyms": [
       "Despise",
       "Abhor",
       "Condemn"
-    ]
-  },
-  {
-    "id": "serene",
-    "word": "Serene",
-    "synonyms": [
-      "Peaceful",
-      "Tranquil",
-      "Composed",
-      "Hushed",
-      "Placid"
     ]
   },
   {
@@ -994,56 +774,12 @@
     ]
   },
   {
-    "id": "swift",
-    "word": "Swift",
-    "synonyms": [
-      "Rapid",
-      "Expeditious",
-      "Fleet",
-      "Brisk",
-      "Accelerated"
-    ]
-  },
-  {
-    "id": "tenebrous",
-    "word": "Tenebrous",
-    "synonyms": [
-      "Shadowy",
-      "Dim",
-      "Murky",
-      "Obscure",
-      "Gloomy"
-    ]
-  },
-  {
     "id": "unparalleled",
     "word": "Unparalleled",
     "synonyms": [
       "Unique",
       "Rare",
       "Matchless"
-    ]
-  },
-  {
-    "id": "vindictive",
-    "word": "Vindictive",
-    "synonyms": [
-      "Malicious",
-      "Spiteful",
-      "Cruel",
-      "Harsh",
-      "Unkind"
-    ]
-  },
-  {
-    "id": "weary",
-    "word": "Weary",
-    "synonyms": [
-      "Fatigued",
-      "Drained",
-      "Exhausted",
-      "Worn-Out",
-      "Drowsy"
     ]
   }
 ]
