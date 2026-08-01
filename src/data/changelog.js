@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '01 Aug 2026',
+    entries: [
+      { icon: '👂', topic: 'Homophones: 17 More Sets', text: 'Added rain/reign/rein, deer/dear, ate/eight, for/four/fore, by/buy/bye, one/won, sun/son, blue/blew, made/maid, week/weak, wood/would, board/bored, our/hour, so/sew/sow, new/knew, which/witch, and wear/where — 38 new questions, every word tested. 69 → 107 questions.' },
+    ],
+  },
+  {
     date: '31 Jul 2026',
     entries: [
       { icon: '🎤', topic: 'Voice Quiz: Multi-Answer Mic Cutoff', text: 'Questions needing several spoken answers in a row (e.g. a simile with more than one valid completion) were getting cut off after the first answer — the mic stopped listening at the first pause in speech, submitting early. It now keeps listening through pauses for these questions, with a new "✓ Said them all — submit" button so you\'re not stuck waiting out the full timer once you\'re done.' },
@@ -134,6 +140,12 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '01 Aug 2026',
+    entries: [
+      'homophones.json — 69 → 107 entries. Added 17 more common Grade-4-level homophone sets flagged as missing (rain/reign/rein, deer/dear, ate/eight, for/four/fore, by/buy/bye, one/won, sun/son, blue/blew, made/maid, week/weak, wood/would, board/bored, our/hour, so/sew/sow, new/knew, which/witch, wear/where) — no source PDF exists for this topic (unlike other topics, homophones.json was hand-authored, not extracted from a PDF), so this list is curated directly rather than checked against a reference document.',
+    ],
+  },
   {
     date: '31 Jul 2026',
     entries: [
