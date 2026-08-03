@@ -1,13 +1,15 @@
-import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
+import { TOPIC_META, CORE_TOPIC_ORDER, VOCABO_TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 
 const COUNT_OPTIONS = [50, 100];
 
-export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, onTeachStart, syncing }) {
+export default function TopicSelect({ group = 'core', onStart, onBack, onRevise, onVoiceStart, onTeachStart, syncing }) {
+  const isVocabo = group === 'vocabo';
+  const topicOrder = isVocabo ? VOCABO_TOPIC_ORDER : CORE_TOPIC_ORDER;
   return (
     <div style={styles.page} className="fade-in">
       <div style={styles.header}>
         <button onClick={onBack} style={styles.back}>← Back</button>
-        <div style={styles.title}>Choose a Topic</div>
+        <div style={styles.title}>{isVocabo ? 'Vocabo Topics' : 'Choose a Topic'}</div>
         <div />
       </div>
 
@@ -18,17 +20,17 @@ export default function TopicSelect({ onStart, onBack, onRevise, onVoiceStart, o
         </div>
       )}
       <div style={styles.body}>
-        {/* Mixed test */}
+        {/* Mixed test — scoped to whichever group's Home CTA was used */}
         <TopicCard
-          meta={{ id: 'mixed', name: 'Mixed Test', icon: '🎲', color: '#212427', bg: '#E3FDDB' }}
-          count={TOPIC_ORDER.filter(tid => !TOPIC_META[tid].comingSoon).reduce((s, tid) => s + ALL_TOPIC_DATA[tid].length, 0)}
+          meta={{ id: 'mixed', name: isVocabo ? 'Vocabo Mixed Test' : 'Mixed Test', icon: '🎲', color: '#212427', bg: '#E3FDDB' }}
+          count={topicOrder.filter(tid => !TOPIC_META[tid].comingSoon).reduce((s, tid) => s + ALL_TOPIC_DATA[tid].length, 0)}
           onStart={onStart}
           highlight
         />
 
         <div style={styles.sectionLabel}>Or pick a topic</div>
 
-        {TOPIC_ORDER.map(tid => (
+        {topicOrder.map(tid => (
           <TopicCard
             key={tid}
             meta={TOPIC_META[tid]}

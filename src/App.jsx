@@ -17,7 +17,7 @@ import {
 } from './services/dataService.js';
 import GeoTopicSelect from './screens/GeoTopicSelect.jsx';
 import { getDarkMode, setDarkMode as persistDarkMode } from './utils/theme.js';
-import { TOPIC_META } from './data/topicData.js';
+import { TOPIC_META, CORE_TOPIC_ORDER, VOCABO_TOPIC_ORDER } from './data/topicData.js';
 import { GEO_TOPIC_META } from './data/geoTopicData.js';
 import { pathForScreen, parseRoute } from './utils/routes.js';
 
@@ -48,6 +48,7 @@ export default function App() {
   const [homeKey,         setHomeKey]         = useState(0);
   const [syncing,         setSyncing]         = useState(false);
   const [reviseTopicId,   setReviseTopicId]   = useState(null);
+  const [topicGroup,      setTopicGroup]      = useState('core'); // 'core' | 'vocabo' — which Home CTA opened topic-select (scopes the Mixed Test)
   const [teachTopicId,    setTeachTopicId]    = useState(null);
   const [isPracticeMode,  setIsPracticeMode]  = useState(false);
   const [practiceItems,   setPracticeItems]   = useState([]); // wrong results to repractice
@@ -124,12 +125,13 @@ export default function App() {
     setSyncing(true);
     await syncSubject(user.username, 'english');
     setSyncing(false);
-    const qs = buildTest(topicId, count, getScores(user.username));
+    const mixedTopicIds = topicId === 'mixed' ? (topicGroup === 'vocabo' ? VOCABO_TOPIC_ORDER : CORE_TOPIC_ORDER) : undefined;
+    const qs = buildTest(topicId, count, getScores(user.username), mixedTopicIds);
     setQuestions(qs);
     setTestConfig({ topicId, count, subject: 'english', voice: false });
     setIsPracticeMode(false);
     setScreen('test');
-  }, [user, syncSubject]);
+  }, [user, syncSubject, topicGroup]);
 
   const handleStartGeoTest = useCallback(async (topicId, count) => {
     const geoUser = `geo_${user.username}`;
@@ -262,13 +264,14 @@ export default function App() {
       setQuestions(qs);
       setScreen('voice-test');
     } else {
+      const mixedTopicIds = testConfig.topicId === 'mixed' ? (topicGroup === 'vocabo' ? VOCABO_TOPIC_ORDER : CORE_TOPIC_ORDER) : undefined;
       const qs = isGeo
         ? buildGeoTest(testConfig.topicId, testConfig.count, getScores(`geo_${user.username}`))
-        : buildTest(testConfig.topicId, testConfig.count, getScores(user.username));
+        : buildTest(testConfig.topicId, testConfig.count, getScores(user.username), mixedTopicIds);
       setQuestions(qs);
       setScreen('test');
     }
-  }, [testConfig, user, isPracticeMode, practiceItems]);
+  }, [testConfig, user, isPracticeMode, practiceItems, topicGroup]);
 
   // If the app was opened via a deep link (e.g. /revise/similes or
   // /quiz/synonyms/voice), jump straight there once login completes instead
@@ -284,7 +287,7 @@ export default function App() {
     if (dl.screen === 'voice-test' && isGeo && GEO_TOPIC_META[dl.topicId])       return handleStartGeoVoiceTest(dl.topicId, DEFAULT_QUIZ_COUNT);
     if (dl.screen === 'test' && TOPIC_META[dl.topicId])                         return handleStartTest(dl.topicId, DEFAULT_QUIZ_COUNT);
     if (dl.screen === 'voice-test' && TOPIC_META[dl.topicId])                    return handleStartVoiceTest(dl.topicId, DEFAULT_QUIZ_COUNT);
-    if (dl.screen === 'topic-select')                                           return setScreen('topic-select');
+    if (dl.screen === 'topic-select')                                           { setTopicGroup(dl.group === 'vocabo' ? 'vocabo' : 'core'); return setScreen('topic-select'); }
     if (dl.screen === 'geo-topic-select')                                       return setScreen('geo-topic-select');
   }, [user, handleRevise, handleStartGeoTest, handleStartGeoVoiceTest, handleStartTest, handleStartVoiceTest]);
 
@@ -300,12 +303,13 @@ export default function App() {
     const path = pathForScreen(screen, {
       topicId: screen === 'revise' ? reviseTopicId : screen === 'teach-ask' ? teachTopicId : testConfig?.topicId,
       subject: testConfig?.subject,
+      group: topicGroup,
     });
     const isRoot = screen === 'home' || screen === 'login';
     if (isRoot) { guardActiveRef.current = false; window.history.replaceState({ screen }, '', path); return; }
     if (guardActiveRef.current) window.history.replaceState({ screen }, '', path);
     else { window.history.pushState({ screen }, '', path); guardActiveRef.current = true; }
-  }, [screen, reviseTopicId, teachTopicId, testConfig]);
+  }, [screen, reviseTopicId, teachTopicId, testConfig, topicGroup]);
 
   useEffect(() => {
     function onPopState() {
@@ -336,8 +340,8 @@ export default function App() {
   return (
     <>
       {screen === 'login'        && <Login onLogin={handleLogin} />}
-      {screen === 'home'          && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => setScreen('topic-select')} onStartGeo={() => setScreen('geo-topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
-      {screen === 'topic-select'  && <TopicSelect onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
+      {screen === 'home'          && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => { setTopicGroup('core'); setScreen('topic-select'); }} onStartVocabo={() => { setTopicGroup('vocabo'); setScreen('topic-select'); }} onStartGeo={() => setScreen('geo-topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
+      {screen === 'topic-select'  && <TopicSelect group={topicGroup} onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
       {screen === 'geo-topic-select' && <GeoTopicSelect username={user.username} onStart={handleStartGeoTest} onVoiceStart={handleStartGeoVoiceTest} onBack={goHome} syncing={syncing} />}
       {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} darkMode={darkMode} />}

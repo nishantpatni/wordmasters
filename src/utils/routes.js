@@ -10,7 +10,7 @@ export function pathForScreen(screen, ctx = {}) {
   const { topicId, subject, voice } = ctx;
   switch (screen) {
     case 'home':            return '/';
-    case 'topic-select':    return '/topics';
+    case 'topic-select':    return ctx.group === 'vocabo' ? '/topics/vocabo' : '/topics';
     case 'geo-topic-select':return '/topics/geography';
     case 'revise':          return topicId ? `/revise/${topicId}` : '/topics';
     case 'test':
@@ -47,7 +47,9 @@ export function parseRoute(pathname) {
     }
   }
   if (parts[0] === 'topics') {
-    return parts[1] === 'geography' ? { screen: 'geo-topic-select' } : { screen: 'topic-select' };
+    if (parts[1] === 'geography') return { screen: 'geo-topic-select' };
+    if (parts[1] === 'vocabo')    return { screen: 'topic-select', group: 'vocabo' };
+    return { screen: 'topic-select' };
   }
   return null;
 }

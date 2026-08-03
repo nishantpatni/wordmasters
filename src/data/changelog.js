@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '03 Aug 2026',
+    entries: [
+      { icon: '📘', topic: 'Core vs. Vocabo, Split on Home', text: 'Home now has two separate "Start a Test" sections instead of one combined list: Core Topics (Synonyms, Antonyms, One Word Subs, Proverbs, Idioms, Similes, Oxymorons) and Vocabo Topics (all the Vocabopedia-sourced ones, plus Vocabo Collective Nouns and Vocabo Homophones). Mixed Test is now scoped to whichever section you started from. Nothing about your existing scores or history changed — this is just how topics are organized for browsing.' },
+    ],
+  },
+  {
     date: '01 Aug 2026',
     entries: [
       { icon: '📘', topic: 'New Topics: Vocabopedia Synonyms & Antonyms', text: 'Split off two new topics containing the Vocabopedia lists — 30 synonyms and 15 antonyms (MCQ, Voice Quiz, Revise, Teach & Ask). The original Synonyms and Antonyms topics keep the rest. Also renamed Collective Nouns and Homophones/Homonyms/Homographs to "Vocabo Collective Nouns" and "Vocabo Homophones, Homonyms & Homographs" to match.' },
@@ -144,6 +150,17 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '03 Aug 2026',
+    entries: [
+      'topicData.js — VOCABO_TOPIC_IDS (Set) + derived CORE_TOPIC_ORDER/VOCABO_TOPIC_ORDER (filtered subsets of TOPIC_ORDER). Pure UI grouping, not a new subject: same localStorage keys, same Supabase subject=\'english\', no data migration.',
+      'App.jsx — new topicGroup state (\'core\'|\'vocabo\'), set by two Home CTAs (onStartTest/onStartVocabo), passed to TopicSelect as `group` and used to scope the Mixed Test topic list (both on start and on Retry) via buildTest\'s new optional 4th param.',
+      'quiz.js buildTest(topicId, count, scores, mixedTopicIds) — mixedTopicIds optionally replaces the "loop every live topic" default for topicId===\'mixed\', so it can be scoped to just Core or just Vocabo.',
+      'TopicSelect.jsx — new `group` prop (default \'core\') filters which topics render, using CORE_TOPIC_ORDER/VOCABO_TOPIC_ORDER instead of the full TOPIC_ORDER; Mixed Test card count/label follows the same scoping.',
+      'Home.jsx — extracted TopicList sub-component (was inline), rendered twice (Core / Vocabo) with a CTA each; top summary (mastery ring, coins, AsanScore) stays a combined all-topics aggregate, unchanged.',
+      'utils/routes.js — /topics/vocabo deep link (mirrors the existing /topics/geography pattern), parses to { screen: \'topic-select\', group: \'vocabo\' }.',
+    ],
+  },
   {
     date: '01 Aug 2026',
     entries: [

@@ -1,11 +1,62 @@
 import { useState } from 'react';
-import { TOPIC_META, TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
+import { TOPIC_META, TOPIC_ORDER, CORE_TOPIC_ORDER, VOCABO_TOPIC_ORDER, ALL_TOPIC_DATA } from '../data/topicData.js';
 import { ALL_GEO_DATA, GEO_TOPIC_META, GEO_TOPIC_ORDER } from '../data/geoTopicData.js';
 import { getScores, getMeta, memoryScore, isDue } from '../engine/quiz.js';
 import { USER_CHANGELOG } from '../data/changelog.js';
 
+function TopicList({ topicIds, scores, onRevise }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+      {topicIds.filter(tid => !TOPIC_META[tid].comingSoon).map(tid => {
+        const m = TOPIC_META[tid];
+        const items = ALL_TOPIC_DATA[tid];
+        const topicScores = items.map(i => scores[i.id]).filter(Boolean);
+        const att = topicScores.length;
+        const strong = topicScores.filter(r => memoryScore(r) >= 70).length;
+        const masteryPct = Math.round((strong / items.length) * 100);
+        return (
+          <div key={tid} style={styles.topicRow}>
+            <span style={{ fontSize: 18 }}>{m.icon}</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>{m.name}</span>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: 14, fontWeight: 800, color: att > 0 ? m.color : '#9CA3AF' }}>
+                    {att > 0 ? `${masteryPct}%` : `${items.length} items`}
+                  </span>
+                  {att > 0 && (
+                    <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, marginLeft: 5 }}>
+                      {strong}/{items.length} mastered
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div style={{ height: 6, background: '#F2F2F2', borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${masteryPct}%`, background: m.color, borderRadius: 3, transition: 'width 0.6s' }} />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                {att > 0
+                  ? <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600 }}>
+                      {att}/{items.length} attempted · {strong} mastered
+                    </span>
+                  : <span />
+                }
+                <button
+                  onClick={() => onRevise(tid)}
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 700, color: m.color, padding: 0, opacity: 0.8 }}
+                >
+                  Browse →
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
-export default function Home({ user, syncing, onStartTest, onStartGeo, onRevise, onAdmin, onLogout }) {
+export default function Home({ user, syncing, onStartTest, onStartVocabo, onStartGeo, onRevise, onAdmin, onLogout }) {
   const scores    = getScores(user.username);
   const geoScores = getScores(`geo_${user.username}`);
   const meta    = getMeta(user.username);
@@ -148,57 +199,9 @@ export default function Home({ user, syncing, onStartTest, onStartGeo, onRevise,
           )}
         </div>
 
-        {/* Per-topic mini progress */}
-        <div style={styles.sectionTitle}>Topics</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
-          {TOPIC_ORDER.filter(tid => !TOPIC_META[tid].comingSoon).map(tid => {
-            const m = TOPIC_META[tid];
-            const items = ALL_TOPIC_DATA[tid];
-            const topicScores = items.map(i => scores[i.id]).filter(Boolean);
-            const att = topicScores.length;
-            const strong = topicScores.filter(r => memoryScore(r) >= 70).length;
-            const masteryPct = Math.round((strong / items.length) * 100);
-            return (
-              <div key={tid} style={styles.topicRow}>
-                <span style={{ fontSize: 18 }}>{m.icon}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#212427' }}>{m.name}</span>
-                    <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: 14, fontWeight: 800, color: att > 0 ? m.color : '#9CA3AF' }}>
-                        {att > 0 ? `${masteryPct}%` : `${items.length} items`}
-                      </span>
-                      {att > 0 && (
-                        <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, marginLeft: 5 }}>
-                          {strong}/{items.length} mastered
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div style={{ height: 6, background: '#F2F2F2', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${masteryPct}%`, background: m.color, borderRadius: 3, transition: 'width 0.6s' }} />
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
-                    {att > 0
-                      ? <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600 }}>
-                          {att}/{items.length} attempted · {strong} mastered
-                        </span>
-                      : <span />
-                    }
-                    <button
-                      onClick={() => onRevise(tid)}
-                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 10, fontWeight: 700, color: m.color, padding: 0, opacity: 0.8 }}
-                    >
-                      Browse →
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* CTA — English */}
+        {/* Core topics */}
+        <div style={styles.sectionTitle}>Core Topics</div>
+        <TopicList topicIds={CORE_TOPIC_ORDER} scores={scores} onRevise={onRevise} />
         <button
           onClick={onStartTest}
           style={styles.bigBtn}
@@ -207,9 +210,21 @@ export default function Home({ user, syncing, onStartTest, onStartGeo, onRevise,
         >
           🚀 Start a Test
         </button>
-        <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, fontWeight: 600 }}>
+        <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, marginBottom: 28, fontWeight: 600 }}>
           {meta.sessions} sessions completed
         </div>
+
+        {/* Vocabo topics */}
+        <div style={styles.sectionTitle}>📘 Vocabo Topics</div>
+        <TopicList topicIds={VOCABO_TOPIC_ORDER} scores={scores} onRevise={onRevise} />
+        <button
+          onClick={onStartVocabo}
+          style={{ ...styles.bigBtn, background: '#F0FDFA', color: '#0D9488', border: '2px solid #99F6E4' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#0D9488'; e.currentTarget.style.color = '#fff'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#F0FDFA'; e.currentTarget.style.color = '#0D9488'; }}
+        >
+          📘 Start a Vocabo Test
+        </button>
 
         {/* ── Indian Geography section ── */}
         <div style={{ ...styles.sectionTitle, marginTop: 32 }}>🗺️ Indian Geography</div>

@@ -908,14 +908,17 @@ function addRegularQuestions(topicId, regularItems, scores, questions, limit) {
 }
 
 // ── Public: build a test question list ───────────────────────────────────────
-export function buildTest(topicId, count, scores = {}) {
+// mixedTopicIds optionally scopes the "Mixed Test" to a subset of topics
+// (e.g. just the Core or just the Vocabo group on Home) — defaults to every
+// live topic, the original behavior.
+export function buildTest(topicId, count, scores = {}, mixedTopicIds) {
   synSubIdx = 0; antSubIdx = 0; idiomSubIdx = 0; owsSubIdx = 0;
   simileSubIdx = 0; oxySubIdx = 0; proverbSubIdx = 0; collectiveSubIdx = 0;
 
   const questions = [];
 
   if (topicId === 'mixed') {
-    const liveTids = TOPIC_ORDER.filter(tid => ALL_TOPIC_DATA[tid].length > 0);
+    const liveTids = (mixedTopicIds || TOPIC_ORDER).filter(tid => ALL_TOPIC_DATA[tid].length > 0);
     const perTopic = Math.ceil(count / liveTids.length);
     for (const tid of liveTids) {
       const before = questions.length;

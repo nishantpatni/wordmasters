@@ -57,6 +57,19 @@ export const TOPIC_ORDER = [
   'oxymorons', 'vocabopediaOxymorons', 'collectiveNouns', 'homophones',
 ];
 
+// Pure UI grouping for Home/TopicSelect — "Vocabo" topics (the vocabopedia*
+// splits, plus Collective Nouns and Homophones which were only renamed, not
+// split) vs. everything else ("Core"). This is a browsing/organizational
+// split only: subject stays 'english' for both, same sync/scoring/local
+// storage as before — no data migration, no separate progress tracking.
+export const VOCABO_TOPIC_IDS = new Set([
+  'vocabopediaSynonyms', 'vocabopediaAntonyms', 'vocabopediaOneWordSubs',
+  'vocabopediaProverbs', 'vocabopediaIdioms', 'vocabopediaSimiles', 'vocabopediaOxymorons',
+  'collectiveNouns', 'homophones',
+]);
+export const CORE_TOPIC_ORDER   = TOPIC_ORDER.filter(tid => !VOCABO_TOPIC_IDS.has(tid));
+export const VOCABO_TOPIC_ORDER = TOPIC_ORDER.filter(tid => VOCABO_TOPIC_IDS.has(tid));
+
 export const ALL_TOPIC_DATA = {
   synonyms:        SYNONYMS_DATA,
   vocabopediaSynonyms: VOCABOPEDIA_SYNONYMS_DATA,
