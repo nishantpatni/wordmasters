@@ -4,6 +4,29 @@ import { ALL_GEO_DATA, GEO_TOPIC_META, GEO_TOPIC_ORDER } from '../data/geoTopicD
 import { getScores, getMeta, memoryScore, isDue } from '../engine/quiz.js';
 import { USER_CHANGELOG } from '../data/changelog.js';
 
+function sectionStats(topicIds, scores) {
+  const items = topicIds.flatMap(tid => ALL_TOPIC_DATA[tid]);
+  const total = items.length;
+  const attemptedRecs = items.map(i => scores[i.id]).filter(Boolean);
+  const attempted = attemptedRecs.length;
+  const strong = attemptedRecs.filter(r => memoryScore(r) >= 70).length;
+  const pct = Math.round((strong / Math.max(1, total)) * 100);
+  return { total, attempted, strong, pct };
+}
+
+function SectionSummary({ topicIds, scores, color }) {
+  const { total, attempted, strong, pct } = sectionStats(topicIds, scores);
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+      <div style={{ fontFamily: "'Fredoka', cursive", fontWeight: 500, fontSize: 26, color }}>{pct}%</div>
+      <div style={{ fontSize: 12, color: '#6B7280', fontWeight: 600, lineHeight: 1.5 }}>
+        <div>{strong}/{attempted} strong</div>
+        <div style={{ color: '#9CA3AF' }}>{total} total words</div>
+      </div>
+    </div>
+  );
+}
+
 function TopicList({ topicIds, scores, onRevise }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
@@ -199,23 +222,9 @@ export default function Home({ user, syncing, onStartTest, onStartVocabo, onStar
           )}
         </div>
 
-        {/* Core topics */}
-        <div style={styles.sectionTitle}>Core Topics</div>
-        <TopicList topicIds={CORE_TOPIC_ORDER} scores={scores} onRevise={onRevise} />
-        <button
-          onClick={onStartTest}
-          style={styles.bigBtn}
-          onMouseEnter={e => e.currentTarget.style.background = '#71DC68'}
-          onMouseLeave={e => e.currentTarget.style.background = '#96F878'}
-        >
-          🚀 Start a Test
-        </button>
-        <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, marginBottom: 28, fontWeight: 600 }}>
-          {meta.sessions} sessions completed
-        </div>
-
         {/* Vocabo topics */}
         <div style={styles.sectionTitle}>📘 Vocabo Topics</div>
+        <SectionSummary topicIds={VOCABO_TOPIC_ORDER} scores={scores} color="#0D9488" />
         <TopicList topicIds={VOCABO_TOPIC_ORDER} scores={scores} onRevise={onRevise} />
         <button
           onClick={onStartVocabo}
@@ -224,6 +233,22 @@ export default function Home({ user, syncing, onStartTest, onStartVocabo, onStar
           onMouseLeave={e => { e.currentTarget.style.background = '#F0FDFA'; e.currentTarget.style.color = '#0D9488'; }}
         >
           📘 Start a Vocabo Test
+        </button>
+        <div style={{ textAlign: 'center', fontSize: 12, color: '#9CA3AF', marginTop: 10, marginBottom: 28, fontWeight: 600 }}>
+          {meta.sessions} sessions completed
+        </div>
+
+        {/* Brainy Bee topics (was "Core") */}
+        <div style={styles.sectionTitle}>🐝 Brainy Bee Topics</div>
+        <SectionSummary topicIds={CORE_TOPIC_ORDER} scores={scores} color="#197A56" />
+        <TopicList topicIds={CORE_TOPIC_ORDER} scores={scores} onRevise={onRevise} />
+        <button
+          onClick={onStartTest}
+          style={styles.bigBtn}
+          onMouseEnter={e => e.currentTarget.style.background = '#71DC68'}
+          onMouseLeave={e => e.currentTarget.style.background = '#96F878'}
+        >
+          🐝 Start a Brainy Bee Test
         </button>
 
         {/* ── Indian Geography section ── */}

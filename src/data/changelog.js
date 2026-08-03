@@ -2,7 +2,7 @@ export const USER_CHANGELOG = [
   {
     date: '03 Aug 2026',
     entries: [
-      { icon: '📘', topic: 'Core vs. Vocabo, Split on Home', text: 'Home now has two separate "Start a Test" sections instead of one combined list: Core Topics (Synonyms, Antonyms, One Word Subs, Proverbs, Idioms, Similes, Oxymorons) and Vocabo Topics (all the Vocabopedia-sourced ones, plus Vocabo Collective Nouns and Vocabo Homophones). Mixed Test is now scoped to whichever section you started from. Nothing about your existing scores or history changed — this is just how topics are organized for browsing.' },
+      { icon: '📘', topic: 'Vocabo & Brainy Bee, Split on Home', text: 'Home now has two separate "Start a Test" sections instead of one combined list — 📘 Vocabo Topics (all the Vocabopedia-sourced ones, plus Vocabo Collective Nouns and Vocabo Homophones) shown first, then 🐝 Brainy Bee Topics (Synonyms, Antonyms, One Word Subs, Proverbs, Idioms, Similes, Oxymorons). Each section now shows its own mastery summary (e.g. "51% • 289/377 strong • 566 total words"), and Mixed Test is scoped to whichever section you started from. Nothing about your existing scores or history changed — this is just how topics are organized for browsing.' },
     ],
   },
   {
@@ -157,8 +157,9 @@ export const TECH_CHANGELOG = [
       'App.jsx — new topicGroup state (\'core\'|\'vocabo\'), set by two Home CTAs (onStartTest/onStartVocabo), passed to TopicSelect as `group` and used to scope the Mixed Test topic list (both on start and on Retry) via buildTest\'s new optional 4th param.',
       'quiz.js buildTest(topicId, count, scores, mixedTopicIds) — mixedTopicIds optionally replaces the "loop every live topic" default for topicId===\'mixed\', so it can be scoped to just Core or just Vocabo.',
       'TopicSelect.jsx — new `group` prop (default \'core\') filters which topics render, using CORE_TOPIC_ORDER/VOCABO_TOPIC_ORDER instead of the full TOPIC_ORDER; Mixed Test card count/label follows the same scoping.',
-      'Home.jsx — extracted TopicList sub-component (was inline), rendered twice (Core / Vocabo) with a CTA each; top summary (mastery ring, coins, AsanScore) stays a combined all-topics aggregate, unchanged.',
+      'Home.jsx — extracted TopicList sub-component (was inline), rendered twice (Vocabo first, then "Brainy Bee" i.e. Core) with a CTA each; top summary (mastery ring, coins, AsanScore) stays a combined all-topics aggregate, unchanged.',
       'utils/routes.js — /topics/vocabo deep link (mirrors the existing /topics/geography pattern), parses to { screen: \'topic-select\', group: \'vocabo\' }.',
+      'Home.jsx — new sectionStats()/SectionSummary — per-group (strong/attempted/total) computed the same way as the existing global mastery ring, just scoped to CORE_TOPIC_ORDER or VOCABO_TOPIC_ORDER instead of all of TOPIC_ORDER. TopicSelect.jsx/Home.jsx display copy for the "core" group now says "Brainy Bee" (Vocabo\'s counterpart brand name) — CORE_TOPIC_ORDER/topicGroup=\'core\' internal naming intentionally left as-is, this is display text only.',
     ],
   },
   {
