@@ -1,5 +1,11 @@
 export const USER_CHANGELOG = [
   {
+    date: '04 Aug 2026',
+    entries: [
+      { icon: '👂', topic: 'Homophones/Homonyms/Homographs: Rebuilt from the Real Source', text: 'This topic never had a source PDF, so previous sessions had been inventing sentences and meanings themselves. Now fully rebuilt from your Grade 4 Vocabopedia Homophones/Homographs/Homonyms study sheet — 30 homophone sets and 38 homograph/homonym words, every meaning taken directly from that document. 125 → 140 questions.' },
+    ],
+  },
+  {
     date: '03 Aug 2026',
     entries: [
       { icon: '📘', topic: 'Vocabo & Brainy Bee, Split on Home', text: 'Home now has two separate "Start a Test" sections instead of one combined list — 📘 Vocabo Topics (all the Vocabopedia-sourced ones, plus Vocabo Collective Nouns and Vocabo Homophones) shown first, then 🐝 Brainy Bee Topics (Synonyms, Antonyms, One Word Subs, Proverbs, Idioms, Similes, Oxymorons). Each section now shows its own mastery summary (e.g. "51% • 289/377 strong • 566 total words"), and Mixed Test is scoped to whichever section you started from. Nothing about your existing scores or history changed — this is just how topics are organized for browsing.' },
@@ -150,6 +156,14 @@ export const USER_CHANGELOG = [
 ];
 
 export const TECH_CHANGELOG = [
+  {
+    date: '04 Aug 2026',
+    entries: [
+      'homophones.json fully rebuilt from data/pdfs/GRADE 4 Vocabopedia Homophones, Homonyms and Homographs.pdf — the first real source this topic has ever had. 125 -> 140 entries: 30 fill_blank homophone sets (64 items) + 38 meaning_identify homograph/homonym words x 2 senses each (76 items, matching the PDF\'s exactly-2-senses-per-word structure — previous sessions had fabricated 4 senses for a handful of words, none matching this source).',
+      'ID reuse: 64/140 ids carried over from the pre-rebuild file (matching word, or matching word+sense for the 7 homograph words that already existed: bark/bat/bank/light/match/spring/wave) so score history survives for those items. Everything else in the old file that isn\'t in this PDF was dropped outright (its/it\'s, your/you\'re, weather/whether, "rite", brake/break, fair/fare, "heir", pair/pear/pare, sail/sale, mail/male, stair/stare, steel/steal, so/sew/sow, our/hour, which/witch, "plain", "key", and the 2 fabricated extra senses per homograph word) rather than kept alongside the authoritative content — per explicit instruction to use only the provided list, not a superset.',
+      'meaning_identify options now include 2 cross-word decoys picked at build time from other words\' real senses (pickDecoys() in the one-off rebuild script) instead of always drawing from the same word\'s other listed senses, since the source only gives 2 senses per word (not 4) so same-word padding isn\'t available anymore. fill_blank items rely on genHomophone()\'s existing auto-pad-from-pool behavior for sets with only 2 real members — no per-item invented filler words needed (dropped patterns like "its\'"/"sel"/"si" used in earlier rebuilds).',
+    ],
+  },
   {
     date: '03 Aug 2026',
     entries: [

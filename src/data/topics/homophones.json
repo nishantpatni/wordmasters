@@ -1,127 +1,1782 @@
 [
-  {"id":"their-books","qType":"fill_blank","sentence":"The students put ____ books on the desk.","answer":"their","options":["their","there","they're"],"label":"their / there / they're"},
-  {"id":"there-table","qType":"fill_blank","sentence":"The keys are over ____ on the table.","answer":"there","options":["there","their","they're"],"label":"there / their / they're"},
-  {"id":"theyre-late","qType":"fill_blank","sentence":"____ always late to every meeting without fail.","answer":"they're","options":["they're","their","there"],"label":"they're / their / there"},
-  {"id":"its-paw","qType":"fill_blank","sentence":"The cat licked ____ paw contentedly after eating.","answer":"its","options":["its","it's","it"],"label":"its / it's"},
-  {"id":"its-raining","qType":"fill_blank","sentence":"____ raining very heavily outside today.","answer":"it's","options":["it's","its","its'"],"label":"it's / its"},
-  {"id":"your-umbrella","qType":"fill_blank","sentence":"Is this ____ umbrella or did someone leave it behind?","answer":"your","options":["your","you're","yore"],"label":"your / you're"},
-  {"id":"youre-late","qType":"fill_blank","sentence":"I cannot believe ____ late for the third time this week.","answer":"you're","options":["you're","your","yore"],"label":"you're / your"},
-  {"id":"two-dogs","qType":"fill_blank","sentence":"She owns ____ dogs and a very playful cat.","answer":"two","options":["two","too","to"],"label":"two / too / to"},
-  {"id":"too-expensive","qType":"fill_blank","sentence":"The jacket was ____ expensive for me to afford.","answer":"too","options":["too","two","to"],"label":"too / two / to"},
-  {"id":"to-store","qType":"fill_blank","sentence":"He ran ____ the store before it closed for the night.","answer":"to","options":["to","two","too"],"label":"to / two / too"},
-  {"id":"weather-cold","qType":"fill_blank","sentence":"The ____ was bitterly cold throughout the entire winter.","answer":"weather","options":["weather","whether","wether"],"label":"weather / whether"},
-  {"id":"whether-decide","qType":"fill_blank","sentence":"She could not decide ____ to accept the job offer abroad.","answer":"whether","options":["whether","weather","wether"],"label":"whether / weather"},
-  {"id":"here-come","qType":"fill_blank","sentence":"Please come over ____ and take a look at this.","answer":"here","options":["here","hear","hare"],"label":"here / hear"},
-  {"id":"hear-music","qType":"fill_blank","sentence":"Can you ____ the music playing in the next room?","answer":"hear","options":["hear","here","hare"],"label":"hear / here"},
-  {"id":"right-answer","qType":"fill_blank","sentence":"She gave the ____ answer to every single question.","answer":"right","options":["right","write","rite"],"label":"right / write / rite"},
-  {"id":"write-letter","qType":"fill_blank","sentence":"He had to ____ a formal letter of apology to the principal.","answer":"write","options":["write","right","rite"],"label":"write / right / rite"},
-  {"id":"rite-sacred","qType":"fill_blank","sentence":"The tribal elders performed a sacred ____ to welcome the new season.","answer":"rite","options":["rite","right","write"],"label":"rite / right / write"},
-  {"id":"see-mountains","qType":"fill_blank","sentence":"You can ____ the mountains very clearly from this viewpoint.","answer":"see","options":["see","sea","si"],"label":"see / sea"},
-  {"id":"sea-ship","qType":"fill_blank","sentence":"The ship sailed bravely across the rough and open ____.","answer":"sea","options":["sea","see","si"],"label":"sea / see"},
-  {"id":"brake-pressed","qType":"fill_blank","sentence":"She pressed the ____ hard to avoid the oncoming vehicle.","answer":"brake","options":["brake","break","brakes"],"label":"brake / break"},
-  {"id":"break-glass","qType":"fill_blank","sentence":"Please do not ____ the vase — it is a priceless antique.","answer":"break","options":["break","brake","broke"],"label":"break / brake"},
-  {"id":"bare-feet","qType":"fill_blank","sentence":"He walked on the ____ floor without wearing any slippers.","answer":"bare","options":["bare","bear","beer"],"label":"bare / bear"},
-  {"id":"bear-emerged","qType":"fill_blank","sentence":"A grizzly ____ emerged suddenly from the dense forest.","answer":"bear","options":["bear","bare","beer"],"label":"bear / bare"},
-  {"id":"fair-treatment","qType":"fill_blank","sentence":"Every citizen deserves ____ treatment under the law.","answer":"fair","options":["fair","fare","far"],"label":"fair / fare"},
-  {"id":"fare-increased","qType":"fill_blank","sentence":"The bus ____ has increased significantly this year.","answer":"fare","options":["fare","fair","far"],"label":"fare / fair"},
-  {"id":"hair-long","qType":"fill_blank","sentence":"She had long and flowing ____ that reached well past her waist.","answer":"hair","options":["hair","hare","heir"],"label":"hair / hare / heir"},
-  {"id":"hare-race","qType":"fill_blank","sentence":"The swift ____ outran the tortoise easily in the famous race.","answer":"hare","options":["hare","hair","heir"],"label":"hare / hair / heir"},
-  {"id":"heir-throne","qType":"fill_blank","sentence":"The young prince was the rightful ____ to the throne.","answer":"heir","options":["heir","hair","hare"],"label":"heir / hair / hare"},
-  {"id":"pair-shoes","qType":"fill_blank","sentence":"I bought a brand new ____ of shoes for the wedding ceremony.","answer":"pair","options":["pair","pear","pare"],"label":"pair / pear / pare"},
-  {"id":"pear-fruit","qType":"fill_blank","sentence":"She sliced the ripe ____ and shared it with her brother.","answer":"pear","options":["pear","pair","pare"],"label":"pear / pair / pare"},
-  {"id":"pare-potatoes","qType":"fill_blank","sentence":"Please ____ the potatoes before you boil them.","answer":"pare","options":["pare","pair","pear"],"label":"pare / pair / pear"},
-  {"id":"sail-billowed","qType":"fill_blank","sentence":"The white ____ billowed beautifully in the ocean breeze.","answer":"sail","options":["sail","sale","sel"],"label":"sail / sale"},
-  {"id":"sale-store","qType":"fill_blank","sentence":"The store announced a huge ____ on all winter clothing.","answer":"sale","options":["sale","sail","sel"],"label":"sale / sail"},
-  {"id":"tale-fairy","qType":"fill_blank","sentence":"The grandmother told a fascinating fairy ____ to the children.","answer":"tale","options":["tale","tail","tell"],"label":"tale / tail"},
-  {"id":"tail-wagged","qType":"fill_blank","sentence":"The dog wagged its ____ excitedly when its owner came home.","answer":"tail","options":["tail","tale","tell"],"label":"tail / tale"},
-  {"id":"flour-dough","qType":"fill_blank","sentence":"She mixed the ____ carefully with water to prepare the dough.","answer":"flour","options":["flour","flower","floor"],"label":"flour / flower"},
-  {"id":"flower-garden","qType":"fill_blank","sentence":"The garden was filled with colourful ____ blooming in the spring.","answer":"flower","options":["flower","flour","floor"],"label":"flower / flour"},
-  {"id":"hole-ground","qType":"fill_blank","sentence":"The rabbit disappeared quickly into a ____ in the ground.","answer":"hole","options":["hole","whole","hall"],"label":"hole / whole"},
-  {"id":"whole-pizza","qType":"fill_blank","sentence":"She ate the ____ pizza by herself without sharing a single slice.","answer":"whole","options":["whole","hole","hall"],"label":"whole / hole"},
-  {"id":"peace-treaty","qType":"fill_blank","sentence":"The two nations signed a treaty to restore lasting ____.","answer":"peace","options":["peace","piece","pease"],"label":"peace / piece"},
-  {"id":"piece-cake","qType":"fill_blank","sentence":"He took a small ____ of cake from the tray.","answer":"piece","options":["piece","peace","pease"],"label":"piece / peace"},
-  {"id":"night-dark","qType":"fill_blank","sentence":"The brave ____ rode through the dark forest alone.","answer":"knight","options":["knight","night","knit"],"label":"knight / night"},
-  {"id":"night-fell","qType":"fill_blank","sentence":"The sky turned dark as ____ fell over the quiet village.","answer":"night","options":["night","knight","knit"],"label":"night / knight"},
-  {"id":"mail-arrived","qType":"fill_blank","sentence":"The important ____ arrived three days later than expected.","answer":"mail","options":["mail","male","maul"],"label":"mail / male"},
-  {"id":"male-lion","qType":"fill_blank","sentence":"The zoo welcomed a new ____ lion cub this week.","answer":"male","options":["male","mail","maul"],"label":"male / mail"},
-  {"id":"meet-arranged","qType":"fill_blank","sentence":"They arranged to ____ at the coffee shop at noon.","answer":"meet","options":["meet","meat","mete"],"label":"meet / meat"},
-  {"id":"meat-butcher","qType":"fill_blank","sentence":"The butcher carefully wrapped the fresh ____ in white paper.","answer":"meat","options":["meat","meet","mete"],"label":"meat / meet"},
-  {"id":"stair-climbed","qType":"fill_blank","sentence":"She climbed every ____ slowly as she was recovering from surgery.","answer":"stair","options":["stair","stare","steer"],"label":"stair / stare"},
-  {"id":"stare-rude","qType":"fill_blank","sentence":"It is rude to ____ at strangers for a long time.","answer":"stare","options":["stare","stair","steer"],"label":"stare / stair"},
-  {"id":"steel-bridge","qType":"fill_blank","sentence":"The old bridge was reinforced with thick beams of ____.","answer":"steel","options":["steel","steal","still"],"label":"steel / steal"},
-  {"id":"steal-thief","qType":"fill_blank","sentence":"The thief tried to ____ jewellery from the locked display case.","answer":"steal","options":["steal","steel","still"],"label":"steal / steel"},
-  {"id":"rain-soaked","qType":"fill_blank","sentence":"The heavy ____ soaked the entire garden within minutes.","answer":"rain","options":["rain","reign","rein"],"label":"rain / reign / rein"},
-  {"id":"reign-queen","qType":"fill_blank","sentence":"The queen's ____ lasted for nearly fifty peaceful years.","answer":"reign","options":["reign","rain","rein"],"label":"reign / rain / rein"},
-  {"id":"rein-horse","qType":"fill_blank","sentence":"She pulled the ____ gently to slow the galloping horse.","answer":"rein","options":["rein","rain","reign"],"label":"rein / rain / reign"},
-  {"id":"deer-meadow","qType":"fill_blank","sentence":"A graceful ____ leaped silently across the misty meadow.","answer":"deer","options":["deer","dear","dare"],"label":"deer / dear"},
-  {"id":"dear-friend","qType":"fill_blank","sentence":"Thank you so much, my ____ friend, for your kindness.","answer":"dear","options":["dear","deer","dare"],"label":"dear / deer"},
-  {"id":"ate-pasta","qType":"fill_blank","sentence":"She ____ the entire plate of pasta before dessert arrived.","answer":"ate","options":["ate","eight","eighth"],"label":"ate / eight"},
-  {"id":"eight-clock","qType":"fill_blank","sentence":"The clock struck ____ just as the movie began.","answer":"eight","options":["eight","ate","eighth"],"label":"eight / ate"},
-  {"id":"for-gift","qType":"fill_blank","sentence":"This gift is ____ my grandmother's upcoming birthday party.","answer":"for","options":["for","four","fore"],"label":"for / four / fore"},
-  {"id":"four-guests","qType":"fill_blank","sentence":"The table was set neatly for ____ hungry guests.","answer":"four","options":["four","for","fore"],"label":"four / for / fore"},
-  {"id":"fore-golf","qType":"fill_blank","sentence":"The golfer shouted ____ to warn the players ahead.","answer":"fore","options":["fore","for","four"],"label":"fore / for / four"},
-  {"id":"by-fence","qType":"fill_blank","sentence":"She walked quietly ____ the old wooden fence.","answer":"by","options":["by","buy","bye"],"label":"by / buy / bye"},
-  {"id":"buy-milk","qType":"fill_blank","sentence":"We need to ____ some milk from the store today.","answer":"buy","options":["buy","by","bye"],"label":"buy / by / bye"},
-  {"id":"bye-train","qType":"fill_blank","sentence":"He waved good ____ as the train pulled away.","answer":"bye","options":["bye","by","buy"],"label":"bye / by / buy"},
-  {"id":"one-student","qType":"fill_blank","sentence":"Only ____ student answered every question correctly.","answer":"one","options":["one","won","on"],"label":"one / won"},
-  {"id":"won-championship","qType":"fill_blank","sentence":"Our team ____ the championship after a thrilling final match.","answer":"won","options":["won","one","on"],"label":"won / one"},
-  {"id":"sun-beach","qType":"fill_blank","sentence":"The bright ____ warmed the entire beach all afternoon.","answer":"sun","options":["sun","son","sung"],"label":"sun / son"},
-  {"id":"son-graduated","qType":"fill_blank","sentence":"Their eldest ____ just graduated from medical school.","answer":"son","options":["son","sun","sung"],"label":"son / sun"},
-  {"id":"blue-sky","qType":"fill_blank","sentence":"The sky turned a deep ____ just before sunset.","answer":"blue","options":["blue","blew","blow"],"label":"blue / blew"},
-  {"id":"blew-wind","qType":"fill_blank","sentence":"A strong wind ____ the leaves across the yard.","answer":"blew","options":["blew","blue","blow"],"label":"blew / blue"},
-  {"id":"made-cake","qType":"fill_blank","sentence":"She ____ a delicious cake for the birthday party.","answer":"made","options":["made","maid","mad"],"label":"made / maid"},
-  {"id":"maid-hotel","qType":"fill_blank","sentence":"The hotel ____ cleaned every room before checkout time.","answer":"maid","options":["maid","made","mad"],"label":"maid / made"},
-  {"id":"week-vacation","qType":"fill_blank","sentence":"We are going on vacation next ____.","answer":"week","options":["week","weak","weeks"],"label":"week / weak"},
-  {"id":"weak-fever","qType":"fill_blank","sentence":"He felt too ____ to climb the stairs after the fever.","answer":"weak","options":["weak","week","weeks"],"label":"weak / week"},
-  {"id":"wood-table","qType":"fill_blank","sentence":"The carpenter carved a beautiful table from solid ____.","answer":"wood","options":["wood","would","wooden"],"label":"wood / would"},
-  {"id":"would-help","qType":"fill_blank","sentence":"She said she ____ help us finish the project tomorrow.","answer":"would","options":["would","wood","wooden"],"label":"would / wood"},
-  {"id":"board-window","qType":"fill_blank","sentence":"He nailed a wooden ____ across the broken window.","answer":"board","options":["board","bored","broad"],"label":"board / bored"},
-  {"id":"bored-ride","qType":"fill_blank","sentence":"The children grew ____ during the long car ride.","answer":"bored","options":["bored","board","broad"],"label":"bored / board"},
-  {"id":"our-park","qType":"fill_blank","sentence":"This is ____ favourite park to visit every summer.","answer":"our","options":["our","hour","are"],"label":"our / hour"},
-  {"id":"hour-meeting","qType":"fill_blank","sentence":"The meeting lasted for more than an ____.","answer":"hour","options":["hour","our","are"],"label":"hour / our"},
-  {"id":"so-tired","qType":"fill_blank","sentence":"She was ____ tired that she fell asleep instantly.","answer":"so","options":["so","sew","sow"],"label":"so / sew / sow"},
-  {"id":"sew-button","qType":"fill_blank","sentence":"My grandmother taught me how to ____ a button back on.","answer":"sew","options":["sew","so","sow"],"label":"sew / so / sow"},
-  {"id":"sow-seeds","qType":"fill_blank","sentence":"The farmer will ____ the seeds early in spring.","answer":"sow","options":["sow","so","sew"],"label":"sow / so / sew"},
-  {"id":"new-shoes","qType":"fill_blank","sentence":"She bought a ____ pair of shoes for the school trip.","answer":"new","options":["new","knew","knee"],"label":"new / knew"},
-  {"id":"knew-answer","qType":"fill_blank","sentence":"He already ____ the answer before the teacher asked.","answer":"knew","options":["knew","new","knee"],"label":"knew / new"},
-  {"id":"which-book","qType":"fill_blank","sentence":"____ book would you like to read tonight?","answer":"which","options":["which","witch","wish"],"label":"which / witch"},
-  {"id":"witch-halloween","qType":"fill_blank","sentence":"The children dressed up as a ____ for Halloween.","answer":"witch","options":["witch","which","wish"],"label":"witch / which"},
-  {"id":"wear-coat","qType":"fill_blank","sentence":"You should ____ a warm coat in the winter.","answer":"wear","options":["wear","where","wore"],"label":"wear / where"},
-  {"id":"where-kitten","qType":"fill_blank","sentence":"Nobody knew exactly ____ the lost kitten had gone.","answer":"where","options":["where","wear","wore"],"label":"where / wear"},
-  {"id":"bark-meaning","qType":"meaning_identify","sentence":"The bark of the ancient oak tree was rough and covered in moss.","targetWord":"bark","answer":"the outer covering of a tree trunk","options":["the outer covering of a tree trunk","the sharp sound made by a dog","a type of small wooden boat","to shout sharply at someone"],"label":"bark"},
-  {"id":"bark-dog","qType":"meaning_identify","sentence":"The loud bark of the dog startled the sleeping cat.","targetWord":"bark","answer":"the sharp sound made by a dog","options":["the sharp sound made by a dog","the outer covering of a tree trunk","a type of small wooden boat","to shout sharply at someone"],"label":"bark"},
-  {"id":"bat-meaning","qType":"meaning_identify","sentence":"He swung the bat with great force and hit the ball out of the park.","targetWord":"bat","answer":"a wooden or metal club used to hit a ball","options":["a wooden or metal club used to hit a ball","a nocturnal flying mammal","to blink or flutter the eyelids rapidly","a turn at hitting in cricket"],"label":"bat"},
-  {"id":"bat-mammal","qType":"meaning_identify","sentence":"A bat flew silently through the dark cave at midnight.","targetWord":"bat","answer":"a nocturnal flying mammal","options":["a nocturnal flying mammal","a wooden or metal club used to hit a ball","to blink or flutter the eyelids rapidly","a turn at hitting in cricket"],"label":"bat"},
-  {"id":"bank-river","qType":"meaning_identify","sentence":"They sat on the grassy bank and watched the river flow peacefully by.","targetWord":"bank","answer":"the sloping land alongside a river","options":["the sloping land alongside a river","a financial institution that holds money","to tilt an aircraft during a turn","to save or store something for later"],"label":"bank"},
-  {"id":"bank-money","qType":"meaning_identify","sentence":"She walked into the bank to deposit her monthly salary.","targetWord":"bank","answer":"a financial institution that holds money","options":["a financial institution that holds money","the sloping land alongside a river","to tilt an aircraft during a turn","to save or store something for later"],"label":"bank"},
-  {"id":"light-weight","qType":"meaning_identify","sentence":"The feather was so light that it floated gently in the still air.","targetWord":"light","answer":"not heavy; having very little weight","options":["not heavy; having very little weight","brightness produced by a source of illumination","a source of fire used to ignite something","pale or not dark in colour"],"label":"light"},
-  {"id":"light-brightness","qType":"meaning_identify","sentence":"The bright light from the lamp lit up the entire room.","targetWord":"light","answer":"brightness produced by a source of illumination","options":["brightness produced by a source of illumination","not heavy; having very little weight","a source of fire used to ignite something","pale or not dark in colour"],"label":"light"},
-  {"id":"match-fire","qType":"meaning_identify","sentence":"He struck a match and lit the candle on the dinner table.","targetWord":"match","answer":"a short stick used to produce fire by friction","options":["a short stick used to produce fire by friction","a sports competition between two teams","to pair things that go well together","something that closely resembles another thing"],"label":"match"},
-  {"id":"match-sport","qType":"meaning_identify","sentence":"The football match ended in a thrilling draw between the two teams.","targetWord":"match","answer":"a sports competition between two teams","options":["a sports competition between two teams","a short stick used to produce fire by friction","to pair things that go well together","something that closely resembles another thing"],"label":"match"},
-  {"id":"spring-season","qType":"meaning_identify","sentence":"The cherry blossoms bloomed spectacularly in the spring sunshine.","targetWord":"spring","answer":"the season between winter and summer","options":["the season between winter and summer","a coiled metal device that stores mechanical energy","to jump or leap forward suddenly","a natural source of water rising from the ground"],"label":"spring"},
-  {"id":"spring-coil","qType":"meaning_identify","sentence":"The old mattress had a broken spring poking through the fabric.","targetWord":"spring","answer":"a coiled metal device that stores mechanical energy","options":["a coiled metal device that stores mechanical energy","the season between winter and summer","to jump or leap forward suddenly","a natural source of water rising from the ground"],"label":"spring"},
-  {"id":"wave-ocean","qType":"meaning_identify","sentence":"A massive wave crashed against the rocky coastline with tremendous force.","targetWord":"wave","answer":"a ridge of water moving across the surface of the sea","options":["a ridge of water moving across the surface of the sea","a gesture of greeting using an outstretched hand","a widespread trend or movement across society","a disturbance that carries energy through a medium"],"label":"wave"},
-  {"id":"wave-greeting","qType":"meaning_identify","sentence":"She gave a friendly wave to her neighbour across the street.","targetWord":"wave","answer":"a gesture of greeting using an outstretched hand","options":["a gesture of greeting using an outstretched hand","a ridge of water moving across the surface of the sea","a widespread trend or movement across society","a disturbance that carries energy through a medium"],"label":"wave"},
-  {"id":"plain-food","qType":"meaning_identify","sentence":"She always preferred plain food without any spices or strong sauces.","targetWord":"plain","answer":"simple and undecorated; without embellishment","options":["simple and undecorated; without embellishment","a large area of flat and level land","obvious or easy to see and understand","to complain or express dissatisfaction aloud"],"label":"plain"},
-  {"id":"plain-land","qType":"meaning_identify","sentence":"The herd of buffalo grazed peacefully on the wide open plain.","targetWord":"plain","answer":"a large area of flat and level land","options":["a large area of flat and level land","simple and undecorated; without embellishment","obvious or easy to see and understand","to complain or express dissatisfaction aloud"],"label":"plain"},
-  {"id":"key-music","qType":"meaning_identify","sentence":"The pianist performed the entire sonata in the key of C major.","targetWord":"key","answer":"a musical scale forming the basis of a composition","options":["a musical scale forming the basis of a composition","a metal instrument used to open a lock","the most important or essential element of something","a low-lying coral island or reef"],"label":"key"},
-  {"id":"key-lock","qType":"meaning_identify","sentence":"He lost the key to the front door and had to call a locksmith.","targetWord":"key","answer":"a metal instrument used to open a lock","options":["a metal instrument used to open a lock","a musical scale forming the basis of a composition","the most important or essential element of something","a low-lying coral island or reef"],"label":"key"},
-  {"id":"bark-boat","qType":"meaning_identify","sentence":"The old sailor described his little bark sailing bravely through the storm.","targetWord":"bark","answer":"a type of small wooden boat","options":["a type of small wooden boat","the outer covering of a tree trunk","the sharp sound made by a dog","to shout sharply at someone"],"label":"bark"},
-  {"id":"bark-shout","qType":"meaning_identify","sentence":"The sergeant would bark orders at the new recruits every morning.","targetWord":"bark","answer":"to shout sharply at someone","options":["to shout sharply at someone","the outer covering of a tree trunk","the sharp sound made by a dog","a type of small wooden boat"],"label":"bark"},
-  {"id":"bat-blink","qType":"meaning_identify","sentence":"She began to bat her eyelids nervously during the interview.","targetWord":"bat","answer":"to blink or flutter the eyelids rapidly","options":["to blink or flutter the eyelids rapidly","a wooden or metal club used to hit a ball","a nocturnal flying mammal","a turn at hitting in cricket"],"label":"bat"},
-  {"id":"bat-turn","qType":"meaning_identify","sentence":"The captain decided to take the first bat after winning the toss.","targetWord":"bat","answer":"a turn at hitting in cricket","options":["a turn at hitting in cricket","a wooden or metal club used to hit a ball","a nocturnal flying mammal","to blink or flutter the eyelids rapidly"],"label":"bat"},
-  {"id":"bank-tilt","qType":"meaning_identify","sentence":"The pilot made the plane bank sharply to the left before landing.","targetWord":"bank","answer":"to tilt an aircraft during a turn","options":["to tilt an aircraft during a turn","the sloping land alongside a river","a financial institution that holds money","to save or store something for later"],"label":"bank"},
-  {"id":"bank-save","qType":"meaning_identify","sentence":"You can bank your extra vacation days for use next year.","targetWord":"bank","answer":"to save or store something for later","options":["to save or store something for later","the sloping land alongside a river","a financial institution that holds money","to tilt an aircraft during a turn"],"label":"bank"},
-  {"id":"light-fire","qType":"meaning_identify","sentence":"He asked a stranger for a light to start the campfire.","targetWord":"light","answer":"a source of fire used to ignite something","options":["a source of fire used to ignite something","not heavy; having very little weight","brightness produced by a source of illumination","pale or not dark in colour"],"label":"light"},
-  {"id":"light-pale","qType":"meaning_identify","sentence":"She painted her bedroom walls a soft, light shade of blue.","targetWord":"light","answer":"pale or not dark in colour","options":["pale or not dark in colour","not heavy; having very little weight","brightness produced by a source of illumination","a source of fire used to ignite something"],"label":"light"},
-  {"id":"match-pair","qType":"meaning_identify","sentence":"She tried to match her shoes with the colour of her dress.","targetWord":"match","answer":"to pair things that go well together","options":["to pair things that go well together","a short stick used to produce fire by friction","a sports competition between two teams","something that closely resembles another thing"],"label":"match"},
-  {"id":"match-resemble","qType":"meaning_identify","sentence":"His drawing was such a good match that everyone thought it was a photo.","targetWord":"match","answer":"something that closely resembles another thing","options":["something that closely resembles another thing","a short stick used to produce fire by friction","a sports competition between two teams","to pair things that go well together"],"label":"match"},
-  {"id":"spring-jump","qType":"meaning_identify","sentence":"The cat waited quietly, ready to spring at the passing mouse.","targetWord":"spring","answer":"to jump or leap forward suddenly","options":["to jump or leap forward suddenly","the season between winter and summer","a coiled metal device that stores mechanical energy","a natural source of water rising from the ground"],"label":"spring"},
-  {"id":"spring-water","qType":"meaning_identify","sentence":"The villagers filled their jugs from the clear spring near the hills.","targetWord":"spring","answer":"a natural source of water rising from the ground","options":["a natural source of water rising from the ground","the season between winter and summer","a coiled metal device that stores mechanical energy","to jump or leap forward suddenly"],"label":"spring"},
-  {"id":"wave-trend","qType":"meaning_identify","sentence":"A new wave of environmental awareness swept across the country.","targetWord":"wave","answer":"a widespread trend or movement across society","options":["a widespread trend or movement across society","a ridge of water moving across the surface of the sea","a gesture of greeting using an outstretched hand","a disturbance that carries energy through a medium"],"label":"wave"},
-  {"id":"wave-energy","qType":"meaning_identify","sentence":"Sound travels as a wave that moves through the air to reach our ears.","targetWord":"wave","answer":"a disturbance that carries energy through a medium","options":["a disturbance that carries energy through a medium","a ridge of water moving across the surface of the sea","a gesture of greeting using an outstretched hand","a widespread trend or movement across society"],"label":"wave"},
-  {"id":"plain-obvious","qType":"meaning_identify","sentence":"It was plain to everyone that he had not studied for the test.","targetWord":"plain","answer":"obvious or easy to see and understand","options":["obvious or easy to see and understand","simple and undecorated; without embellishment","a large area of flat and level land","to complain or express dissatisfaction aloud"],"label":"plain"},
-  {"id":"plain-complain","qType":"meaning_identify","sentence":"The tenants would often plain to the landlord about the broken heater.","targetWord":"plain","answer":"to complain or express dissatisfaction aloud","options":["to complain or express dissatisfaction aloud","simple and undecorated; without embellishment","a large area of flat and level land","obvious or easy to see and understand"],"label":"plain"},
-  {"id":"key-important","qType":"meaning_identify","sentence":"Practice is the key to becoming a skilled musician.","targetWord":"key","answer":"the most important or essential element of something","options":["the most important or essential element of something","a musical scale forming the basis of a composition","a metal instrument used to open a lock","a low-lying coral island or reef"],"label":"key"},
-  {"id":"key-island","qType":"meaning_identify","sentence":"The fishermen sailed toward a small key just off the coast of Florida.","targetWord":"key","answer":"a low-lying coral island or reef","options":["a low-lying coral island or reef","a musical scale forming the basis of a composition","a metal instrument used to open a lock","the most important or essential element of something"],"label":"key"}
+  {
+    "id": "see-mountains",
+    "qType": "fill_blank",
+    "sentence": "You can ___ the mountains clearly from this viewpoint.",
+    "answer": "see",
+    "options": [
+      "see",
+      "sea"
+    ],
+    "label": "see / sea"
+  },
+  {
+    "id": "sea-ship",
+    "qType": "fill_blank",
+    "sentence": "The ship sailed across the deep blue ___.",
+    "answer": "sea",
+    "options": [
+      "sea",
+      "see"
+    ],
+    "label": "sea / see"
+  },
+  {
+    "id": "two-dogs",
+    "qType": "fill_blank",
+    "sentence": "She owns ___ playful puppies at home.",
+    "answer": "two",
+    "options": [
+      "two",
+      "too",
+      "to"
+    ],
+    "label": "two / too / to"
+  },
+  {
+    "id": "too-expensive",
+    "qType": "fill_blank",
+    "sentence": "I would like to come along ___.",
+    "answer": "too",
+    "options": [
+      "too",
+      "two",
+      "to"
+    ],
+    "label": "too / two / to"
+  },
+  {
+    "id": "to-store",
+    "qType": "fill_blank",
+    "sentence": "He walked ___ the store this morning.",
+    "answer": "to",
+    "options": [
+      "to",
+      "two",
+      "too"
+    ],
+    "label": "to / two / too"
+  },
+  {
+    "id": "flower-garden",
+    "qType": "fill_blank",
+    "sentence": "She picked a beautiful ___ from the garden.",
+    "answer": "flower",
+    "options": [
+      "flower",
+      "flour"
+    ],
+    "label": "flower / flour"
+  },
+  {
+    "id": "flour-dough",
+    "qType": "fill_blank",
+    "sentence": "Mom mixed the ___ carefully to bake a cake.",
+    "answer": "flour",
+    "options": [
+      "flour",
+      "flower"
+    ],
+    "label": "flour / flower"
+  },
+  {
+    "id": "sun-beach",
+    "qType": "fill_blank",
+    "sentence": "The bright ___ warmed the entire beach all afternoon.",
+    "answer": "sun",
+    "options": [
+      "sun",
+      "son"
+    ],
+    "label": "sun / son"
+  },
+  {
+    "id": "son-graduated",
+    "qType": "fill_blank",
+    "sentence": "Their eldest ___ just graduated from school.",
+    "answer": "son",
+    "options": [
+      "son",
+      "sun"
+    ],
+    "label": "son / sun"
+  },
+  {
+    "id": "blue-sky",
+    "qType": "fill_blank",
+    "sentence": "The sky turned a deep ___ just before sunset.",
+    "answer": "blue",
+    "options": [
+      "blue",
+      "blew"
+    ],
+    "label": "blue / blew"
+  },
+  {
+    "id": "blew-wind",
+    "qType": "fill_blank",
+    "sentence": "A strong wind ___ the leaves across the yard.",
+    "answer": "blew",
+    "options": [
+      "blew",
+      "blue"
+    ],
+    "label": "blew / blue"
+  },
+  {
+    "id": "there-table",
+    "qType": "fill_blank",
+    "sentence": "The keys are over ___ on the table.",
+    "answer": "there",
+    "options": [
+      "there",
+      "their",
+      "they're"
+    ],
+    "label": "there / their / they're"
+  },
+  {
+    "id": "their-books",
+    "qType": "fill_blank",
+    "sentence": "The students put ___ books on the desk.",
+    "answer": "their",
+    "options": [
+      "their",
+      "there",
+      "they're"
+    ],
+    "label": "their / there / they're"
+  },
+  {
+    "id": "theyre-late",
+    "qType": "fill_blank",
+    "sentence": "___ always late to every meeting without fail.",
+    "answer": "they're",
+    "options": [
+      "they're",
+      "there",
+      "their"
+    ],
+    "label": "they're / there / their"
+  },
+  {
+    "id": "here-come",
+    "qType": "fill_blank",
+    "sentence": "Please come over ___ and take a look at this.",
+    "answer": "here",
+    "options": [
+      "here",
+      "hear"
+    ],
+    "label": "here / hear"
+  },
+  {
+    "id": "hear-music",
+    "qType": "fill_blank",
+    "sentence": "Can you ___ the music playing in the next room?",
+    "answer": "hear",
+    "options": [
+      "hear",
+      "here"
+    ],
+    "label": "hear / here"
+  },
+  {
+    "id": "one-student",
+    "qType": "fill_blank",
+    "sentence": "Only ___ student answered every question correctly.",
+    "answer": "one",
+    "options": [
+      "one",
+      "won"
+    ],
+    "label": "one / won"
+  },
+  {
+    "id": "won-championship",
+    "qType": "fill_blank",
+    "sentence": "Our team ___ the championship after a thrilling final match.",
+    "answer": "won",
+    "options": [
+      "won",
+      "one"
+    ],
+    "label": "won / one"
+  },
+  {
+    "id": "by-fence",
+    "qType": "fill_blank",
+    "sentence": "She walked quietly ___ the old wooden fence.",
+    "answer": "by",
+    "options": [
+      "by",
+      "buy",
+      "bye"
+    ],
+    "label": "by / buy / bye"
+  },
+  {
+    "id": "buy-milk",
+    "qType": "fill_blank",
+    "sentence": "We need to ___ some milk from the store today.",
+    "answer": "buy",
+    "options": [
+      "buy",
+      "by",
+      "bye"
+    ],
+    "label": "buy / by / bye"
+  },
+  {
+    "id": "bye-train",
+    "qType": "fill_blank",
+    "sentence": "He waved good ___ as the train pulled away.",
+    "answer": "bye",
+    "options": [
+      "bye",
+      "by",
+      "buy"
+    ],
+    "label": "bye / by / buy"
+  },
+  {
+    "id": "ate-pasta",
+    "qType": "fill_blank",
+    "sentence": "She ___ the entire plate of pasta before dessert arrived.",
+    "answer": "ate",
+    "options": [
+      "ate",
+      "eight"
+    ],
+    "label": "ate / eight"
+  },
+  {
+    "id": "eight-clock",
+    "qType": "fill_blank",
+    "sentence": "The clock struck ___ just as the movie began.",
+    "answer": "eight",
+    "options": [
+      "eight",
+      "ate"
+    ],
+    "label": "eight / ate"
+  },
+  {
+    "id": "right-answer",
+    "qType": "fill_blank",
+    "sentence": "She gave the ___ answer to every single question.",
+    "answer": "right",
+    "options": [
+      "right",
+      "write"
+    ],
+    "label": "right / write"
+  },
+  {
+    "id": "write-letter",
+    "qType": "fill_blank",
+    "sentence": "He had to ___ a formal letter of apology to the principal.",
+    "answer": "write",
+    "options": [
+      "write",
+      "right"
+    ],
+    "label": "write / right"
+  },
+  {
+    "id": "new-shoes",
+    "qType": "fill_blank",
+    "sentence": "She bought a ___ pair of shoes for the school trip.",
+    "answer": "new",
+    "options": [
+      "new",
+      "knew"
+    ],
+    "label": "new / knew"
+  },
+  {
+    "id": "knew-answer",
+    "qType": "fill_blank",
+    "sentence": "He already ___ the answer before the teacher asked.",
+    "answer": "knew",
+    "options": [
+      "knew",
+      "new"
+    ],
+    "label": "knew / new"
+  },
+  {
+    "id": "no-know",
+    "qType": "fill_blank",
+    "sentence": "There is ___ time left to finish the race.",
+    "answer": "no",
+    "options": [
+      "no",
+      "know"
+    ],
+    "label": "no / know"
+  },
+  {
+    "id": "know-no",
+    "qType": "fill_blank",
+    "sentence": "I ___ the answer to that tricky question.",
+    "answer": "know",
+    "options": [
+      "know",
+      "no"
+    ],
+    "label": "know / no"
+  },
+  {
+    "id": "hole-ground",
+    "qType": "fill_blank",
+    "sentence": "The rabbit disappeared quickly into a ___ in the ground.",
+    "answer": "hole",
+    "options": [
+      "hole",
+      "whole"
+    ],
+    "label": "hole / whole"
+  },
+  {
+    "id": "whole-pizza",
+    "qType": "fill_blank",
+    "sentence": "She ate the ___ pizza by herself without sharing a single slice.",
+    "answer": "whole",
+    "options": [
+      "whole",
+      "hole"
+    ],
+    "label": "whole / hole"
+  },
+  {
+    "id": "week-vacation",
+    "qType": "fill_blank",
+    "sentence": "We are going on vacation next ___.",
+    "answer": "week",
+    "options": [
+      "week",
+      "weak"
+    ],
+    "label": "week / weak"
+  },
+  {
+    "id": "weak-fever",
+    "qType": "fill_blank",
+    "sentence": "He felt too ___ to climb the stairs after the fever.",
+    "answer": "weak",
+    "options": [
+      "weak",
+      "week"
+    ],
+    "label": "weak / week"
+  },
+  {
+    "id": "meet-arranged",
+    "qType": "fill_blank",
+    "sentence": "They arranged to ___ at the coffee shop at noon.",
+    "answer": "meet",
+    "options": [
+      "meet",
+      "meat"
+    ],
+    "label": "meet / meat"
+  },
+  {
+    "id": "meat-butcher",
+    "qType": "fill_blank",
+    "sentence": "The butcher carefully wrapped the fresh ___ in white paper.",
+    "answer": "meat",
+    "options": [
+      "meat",
+      "meet"
+    ],
+    "label": "meat / meet"
+  },
+  {
+    "id": "tale-fairy",
+    "qType": "fill_blank",
+    "sentence": "The grandmother told a fascinating fairy ___ to the children.",
+    "answer": "tale",
+    "options": [
+      "tale",
+      "tail"
+    ],
+    "label": "tale / tail"
+  },
+  {
+    "id": "tail-wagged",
+    "qType": "fill_blank",
+    "sentence": "The dog wagged its ___ excitedly when its owner came home.",
+    "answer": "tail",
+    "options": [
+      "tail",
+      "tale"
+    ],
+    "label": "tail / tale"
+  },
+  {
+    "id": "bare-feet",
+    "qType": "fill_blank",
+    "sentence": "He walked on the ___ floor without wearing any slippers.",
+    "answer": "bare",
+    "options": [
+      "bare",
+      "bear"
+    ],
+    "label": "bare / bear"
+  },
+  {
+    "id": "bear-emerged",
+    "qType": "fill_blank",
+    "sentence": "A grizzly ___ emerged suddenly from the dense forest.",
+    "answer": "bear",
+    "options": [
+      "bear",
+      "bare"
+    ],
+    "label": "bear / bare"
+  },
+  {
+    "id": "dear-friend",
+    "qType": "fill_blank",
+    "sentence": "Thank you so much, my ___ friend, for your kindness.",
+    "answer": "dear",
+    "options": [
+      "dear",
+      "deer"
+    ],
+    "label": "dear / deer"
+  },
+  {
+    "id": "deer-meadow",
+    "qType": "fill_blank",
+    "sentence": "A graceful ___ leaped silently across the misty meadow.",
+    "answer": "deer",
+    "options": [
+      "deer",
+      "dear"
+    ],
+    "label": "deer / dear"
+  },
+  {
+    "id": "cell-sell",
+    "qType": "fill_blank",
+    "sentence": "The prisoner sat quietly inside his small ___.",
+    "answer": "cell",
+    "options": [
+      "cell",
+      "sell"
+    ],
+    "label": "cell / sell"
+  },
+  {
+    "id": "sell-cell",
+    "qType": "fill_blank",
+    "sentence": "The farmer will ___ his vegetables at the weekend market.",
+    "answer": "sell",
+    "options": [
+      "sell",
+      "cell"
+    ],
+    "label": "sell / cell"
+  },
+  {
+    "id": "peace-treaty",
+    "qType": "fill_blank",
+    "sentence": "The two nations signed a treaty to restore lasting ___.",
+    "answer": "peace",
+    "options": [
+      "peace",
+      "piece"
+    ],
+    "label": "peace / piece"
+  },
+  {
+    "id": "piece-cake",
+    "qType": "fill_blank",
+    "sentence": "He took a small ___ of cake from the tray.",
+    "answer": "piece",
+    "options": [
+      "piece",
+      "peace"
+    ],
+    "label": "piece / peace"
+  },
+  {
+    "id": "wait-weight",
+    "qType": "fill_blank",
+    "sentence": "Please ___ here until your name is called.",
+    "answer": "wait",
+    "options": [
+      "wait",
+      "weight"
+    ],
+    "label": "wait / weight"
+  },
+  {
+    "id": "weight-wait",
+    "qType": "fill_blank",
+    "sentence": "The doctor checked the baby's ___ carefully.",
+    "answer": "weight",
+    "options": [
+      "weight",
+      "wait"
+    ],
+    "label": "weight / wait"
+  },
+  {
+    "id": "night-fell",
+    "qType": "fill_blank",
+    "sentence": "The sky turned dark as ___ fell over the quiet village.",
+    "answer": "night",
+    "options": [
+      "night",
+      "knight"
+    ],
+    "label": "night / knight"
+  },
+  {
+    "id": "night-dark",
+    "qType": "fill_blank",
+    "sentence": "The brave ___ rode through the dark forest alone.",
+    "answer": "knight",
+    "options": [
+      "knight",
+      "night"
+    ],
+    "label": "knight / night"
+  },
+  {
+    "id": "rain-soaked",
+    "qType": "fill_blank",
+    "sentence": "The heavy ___ soaked the entire garden within minutes.",
+    "answer": "rain",
+    "options": [
+      "rain",
+      "reign",
+      "rein"
+    ],
+    "label": "rain / reign / rein"
+  },
+  {
+    "id": "reign-queen",
+    "qType": "fill_blank",
+    "sentence": "The queen's ___ lasted for nearly fifty peaceful years.",
+    "answer": "reign",
+    "options": [
+      "reign",
+      "rain",
+      "rein"
+    ],
+    "label": "reign / rain / rein"
+  },
+  {
+    "id": "rein-horse",
+    "qType": "fill_blank",
+    "sentence": "She pulled the ___ gently to slow the galloping horse.",
+    "answer": "rein",
+    "options": [
+      "rein",
+      "rain",
+      "reign"
+    ],
+    "label": "rein / rain / reign"
+  },
+  {
+    "id": "some-sum",
+    "qType": "fill_blank",
+    "sentence": "Can I have ___ more juice, please?",
+    "answer": "some",
+    "options": [
+      "some",
+      "sum"
+    ],
+    "label": "some / sum"
+  },
+  {
+    "id": "sum-some",
+    "qType": "fill_blank",
+    "sentence": "The teacher asked us to find the ___ of the two numbers.",
+    "answer": "sum",
+    "options": [
+      "sum",
+      "some"
+    ],
+    "label": "sum / some"
+  },
+  {
+    "id": "road-rode",
+    "qType": "fill_blank",
+    "sentence": "The long ___ led all the way to the village.",
+    "answer": "road",
+    "options": [
+      "road",
+      "rode"
+    ],
+    "label": "road / rode"
+  },
+  {
+    "id": "rode-road",
+    "qType": "fill_blank",
+    "sentence": "She ___ her bicycle to school yesterday.",
+    "answer": "rode",
+    "options": [
+      "rode",
+      "road"
+    ],
+    "label": "rode / road"
+  },
+  {
+    "id": "scene-seen",
+    "qType": "fill_blank",
+    "sentence": "The final ___ of the play made everyone in the audience cry.",
+    "answer": "scene",
+    "options": [
+      "scene",
+      "seen"
+    ],
+    "label": "scene / seen"
+  },
+  {
+    "id": "seen-scene",
+    "qType": "fill_blank",
+    "sentence": "Have you ___ my missing shoes anywhere?",
+    "answer": "seen",
+    "options": [
+      "seen",
+      "scene"
+    ],
+    "label": "seen / scene"
+  },
+  {
+    "id": "wear-coat",
+    "qType": "fill_blank",
+    "sentence": "You should ___ a warm coat in the winter.",
+    "answer": "wear",
+    "options": [
+      "wear",
+      "where"
+    ],
+    "label": "wear / where"
+  },
+  {
+    "id": "where-kitten",
+    "qType": "fill_blank",
+    "sentence": "Nobody knew exactly ___ the lost kitten had gone.",
+    "answer": "where",
+    "options": [
+      "where",
+      "wear"
+    ],
+    "label": "where / wear"
+  },
+  {
+    "id": "hair-long",
+    "qType": "fill_blank",
+    "sentence": "She had long and flowing ___ that reached well past her waist.",
+    "answer": "hair",
+    "options": [
+      "hair",
+      "hare"
+    ],
+    "label": "hair / hare"
+  },
+  {
+    "id": "hare-race",
+    "qType": "fill_blank",
+    "sentence": "The swift ___ outran the tortoise easily in the famous race.",
+    "answer": "hare",
+    "options": [
+      "hare",
+      "hair"
+    ],
+    "label": "hare / hair"
+  },
+  {
+    "id": "not-knot",
+    "qType": "fill_blank",
+    "sentence": "I am ___ going to the party tonight.",
+    "answer": "not",
+    "options": [
+      "not",
+      "knot"
+    ],
+    "label": "not / knot"
+  },
+  {
+    "id": "knot-not",
+    "qType": "fill_blank",
+    "sentence": "He tied a tight ___ to secure the boat.",
+    "answer": "knot",
+    "options": [
+      "knot",
+      "not"
+    ],
+    "label": "knot / not"
+  },
+  {
+    "id": "bat-mammal",
+    "qType": "meaning_identify",
+    "sentence": "A bat flew silently through the dark cave at night.",
+    "targetWord": "bat",
+    "answer": "flying animal",
+    "options": [
+      "flying animal",
+      "cricket stick",
+      "to twist something",
+      "brightness"
+    ],
+    "label": "bat"
+  },
+  {
+    "id": "bat-meaning",
+    "qType": "meaning_identify",
+    "sentence": "He gripped the bat firmly before facing the first ball.",
+    "targetWord": "bat",
+    "answer": "cricket stick",
+    "options": [
+      "cricket stick",
+      "flying animal",
+      "a heavy metal",
+      "to twist something"
+    ],
+    "label": "bat"
+  },
+  {
+    "id": "bow-ribbon-knot",
+    "qType": "meaning_identify",
+    "sentence": "She tied a pretty bow on top of the gift box.",
+    "targetWord": "bow",
+    "answer": "ribbon knot",
+    "options": [
+      "ribbon knot",
+      "bend forward",
+      "dog's sound",
+      "to guide"
+    ],
+    "label": "bow"
+  },
+  {
+    "id": "bow-bend-forward",
+    "qType": "meaning_identify",
+    "sentence": "The actors took a bow after the curtain closed.",
+    "targetWord": "bow",
+    "answer": "bend forward",
+    "options": [
+      "bend forward",
+      "ribbon knot",
+      "move in the air",
+      "wrist timepiece"
+    ],
+    "label": "bow"
+  },
+  {
+    "id": "lead-to-guide",
+    "qType": "meaning_identify",
+    "sentence": "The scout will lead the group safely through the forest.",
+    "targetWord": "lead",
+    "answer": "to guide",
+    "options": [
+      "to guide",
+      "a heavy metal",
+      "to shut",
+      "small"
+    ],
+    "label": "lead"
+  },
+  {
+    "id": "lead-a-heavy-metal",
+    "qType": "meaning_identify",
+    "sentence": "Old paint sometimes contained a dangerous amount of lead.",
+    "targetWord": "lead",
+    "answer": "a heavy metal",
+    "options": [
+      "a heavy metal",
+      "to guide",
+      "able to",
+      "bend forward"
+    ],
+    "label": "lead"
+  },
+  {
+    "id": "wind-moving-air",
+    "qType": "meaning_identify",
+    "sentence": "A cold wind blew across the open field.",
+    "targetWord": "wind",
+    "answer": "moving air",
+    "options": [
+      "moving air",
+      "to twist something",
+      "cricket stick",
+      "past of rise"
+    ],
+    "label": "wind"
+  },
+  {
+    "id": "wind-to-twist-something",
+    "qType": "meaning_identify",
+    "sentence": "Please wind the string tightly around the spool.",
+    "targetWord": "wind",
+    "answer": "to twist something",
+    "options": [
+      "to twist something",
+      "moving air",
+      "drop from eye",
+      "to oppose"
+    ],
+    "label": "wind"
+  },
+  {
+    "id": "tear-drop-from-eye",
+    "qType": "meaning_identify",
+    "sentence": "A single tear rolled down her cheek during the sad movie.",
+    "targetWord": "tear",
+    "answer": "drop from eye",
+    "options": [
+      "drop from eye",
+      "to rip",
+      "day of the month",
+      "gentle"
+    ],
+    "label": "tear"
+  },
+  {
+    "id": "tear-to-rip",
+    "qType": "meaning_identify",
+    "sentence": "Be careful not to tear the delicate paper.",
+    "targetWord": "tear",
+    "answer": "to rip",
+    "options": [
+      "to rip",
+      "drop from eye",
+      "insect",
+      "move hand"
+    ],
+    "label": "tear"
+  },
+  {
+    "id": "close-to-shut",
+    "qType": "meaning_identify",
+    "sentence": "Please close the door before you leave the room.",
+    "targetWord": "close",
+    "answer": "to shut",
+    "options": [
+      "to shut",
+      "near",
+      "day of the month",
+      "past of rise"
+    ],
+    "label": "close"
+  },
+  {
+    "id": "close-near",
+    "qType": "meaning_identify",
+    "sentence": "The bakery is close to our house.",
+    "targetWord": "close",
+    "answer": "near",
+    "options": [
+      "near",
+      "to shut",
+      "moving air",
+      "group of cars"
+    ],
+    "label": "close"
+  },
+  {
+    "id": "fair-just-and-honest",
+    "qType": "meaning_identify",
+    "sentence": "The teacher made sure every rule was fair for all the students.",
+    "targetWord": "fair",
+    "answer": "just and honest",
+    "options": [
+      "just and honest",
+      "carnival",
+      "argument",
+      "flying animal"
+    ],
+    "label": "fair"
+  },
+  {
+    "id": "fair-carnival",
+    "qType": "meaning_identify",
+    "sentence": "We rode the Ferris wheel at the county fair.",
+    "targetWord": "fair",
+    "answer": "carnival",
+    "options": [
+      "carnival",
+      "just and honest",
+      "able to",
+      "to guide"
+    ],
+    "label": "fair"
+  },
+  {
+    "id": "park-green-area",
+    "qType": "meaning_identify",
+    "sentence": "The children played happily in the park after school.",
+    "targetWord": "park",
+    "answer": "green area",
+    "options": [
+      "green area",
+      "to leave a vehicle",
+      "tree covering",
+      "get weary"
+    ],
+    "label": "park"
+  },
+  {
+    "id": "park-to-leave-a-vehicle",
+    "qType": "meaning_identify",
+    "sentence": "He had to park the car far from the entrance.",
+    "targetWord": "park",
+    "answer": "to leave a vehicle",
+    "options": [
+      "to leave a vehicle",
+      "green area",
+      "wheel covering",
+      "moving air"
+    ],
+    "label": "park"
+  },
+  {
+    "id": "watch-to-look",
+    "qType": "meaning_identify",
+    "sentence": "We stayed up late to watch the meteor shower.",
+    "targetWord": "watch",
+    "answer": "to look",
+    "options": [
+      "to look",
+      "wrist timepiece",
+      "river edge",
+      "rest flat"
+    ],
+    "label": "watch"
+  },
+  {
+    "id": "watch-wrist-timepiece",
+    "qType": "meaning_identify",
+    "sentence": "Her grandfather gave her a gold watch for her birthday.",
+    "targetWord": "watch",
+    "answer": "wrist timepiece",
+    "options": [
+      "wrist timepiece",
+      "to look",
+      "to twist something",
+      "a stone"
+    ],
+    "label": "watch"
+  },
+  {
+    "id": "wave-greeting",
+    "qType": "meaning_identify",
+    "sentence": "She gave a cheerful wave as the bus pulled away.",
+    "targetWord": "wave",
+    "answer": "move hand",
+    "options": [
+      "move hand",
+      "motion of the sea",
+      "metal fastener",
+      "direction"
+    ],
+    "label": "wave"
+  },
+  {
+    "id": "wave-ocean",
+    "qType": "meaning_identify",
+    "sentence": "A huge wave crashed against the rocky shore.",
+    "targetWord": "wave",
+    "answer": "motion of the sea",
+    "options": [
+      "motion of the sea",
+      "move hand",
+      "not tell the truth",
+      "a thing"
+    ],
+    "label": "wave"
+  },
+  {
+    "id": "match-sport",
+    "qType": "meaning_identify",
+    "sentence": "Our team won the football match yesterday evening.",
+    "targetWord": "match",
+    "answer": "game",
+    "options": [
+      "game",
+      "stick to light fire",
+      "bird",
+      "gentle"
+    ],
+    "label": "match"
+  },
+  {
+    "id": "match-fire",
+    "qType": "meaning_identify",
+    "sentence": "He struck a match to light the candles.",
+    "targetWord": "match",
+    "answer": "stick to light fire",
+    "options": [
+      "stick to light fire",
+      "game",
+      "move in the air",
+      "to shut"
+    ],
+    "label": "match"
+  },
+  {
+    "id": "light-brightness",
+    "qType": "meaning_identify",
+    "sentence": "The bright light from the window woke her up early.",
+    "targetWord": "light",
+    "answer": "brightness",
+    "options": [
+      "brightness",
+      "not heavy",
+      "tree covering",
+      "financial place"
+    ],
+    "label": "light"
+  },
+  {
+    "id": "light-weight",
+    "qType": "meaning_identify",
+    "sentence": "The empty suitcase felt very light to carry.",
+    "targetWord": "light",
+    "answer": "not heavy",
+    "options": [
+      "not heavy",
+      "brightness",
+      "carnival",
+      "bend forward"
+    ],
+    "label": "light"
+  },
+  {
+    "id": "ring-jewelry",
+    "qType": "meaning_identify",
+    "sentence": "He proposed to her with a beautiful diamond ring.",
+    "targetWord": "ring",
+    "answer": "jewelry",
+    "options": [
+      "jewelry",
+      "sound of a bell",
+      "wheel covering",
+      "to show or introduce"
+    ],
+    "label": "ring"
+  },
+  {
+    "id": "ring-sound-of-a-bell",
+    "qType": "meaning_identify",
+    "sentence": "The loud ring of the bell startled everyone in the room.",
+    "targetWord": "ring",
+    "answer": "sound of a bell",
+    "options": [
+      "sound of a bell",
+      "jewelry",
+      "folder",
+      "metal fastener"
+    ],
+    "label": "ring"
+  },
+  {
+    "id": "nail-finger-tip",
+    "qType": "meaning_identify",
+    "sentence": "She painted her nail a bright shade of pink.",
+    "targetWord": "nail",
+    "answer": "finger tip",
+    "options": [
+      "finger tip",
+      "metal fastener",
+      "place to dig minerals",
+      "to teach"
+    ],
+    "label": "nail"
+  },
+  {
+    "id": "nail-metal-fastener",
+    "qType": "meaning_identify",
+    "sentence": "He hammered the nail firmly into the wooden board.",
+    "targetWord": "nail",
+    "answer": "metal fastener",
+    "options": [
+      "metal fastener",
+      "finger tip",
+      "smooth surface with a tool",
+      "to jump"
+    ],
+    "label": "nail"
+  },
+  {
+    "id": "right-correct",
+    "qType": "meaning_identify",
+    "sentence": "She gave the right answer to every question in the quiz.",
+    "targetWord": "right",
+    "answer": "correct",
+    "options": [
+      "correct",
+      "direction",
+      "rest flat",
+      "to move back and forth"
+    ],
+    "label": "right"
+  },
+  {
+    "id": "right-direction",
+    "qType": "meaning_identify",
+    "sentence": "Turn right at the next traffic signal.",
+    "targetWord": "right",
+    "answer": "direction",
+    "options": [
+      "direction",
+      "correct",
+      "place to dig minerals",
+      "financial place"
+    ],
+    "label": "right"
+  },
+  {
+    "id": "spring-season",
+    "qType": "meaning_identify",
+    "sentence": "The flowers bloom beautifully every spring.",
+    "targetWord": "spring",
+    "answer": "a season",
+    "options": [
+      "a season",
+      "to jump",
+      "small",
+      "flying animal"
+    ],
+    "label": "spring"
+  },
+  {
+    "id": "spring-jump",
+    "qType": "meaning_identify",
+    "sentence": "The cat waited quietly, ready to spring at the passing mouse.",
+    "targetWord": "spring",
+    "answer": "to jump",
+    "options": [
+      "to jump",
+      "a season",
+      "sea animal",
+      "line"
+    ],
+    "label": "spring"
+  },
+  {
+    "id": "kind-type",
+    "qType": "meaning_identify",
+    "sentence": "What kind of fruit would you like to eat?",
+    "targetWord": "kind",
+    "answer": "type",
+    "options": [
+      "type",
+      "gentle",
+      "to twist something",
+      "to look"
+    ],
+    "label": "kind"
+  },
+  {
+    "id": "kind-gentle",
+    "qType": "meaning_identify",
+    "sentence": "The kind nurse comforted the frightened child.",
+    "targetWord": "kind",
+    "answer": "gentle",
+    "options": [
+      "gentle",
+      "type",
+      "a flower",
+      "a season"
+    ],
+    "label": "kind"
+  },
+  {
+    "id": "file-folder",
+    "qType": "meaning_identify",
+    "sentence": "She kept every document neatly inside a file.",
+    "targetWord": "file",
+    "answer": "folder",
+    "options": [
+      "folder",
+      "smooth surface with a tool",
+      "bend forward",
+      "ribbon knot"
+    ],
+    "label": "file"
+  },
+  {
+    "id": "file-smooth-surface-with-a-tool",
+    "qType": "meaning_identify",
+    "sentence": "He used a metal file to smooth the rough edge.",
+    "targetWord": "file",
+    "answer": "smooth surface with a tool",
+    "options": [
+      "smooth surface with a tool",
+      "folder",
+      "game",
+      "bend forward"
+    ],
+    "label": "file"
+  },
+  {
+    "id": "duck-bird",
+    "qType": "meaning_identify",
+    "sentence": "The duck swam gracefully across the quiet pond.",
+    "targetWord": "duck",
+    "answer": "bird",
+    "options": [
+      "bird",
+      "bend down quickly",
+      "to show or introduce",
+      "just and honest"
+    ],
+    "label": "duck"
+  },
+  {
+    "id": "duck-bend-down-quickly",
+    "qType": "meaning_identify",
+    "sentence": "Duck under the low branch so you don't hit your head.",
+    "targetWord": "duck",
+    "answer": "bend down quickly",
+    "options": [
+      "bend down quickly",
+      "bird",
+      "to teach",
+      "brightness"
+    ],
+    "label": "duck"
+  },
+  {
+    "id": "tire-get-weary",
+    "qType": "meaning_identify",
+    "sentence": "Long hikes tire me out by the afternoon.",
+    "targetWord": "tire",
+    "answer": "get weary",
+    "options": [
+      "get weary",
+      "wheel covering",
+      "to leave a vehicle",
+      "wrist timepiece"
+    ],
+    "label": "tire"
+  },
+  {
+    "id": "tire-wheel-covering",
+    "qType": "meaning_identify",
+    "sentence": "The mechanic replaced the flat tire on the car.",
+    "targetWord": "tire",
+    "answer": "wheel covering",
+    "options": [
+      "wheel covering",
+      "get weary",
+      "bend down quickly",
+      "a thing"
+    ],
+    "label": "tire"
+  },
+  {
+    "id": "row-line",
+    "qType": "meaning_identify",
+    "sentence": "We sat in the front row of the theatre.",
+    "targetWord": "row",
+    "answer": "line",
+    "options": [
+      "line",
+      "argument",
+      "tree covering",
+      "group of cars"
+    ],
+    "label": "row"
+  },
+  {
+    "id": "row-argument",
+    "qType": "meaning_identify",
+    "sentence": "The two brothers had a noisy row over the remote control.",
+    "targetWord": "row",
+    "answer": "argument",
+    "options": [
+      "argument",
+      "line",
+      "bird",
+      "folder"
+    ],
+    "label": "row"
+  },
+  {
+    "id": "seal-sea-animal",
+    "qType": "meaning_identify",
+    "sentence": "The seal balanced a ball on its nose at the show.",
+    "targetWord": "seal",
+    "answer": "sea animal",
+    "options": [
+      "sea animal",
+      "to close tightly",
+      "not heavy",
+      "rest flat"
+    ],
+    "label": "seal"
+  },
+  {
+    "id": "seal-to-close-tightly",
+    "qType": "meaning_identify",
+    "sentence": "Make sure to seal the jar so the food stays fresh.",
+    "targetWord": "seal",
+    "answer": "to close tightly",
+    "options": [
+      "to close tightly",
+      "sea animal",
+      "line",
+      "insect"
+    ],
+    "label": "seal"
+  },
+  {
+    "id": "object-a-thing",
+    "qType": "meaning_identify",
+    "sentence": "The strange object on the shelf turned out to be an old clock.",
+    "targetWord": "object",
+    "answer": "a thing",
+    "options": [
+      "a thing",
+      "to oppose",
+      "to close tightly",
+      "brightness"
+    ],
+    "label": "object"
+  },
+  {
+    "id": "object-to-oppose",
+    "qType": "meaning_identify",
+    "sentence": "Several parents began to object to the new school rule.",
+    "targetWord": "object",
+    "answer": "to oppose",
+    "options": [
+      "to oppose",
+      "a thing",
+      "an idea",
+      "argument"
+    ],
+    "label": "object"
+  },
+  {
+    "id": "minute-small",
+    "qType": "meaning_identify",
+    "sentence": "The insect left only a minute trace on the leaf.",
+    "targetWord": "minute",
+    "answer": "small",
+    "options": [
+      "small",
+      "60 seconds",
+      "financial place",
+      "able to"
+    ],
+    "label": "minute"
+  },
+  {
+    "id": "minute-60-seconds",
+    "qType": "meaning_identify",
+    "sentence": "Please wait just one minute while I finish this.",
+    "targetWord": "minute",
+    "answer": "60 seconds",
+    "options": [
+      "60 seconds",
+      "small",
+      "to shut",
+      "able to"
+    ],
+    "label": "minute"
+  },
+  {
+    "id": "present-gift",
+    "qType": "meaning_identify",
+    "sentence": "She unwrapped her birthday present with great excitement.",
+    "targetWord": "present",
+    "answer": "gift",
+    "options": [
+      "gift",
+      "to show or introduce",
+      "past of rise",
+      "flying animal"
+    ],
+    "label": "present"
+  },
+  {
+    "id": "present-to-show-or-introduce",
+    "qType": "meaning_identify",
+    "sentence": "The students will present their science projects tomorrow.",
+    "targetWord": "present",
+    "answer": "to show or introduce",
+    "options": [
+      "to show or introduce",
+      "gift",
+      "a stone",
+      "healthy"
+    ],
+    "label": "present"
+  },
+  {
+    "id": "can-able-to",
+    "qType": "meaning_identify",
+    "sentence": "She can solve the puzzle faster than anyone else.",
+    "targetWord": "can",
+    "answer": "able to",
+    "options": [
+      "able to",
+      "metal container",
+      "carnival",
+      "moving air"
+    ],
+    "label": "can"
+  },
+  {
+    "id": "can-metal-container",
+    "qType": "meaning_identify",
+    "sentence": "He recycled the empty soda can after lunch.",
+    "targetWord": "can",
+    "answer": "metal container",
+    "options": [
+      "metal container",
+      "able to",
+      "moving air",
+      "to teach"
+    ],
+    "label": "can"
+  },
+  {
+    "id": "bark-dog",
+    "qType": "meaning_identify",
+    "sentence": "The loud bark of the dog startled the sleeping cat.",
+    "targetWord": "bark",
+    "answer": "dog's sound",
+    "options": [
+      "dog's sound",
+      "tree covering",
+      "rest flat",
+      "a flower"
+    ],
+    "label": "bark"
+  },
+  {
+    "id": "bark-meaning",
+    "qType": "meaning_identify",
+    "sentence": "The rough bark of the old oak tree scraped her hand.",
+    "targetWord": "bark",
+    "answer": "tree covering",
+    "options": [
+      "tree covering",
+      "dog's sound",
+      "wrist timepiece",
+      "a thing"
+    ],
+    "label": "bark"
+  },
+  {
+    "id": "fly-insect",
+    "qType": "meaning_identify",
+    "sentence": "A fly buzzed annoyingly around the picnic table.",
+    "targetWord": "fly",
+    "answer": "insect",
+    "options": [
+      "insect",
+      "move in the air",
+      "get weary",
+      "a thing"
+    ],
+    "label": "fly"
+  },
+  {
+    "id": "fly-move-in-the-air",
+    "qType": "meaning_identify",
+    "sentence": "Birds fly south when winter approaches.",
+    "targetWord": "fly",
+    "answer": "move in the air",
+    "options": [
+      "move in the air",
+      "insect",
+      "not heavy",
+      "water source"
+    ],
+    "label": "fly"
+  },
+  {
+    "id": "train-group-of-cars",
+    "qType": "meaning_identify",
+    "sentence": "We took the morning train into the city.",
+    "targetWord": "train",
+    "answer": "group of cars",
+    "options": [
+      "group of cars",
+      "to teach",
+      "to oppose",
+      "flying animal"
+    ],
+    "label": "train"
+  },
+  {
+    "id": "train-to-teach",
+    "qType": "meaning_identify",
+    "sentence": "The coach will train the new players every weekend.",
+    "targetWord": "train",
+    "answer": "to teach",
+    "options": [
+      "to teach",
+      "group of cars",
+      "to leave a vehicle",
+      "flying animal"
+    ],
+    "label": "train"
+  },
+  {
+    "id": "bank-river",
+    "qType": "meaning_identify",
+    "sentence": "They sat on the grassy bank and watched the river flow peacefully by.",
+    "targetWord": "bank",
+    "answer": "river edge",
+    "options": [
+      "river edge",
+      "financial place",
+      "moving air",
+      "a season"
+    ],
+    "label": "bank"
+  },
+  {
+    "id": "bank-money",
+    "qType": "meaning_identify",
+    "sentence": "She walked into the bank to deposit her monthly savings.",
+    "targetWord": "bank",
+    "answer": "financial place",
+    "options": [
+      "financial place",
+      "river edge",
+      "able to",
+      "to leave a vehicle"
+    ],
+    "label": "bank"
+  },
+  {
+    "id": "rock-a-stone",
+    "qType": "meaning_identify",
+    "sentence": "He tripped over a large rock hidden in the grass.",
+    "targetWord": "rock",
+    "answer": "a stone",
+    "options": [
+      "a stone",
+      "to move back and forth",
+      "moving air",
+      "financial place"
+    ],
+    "label": "rock"
+  },
+  {
+    "id": "rock-to-move-back-and-forth",
+    "qType": "meaning_identify",
+    "sentence": "She began to rock the cradle gently until the baby fell asleep.",
+    "targetWord": "rock",
+    "answer": "to move back and forth",
+    "options": [
+      "to move back and forth",
+      "a stone",
+      "a heavy metal",
+      "an idea"
+    ],
+    "label": "rock"
+  },
+  {
+    "id": "well-healthy",
+    "qType": "meaning_identify",
+    "sentence": "After a week of rest, he finally felt well again.",
+    "targetWord": "well",
+    "answer": "healthy",
+    "options": [
+      "healthy",
+      "water source",
+      "small",
+      "60 seconds"
+    ],
+    "label": "well"
+  },
+  {
+    "id": "well-water-source",
+    "qType": "meaning_identify",
+    "sentence": "The villagers drew fresh water from the old well.",
+    "targetWord": "well",
+    "answer": "water source",
+    "options": [
+      "water source",
+      "healthy",
+      "sound of a bell",
+      "60 seconds"
+    ],
+    "label": "well"
+  },
+  {
+    "id": "mine-belonging-to-me",
+    "qType": "meaning_identify",
+    "sentence": "That blue backpack is mine, not yours.",
+    "targetWord": "mine",
+    "answer": "belonging to me",
+    "options": [
+      "belonging to me",
+      "place to dig minerals",
+      "to shut",
+      "healthy"
+    ],
+    "label": "mine"
+  },
+  {
+    "id": "mine-place-to-dig-minerals",
+    "qType": "meaning_identify",
+    "sentence": "The miners descended deep into the coal mine.",
+    "targetWord": "mine",
+    "answer": "place to dig minerals",
+    "options": [
+      "place to dig minerals",
+      "belonging to me",
+      "sea animal",
+      "motion of the sea"
+    ],
+    "label": "mine"
+  },
+  {
+    "id": "rose-a-flower",
+    "qType": "meaning_identify",
+    "sentence": "She received a single red rose on Valentine's Day.",
+    "targetWord": "rose",
+    "answer": "a flower",
+    "options": [
+      "a flower",
+      "past of rise",
+      "to show or introduce",
+      "correct"
+    ],
+    "label": "rose"
+  },
+  {
+    "id": "rose-past-of-rise",
+    "qType": "meaning_identify",
+    "sentence": "The sun rose slowly over the quiet hills.",
+    "targetWord": "rose",
+    "answer": "past of rise",
+    "options": [
+      "past of rise",
+      "a flower",
+      "not heavy",
+      "tree covering"
+    ],
+    "label": "rose"
+  },
+  {
+    "id": "date-day-of-the-month",
+    "qType": "meaning_identify",
+    "sentence": "Write today's date at the top of your worksheet.",
+    "targetWord": "date",
+    "answer": "day of the month",
+    "options": [
+      "day of the month",
+      "social meeting",
+      "brightness",
+      "flying animal"
+    ],
+    "label": "date"
+  },
+  {
+    "id": "date-social-meeting",
+    "qType": "meaning_identify",
+    "sentence": "They planned a fun date at the new restaurant.",
+    "targetWord": "date",
+    "answer": "social meeting",
+    "options": [
+      "social meeting",
+      "day of the month",
+      "a heavy metal",
+      "carnival"
+    ],
+    "label": "date"
+  },
+  {
+    "id": "point-an-idea",
+    "qType": "meaning_identify",
+    "sentence": "The teacher made an important point during the lesson.",
+    "targetWord": "point",
+    "answer": "an idea",
+    "options": [
+      "an idea",
+      "sharp end",
+      "drop from eye",
+      "stick to light fire"
+    ],
+    "label": "point"
+  },
+  {
+    "id": "point-sharp-end",
+    "qType": "meaning_identify",
+    "sentence": "Be careful, the point of that pencil is very sharp.",
+    "targetWord": "point",
+    "answer": "sharp end",
+    "options": [
+      "sharp end",
+      "an idea",
+      "just and honest",
+      "sea animal"
+    ],
+    "label": "point"
+  },
+  {
+    "id": "lie-not-tell-the-truth",
+    "qType": "meaning_identify",
+    "sentence": "He felt guilty after telling a small lie to his mother.",
+    "targetWord": "lie",
+    "answer": "not tell the truth",
+    "options": [
+      "not tell the truth",
+      "rest flat",
+      "group of cars",
+      "near"
+    ],
+    "label": "lie"
+  },
+  {
+    "id": "lie-rest-flat",
+    "qType": "meaning_identify",
+    "sentence": "She decided to lie down for a short nap.",
+    "targetWord": "lie",
+    "answer": "rest flat",
+    "options": [
+      "rest flat",
+      "not tell the truth",
+      "financial place",
+      "to close tightly"
+    ],
+    "label": "lie"
+  },
+  {
+    "id": "play-to-have-fun",
+    "qType": "meaning_identify",
+    "sentence": "The children love to play in the park after school.",
+    "targetWord": "play",
+    "answer": "to have fun",
+    "options": [
+      "to have fun",
+      "a drama on stage",
+      "argument",
+      "near"
+    ],
+    "label": "play"
+  },
+  {
+    "id": "play-a-drama-on-stage",
+    "qType": "meaning_identify",
+    "sentence": "Our school performed a play about ancient history.",
+    "targetWord": "play",
+    "answer": "a drama on stage",
+    "options": [
+      "a drama on stage",
+      "to have fun",
+      "healthy",
+      "to guide"
+    ],
+    "label": "play"
+  }
 ]
