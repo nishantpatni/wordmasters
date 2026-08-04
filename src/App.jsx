@@ -23,8 +23,7 @@ import { pathForScreen, parseRoute } from './utils/routes.js';
 
 const DEFAULT_QUIZ_COUNT = 50; // used when a deep link starts a quiz directly
 
-function toLogRows(username, results) {
-  const ts = new Date().toISOString();
+function toLogRows(username, results, ts = new Date().toISOString()) {
   return results.map(r => ({
     ts, username,
     itemId:         r.itemId,
@@ -66,6 +65,19 @@ export default function App() {
   // their own quit handler here so browser Back can trigger it directly —
   // it already knows the partial results, App.jsx doesn't.
   const quitRef = useRef(null);
+
+  // ── Crash-safety for in-progress quizzes ────────────────────────────────
+  // A quiz's answers used to only get saved (locally AND remotely) at the
+  // very end — on natural completion, on Quit, or after the Review screen.
+  // If the app/tab was killed any other way (swiped away, force-closed) all
+  // of that session's answers were lost with no record anywhere. Now every
+  // answer is saved locally as it happens, and synced to Supabase every 5
+  // answers (plus a best-effort flush when the tab is hidden/closing) — see
+  // handleProgress/flushRemaining below.
+  const sessionTsRef          = useRef(null); // shared ts for every log row in this session, so Admin's Sessions view still groups them as one
+  const localLoggedIdxRef     = useRef(0);    // results.length already written to local wm_logs_*
+  const remoteSyncedIdxRef    = useRef(0);    // results.length already flushed to Supabase attempt_logs
+  const latestResultsRef      = useRef([]);   // mirrors the in-progress quiz's results, for the visibilitychange flush below
 
   // Captures a deep link's intended destination (e.g. opening /revise/similes
   // directly) from the very first render, before login rewrites the URL.
@@ -152,6 +164,76 @@ export default function App() {
     setScreen('home');
   }, []);
 
+  // Called after EVERY answered question (mid-quiz, not just at the end) —
+  // see the crash-safety comment above. Local writes happen every time
+  // (cheap); Supabase gets a batch every 5 answers to avoid hammering it.
+  // Deliberately does NOT touch scores/streak/coins here — those still
+  // commit only at the existing end-of-session checkpoints below, so the
+  // Review screen's "I spoke correctly" self-correction (which re-derives
+  // scores from the final, possibly-edited results array) keeps working
+  // exactly as before. What this protects is the answer *record* — which
+  // questions were asked and how they went — not the SM-2 mastery state.
+  const handleProgress = useCallback((results) => {
+    if (isPracticeMode || !user || !results.length) return;
+    if (results.length === 1) { // first answer of a fresh session
+      sessionTsRef.current = new Date().toISOString();
+      localLoggedIdxRef.current = 0;
+      remoteSyncedIdxRef.current = 0;
+    }
+    latestResultsRef.current = results;
+
+    try {
+      localStorage.setItem(`wm_pending_${user.username}`, JSON.stringify({
+        results, topicId: testConfig?.topicId, subject: testConfig?.subject, ts: sessionTsRef.current,
+      }));
+    } catch {}
+
+    if (results.length > localLoggedIdxRef.current) {
+      const newRows = toLogRows(user.username, results.slice(localLoggedIdxRef.current), sessionTsRef.current);
+      saveAttemptLogs(user.username, newRows);
+      localLoggedIdxRef.current = results.length;
+    }
+
+    if (results.length - remoteSyncedIdxRef.current >= 5) {
+      const subject = testConfig?.subject === 'geography' ? 'geography' : 'english';
+      const rows = toLogRows(user.username, results.slice(remoteSyncedIdxRef.current), sessionTsRef.current);
+      logRemoteAttempts(user.username, subject, rows);
+      remoteSyncedIdxRef.current = results.length;
+    }
+  }, [user, testConfig, isPracticeMode]);
+
+  // Sends whatever hasn't made it to Supabase yet (0-4 answers normally,
+  // more if handleProgress never got a chance to run) — used at every
+  // proper session end, and as a best-effort save when the tab is hidden.
+  const flushRemaining = useCallback((results) => {
+    if (isPracticeMode || !user || !results || results.length <= remoteSyncedIdxRef.current) return;
+    const subject = testConfig?.subject === 'geography' ? 'geography' : 'english';
+    const rows = toLogRows(user.username, results.slice(remoteSyncedIdxRef.current), sessionTsRef.current || new Date().toISOString());
+    logRemoteAttempts(user.username, subject, rows);
+    remoteSyncedIdxRef.current = results.length;
+  }, [user, testConfig, isPracticeMode]);
+
+  // Clears crash-safety tracking once a session has properly finished
+  // (its results are now fully committed through the normal path below).
+  function clearPendingSession() {
+    try { localStorage.removeItem(`wm_pending_${user.username}`); } catch {}
+    sessionTsRef.current = null;
+    localLoggedIdxRef.current = 0;
+    remoteSyncedIdxRef.current = 0;
+    latestResultsRef.current = [];
+  }
+
+  // Best-effort save if the app is closed/backgrounded mid-quiz without
+  // going through Quit/Back — 'visibilitychange' fires reliably on mobile
+  // (unlike 'beforeunload'), including when a tab is swiped away.
+  useEffect(() => {
+    function onVisibilityChange() {
+      if (document.visibilityState === 'hidden') flushRemaining(latestResultsRef.current);
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, [flushRemaining]);
+
   // Persists results to scores/coins/streak/Supabase. Called either immediately
   // (perfect score, no review shown) or after the user has had a chance to
   // fix voice-quiz mis-hears on the Review screen via "I spoke correctly".
@@ -164,11 +246,10 @@ export default function App() {
     updateStreak(user.username);
     addCoins(user.username, results.filter(r => r.correct).length * 10);
     saveRemoteScores(user.username, subject, getScores(scoreUser));
-    const logRows = toLogRows(user.username, results);
-    saveAttemptLogs(user.username, logRows);
-    logRemoteAttempts(user.username, subject, logRows);
+    flushRemaining(results);
     saveRemoteMeta(user.username, getMeta(user.username));
-  }, [user, testConfig]);
+    clearPendingSession();
+  }, [user, testConfig, flushRemaining]);
 
   const persistPartial = useCallback((results) => {
     const isGeo = testConfig?.subject === 'geography';
@@ -177,11 +258,10 @@ export default function App() {
     batchUpdateScores(scoreUser, results);
     addCoins(user.username, results.filter(r => r.correct).length * 10);
     saveRemoteScores(user.username, subject, getScores(scoreUser));
-    const logRows = toLogRows(user.username, results);
-    saveAttemptLogs(user.username, logRows);
-    logRemoteAttempts(user.username, subject, logRows);
+    flushRemaining(results);
     saveRemoteMeta(user.username, getMeta(user.username));
-  }, [user, testConfig]);
+    clearPendingSession();
+  }, [user, testConfig, flushRemaining]);
 
   const handleTestComplete = useCallback((results) => {
     setTestResults(results);
@@ -343,9 +423,9 @@ export default function App() {
       {screen === 'home'          && <Home key={homeKey} user={user} syncing={syncing} onStartTest={() => { setTopicGroup('core'); setScreen('topic-select'); }} onStartVocabo={() => { setTopicGroup('vocabo'); setScreen('topic-select'); }} onStartGeo={() => setScreen('geo-topic-select')} onRevise={handleRevise} onAdmin={() => setScreen('admin')} onLogout={handleLogout} />}
       {screen === 'topic-select'  && <TopicSelect group={topicGroup} onStart={handleStartTest} onVoiceStart={handleStartVoiceTest} onTeachStart={handleStartTeach} onRevise={handleRevise} onBack={goHome} syncing={syncing} />}
       {screen === 'geo-topic-select' && <GeoTopicSelect username={user.username} onStart={handleStartGeoTest} onVoiceStart={handleStartGeoVoiceTest} onBack={goHome} syncing={syncing} />}
-      {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
+      {screen === 'voice-test'   && <VoiceTest questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} onProgress={handleProgress} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
       {screen === 'revise'       && <Revise topicId={reviseTopicId} username={user.username} onBack={() => setScreen('topic-select')} darkMode={darkMode} />}
-      {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
+      {screen === 'test'         && <TestScreen questions={questions} onComplete={handleTestComplete} onQuit={handleQuit} onProgress={handleProgress} quitRef={quitRef} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />}
       {screen === 'review'       && <ReviewScreen results={testResults} onContinue={handleReviewContinue} continueLabel={reviewDest === 'results' ? 'See Results →' : 'Back to Home →'} onRepractice={handleRepractice} onMarkCorrect={handleMarkCorrect} darkMode={darkMode} />}
       {screen === 'results'      && <Results results={testResults} topicId={testConfig?.topicId} onRetry={handleRetry} onHome={goHome} onRepractice={handleRepractice} isPractice={isPracticeMode} darkMode={darkMode} />}
       {screen === 'teach-ask'    && <TeachAndAsk topicId={teachTopicId} username={user?.username} onQuit={goHome} />}

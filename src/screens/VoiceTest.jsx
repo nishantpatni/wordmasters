@@ -144,7 +144,7 @@ function NotSupported({ onBack, darkMode }) {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export default function VoiceTest({ questions, onComplete, onQuit, quitRef, darkMode, onToggleDarkMode }) {
+export default function VoiceTest({ questions, onComplete, onQuit, onProgress, quitRef, darkMode, onToggleDarkMode }) {
   const [idx,        setIdx]       = useState(0);
   // phase: 'ready' | 'listening' | 'reviewing' | 'result' | 'mic-blocked'
   const [phase,      setPhase]     = useState('ready');
@@ -241,6 +241,7 @@ export default function VoiceTest({ questions, onComplete, onQuit, quitRef, dark
     };
     const updated = [...resultsRef.current, newRes];
     resultsRef.current = updated; // update immediately so quit captures this result
+    onProgress?.(updated);
 
     setTipData({ correct, wordResults, coins, score, threshold, heard, hedged, hedgeWord });
     setPhase('result');

@@ -150,7 +150,7 @@ function getKeyTerm(prompt) {
   return prompt.split('\n')[0].replace(/\?$/, '').trim();
 }
 
-export default function TestScreen({ questions, onComplete, onQuit, quitRef, darkMode, onToggleDarkMode }) {
+export default function TestScreen({ questions, onComplete, onQuit, onProgress, quitRef, darkMode, onToggleDarkMode }) {
   const [idx,           setIdx]          = useState(0);
   const [sel,           setSel]          = useState(null);       // single-select option idx
   const [multiSel,      setMultiSel]     = useState(new Set());  // multi-select
@@ -211,6 +211,7 @@ export default function TestScreen({ questions, onComplete, onQuit, quitRef, dar
 
   // ── Navigation helpers ────────────────────────────────────────────────────
   function advance(updated) {
+    onProgress?.(updated);
     if (idxRef.current + 1 >= questions.length) {
       onComplete(updated);
     } else {
